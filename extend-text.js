@@ -20,11 +20,11 @@ angular.module('nag.extendText', [
           pre: function(scope, element, attributes) {
             scope.options = nagDefaults.getExtendTextOptions(scope.options);
 
-            var template = $(nagHelper.getAsyncTemplate(scope.options.templateUrl));
+            var template = $(nagHelper.getAsyncTemplate(scope.options.templateUrl, scope.options));
             template.find('input[type="hidden"]').attr('ng-bind', scope.options.ngModel);
 
             if(scope.options.autoFocus === true) {
-              template.find('textarea').attr('nag-auto-focus', '');
+              template.find('textarea').attr('auto-focus', '');
             }
 
             element.append($compile(template)(scope));
@@ -54,9 +54,9 @@ angular.module('nag.extendText', [
             };
 
             updateTextAreaPadding = function() {
-              if($(element).find('.nag-extend-text-tag:last-child').length > 0) {
-                var position = $(element).find('.nag-extend-text-tag:last-child').position();
-                var tagWidth = $(element).find('.nag-extend-text-tag:last-child').outerWidth(true);
+              if($(element).find('.extend-text-tag:last-child').length > 0) {
+                var position = $(element).find('.extend-text-tag:last-child').position();
+                var tagWidth = $(element).find('.extend-text-tag:last-child').outerWidth(true);
                 $(element).find('textarea').css('paddingLeft', position.left + tagWidth + 5);
                 $(element).find('textarea').css('paddingTop', position.top);
               } else {
@@ -72,7 +72,7 @@ angular.module('nag.extendText', [
               var top = parseInt(elementPosition.top + elementHeight);
               var left = parseInt(elementPosition.left);
 
-              $(element).find('.nag-extend-text-options').css({
+              $(element).find('.extend-text-options').css({
                 'top': top,
                 'left': left,
                 'width': elementWidth
@@ -332,7 +332,7 @@ angular.module('nag.extendText', [
               }, 0);
             }, true);
 
-            $(element).addClass('nag-extend-text');
+            $(element).addClass('extend-text');
             setElementHeight();
           }
         };
