@@ -12,8 +12,8 @@ angular.module('nag.extendText', [
     return {
       restrict: 'A',
       scope: {
-        options: '=nagExtendText',
-        formData: '='
+        options: '=?nagExtendText',
+        model: '=?'
       },
       compile: function() {
         return {
@@ -21,10 +21,10 @@ angular.module('nag.extendText', [
             scope.options = nagDefaults.getExtendTextOptions(scope.options);
 
             var template = $(nagHelper.getAsyncTemplate(scope.options.templateUrl, scope.options));
-            template.find('input[type="hidden"]').attr('ng-bind', scope.options.ngModel);
+            template.find('input[type="hidden"]').attr('ng-model', 'model.' + scope.options.ngModel);
 
             if(scope.options.autoFocus === true) {
-              template.find('textarea').attr('auto-focus', '');
+              template.find('textarea').attr('nag-auto-focus', '');
             }
 
             element.append($compile(template)(scope));
@@ -316,8 +316,11 @@ angular.module('nag.extendText', [
 
             scope.$watch('options.data', function(newValue, oldValue) {
               $timeout(function(){
-                if(scope.formData) {
-                  scope.formData[scope.options.ngModel] = scope.getHiddenValue();
+                if(scope.model) {
+                  scope.model[scope.options.ngModel] = scope.getHiddenValue();
+                  element.find('input[type="hidden"]').val(scope.getHiddenValue());
+
+                  console.log(scope.model);
                 }
 
                 updateTextAreaPadding();
