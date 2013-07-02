@@ -1,23 +1,20 @@
-<div class="extend-text-outer">
-  <div class="extend-text-inner">
-    <textarea class="extend-text-textarea" name="{{ options.visibleInputName }}" ng-mouseup="mouseUp($event)" nag-event="{keyup: 'keyUp($event)', keydown: 'keyDown($event)', blur: 'blur($event)', focus: 'focus($event)'}">{{ getVisibleValue() }}</textarea>
-    <input type="hidden" name="{{ options.hiddenInputName }}">
-    <div class="extend-text-tag-container" ng-show="options.tagOptions.enabled">
-      <ul class="extend-text-tags">
-        <li class="extend-text-tag" ng-repeat="(key, item) in options.data" ng-class="{selected: isSelectedTag(key)}" ng-dblclick="doubleClick($event, item.value)">
-          <span class="extend-text-tag-text" data-value="{{ item.value }}">{{ item.display }}
-            <span class="extend-text-tag-remove" ng-click="removeValue(item.value)">X</span>
-          </span>
-        </li>
-      </ul>
-    </div>
-    <div class="extend-text-options" ng-show="options.autoCompleteOptions.enabled && options.autoCompleteOptions.display">
-      <div ng-show="options.autoCompleteOptions.options.length == 0 && options.autoCompleteOptions.loadingData == false && options.autoCompleteOptions.loadCharacterCount > getTextAreaValue().length">Starting typing to get a list of options</div>
-      <div ng-show="options.autoCompleteOptions.options.length == 0 && options.autoCompleteOptions.loadingData == true">Loading data...</div>
-      <div ng-show="options.autoCompleteOptions.options.length == 0 && options.autoCompleteOptions.loadingData == false && options.autoCompleteOptions.loadCharacterCount <= getTextAreaValue().length">No Options Found</div>
-      <ul ng-show="options.autoCompleteOptions.options.length > 0">
-        <li ng-repeat="(key, option) in options.autoCompleteOptions.options" data-value="{{ option.value }}" ng-class="{'extend-text-option-focus': isSelectedOption(key)}">{{ option.display }}</li>
-      </ul>
-    </div>
+<div class="container" ng-class="{'is-active': isActive, 'auto-complete': options.autoCompleteOptions.enabled}">
+  <div class="inputs"></div>
+  <div class="tag-container" ng-if="options.tagOptions.enabled">
+    <ul class="tags" ng-click="ulClick($event)">
+      <li class="tag" ng-repeat="(key, item) in options.data" ng-class="{selected: isSelectedTag(key)}" ng-dblclick="doubleClick($event, item.value)">
+        <span class="text" data-value="{{ item.value }}">{{ item.display }}
+          <span class="remove" ng-click="removeValue(item.value)">X</span>
+        </span>
+      </li>
+    </ul>
   </div>
-</div>;
+  <div class="auto-complete-options" ng-if="options.autoCompleteOptions.enabled" ng-show="options.autoCompleteOptions.display">
+    <div ng-show="options.autoCompleteOptions.options.length == 0 && options.autoCompleteOptions.loadingData == false && options.autoCompleteOptions.loadCharacterCount > getTextAreaValue().length">Starting typing to get a list of options</div>
+    <div ng-show="options.autoCompleteOptions.options.length == 0 && options.autoCompleteOptions.loadingData == true">Loading data...</div>
+    <div ng-show="options.autoCompleteOptions.options.length == 0 && options.autoCompleteOptions.loadingData == false && options.autoCompleteOptions.loadCharacterCount <= getTextAreaValue().length">No Options Found</div>
+    <ul ng-show="options.autoCompleteOptions.options.length > 0">
+      <li ng-repeat="(key, option) in options.autoCompleteOptions.options" data-value="{{ option.value }}" ng-class="{'focus': isSelectedOption(key)}">{{ option.display }}</li>
+    </ul>
+  </div>
+</div>
