@@ -174,7 +174,7 @@ angular.module('nag.extendText', [
               $http({method: scope.options.autoCompleteOptions.remoteDataMethod, url: url}).
               success(function(response, status, headers, config) {
                 if(angular.isObject(response)) {
-                  scope.options.autoCompleteOptions.options = scope.options.autoCompleteOptions.dataParser(response);
+                  scope.options.autoCompleteOptions.options = scope.options.autoCompleteOptions.responseParser(response);
                 }
 
                 scope.options.autoCompleteOptions.loadingData = false;
