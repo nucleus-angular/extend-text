@@ -14,7 +14,7 @@
     <div ng-show="options.autoCompleteOptions.options.length == 0 && options.autoCompleteOptions.loadingData == true">Loading data...</div>
     <div ng-show="options.autoCompleteOptions.options.length == 0 && options.autoCompleteOptions.loadingData == false && options.autoCompleteOptions.loadCharacterCount <= getTextAreaValue().length">No Options Found</div>
     <ul ng-show="options.autoCompleteOptions.options.length > 0">
-      <li ng-repeat="(key, option) in options.autoCompleteOptions.options" data-value="{{ option.value }}" ng-class="{'focus': isSelectedOption(key)}">{{ option.display }}</li>
+      <li ng-repeat="(key, option) in options.autoCompleteOptions.options" data-value="{{ option.value }}" ng-class="{'focus': isSelectedOption(key)}" ng-mouseenter="selectOption(key)" ng-mousedown="setValueAutoCompleteMouseDown()">{{ option.display }}</li>
     </ul>
   </div>
 </div>
