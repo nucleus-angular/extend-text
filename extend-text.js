@@ -87,7 +87,7 @@ angular.module('nag.extendText', [
               var hiddenElement = clone.filter('input[type="hidden"]');
 
               displayElement.attr('ng-class', "{'ng-valid': modelController.$dirty && modelController.$valid, 'ng-invalid': modelController.$dirty && modelController.$invalid}")
-              .attr('nag-event', "{keyup: 'keyUp($event)', blur: 'blur($event)', focus: 'focus($event)'}")
+              .attr('nag-event', "{keydown: 'keyDown($event)', keyup: 'keyUp($event)', blur: 'blur($event)', focus: 'focus($event)'}")
               .attr('ng-mouseup', "mouseUp($event)")
               .attr('value', "{{ getVisibleValue() }}");
 
@@ -156,7 +156,7 @@ angular.module('nag.extendText', [
             scope.options = nagDefaults.getExtendTextOptions(scope.options);
             var defaultAutoCompleteOptions = _.clone(scope.options.autoCompleteOptions.options);
             var beatName = 'extend-text-' + scope.$id;
-            var addValue, setValue, updateTextAreaPadding, updateAutoCompletePosition, displayAutoComplete, hideAutoComplete, setElementHeight, getData, originalPadding, borderSize, originalMargin, autoCompleteClicked;
+            var addValue, setValue, updateTextAreaPadding, updateAutoCompletePosition, displayAutoComplete, hideAutoComplete, setElementHeight, getData, originalPadding, borderSize, originalMargin, resetAutoCompleteOptions;
 
             //todo: research: not sure why but I need to have the $timeout here for this to properly be able to pull the original padding
             $timeout(function() {
@@ -274,6 +274,22 @@ angular.module('nag.extendText', [
               }
             };
 
+            resetAutoCompleteOptions = function() {
+              var defaultOptions;
+              defaultOptions = defaultAutoCompleteOptions;
+
+              if(scope.options.autoCompleteOptions.allowFreeForm && scope.getVisibleValue() != '') {
+                defaultOptions = [{
+                  display: scope.getNewItemValue(),
+                  value: scope.getVisibleValue()
+                }];
+              }
+
+              scope.options.autoCompleteOptions.options = defaultOptions;
+              scope.options.autoCompleteOptions.variableCache = null;
+              scope.options.autoCompleteOptions.selectedOptionIndex = 0;
+            },
+
             /**
              * Whether or not it is active
              *
@@ -320,7 +336,7 @@ angular.module('nag.extendText', [
                 $(element).find('input.display').val('');
               }
 
-              scope.options.data = [];
+              resetAutoCompleteOptions();
             }
 
             /**
@@ -343,6 +359,7 @@ angular.module('nag.extendText', [
                 scope.options.data.splice(removeKey, 1);
               } else {
                 //since there is no tagging, we should only be store one value so just clear it out
+                //console.log('clearing data');
                 scope.options.data = [];
               }
             };
@@ -359,6 +376,10 @@ angular.module('nag.extendText', [
               if(scope.options.tagOptions.enabled === true) {
                 return scope.options.data.length > 0 ? angular.toJson(scope.options.data) : '';
               } else {
+                if(scope.options.data[0]) {
+                  //console.log('hidden value');
+                  //console.log(scope.options.data[0].value);
+                }
                 return (scope.options.data[0] ? scope.options.data[0].value : '');
               }
             }
@@ -375,6 +396,10 @@ angular.module('nag.extendText', [
               if(scope.options.tagOptions.enabled === true) {
                 return '';
               } else {
+                if(scope.options.data[0]) {
+                  //console.log('visible value');
+                  //console.log(scope.options.data[0].display);
+                }
                 return (scope.options.data[0] ? scope.options.data[0].display : '');
               }
             };
@@ -464,9 +489,7 @@ angular.module('nag.extendText', [
             scope.setValueFromAutoComplete = function() {
               var newItem = scope.options.autoCompleteOptions.options[scope.options.autoCompleteOptions.selectedOptionIndex];
               scope.newValue(newItem.display, newItem.value);
-              scope.options.autoCompleteOptions.options = defaultAutoCompleteOptions;
-              scope.options.autoCompleteOptions.variableCache = null;
-              scope.options.autoCompleteOptions.selectedOptionIndex = 0;
+              resetAutoCompleteOptions();
             };
 
             /**
@@ -476,7 +499,6 @@ angular.module('nag.extendText', [
              * @method setValueAutoCompleteMouseDown
              */
             scope.setValueAutoCompleteMouseDown = function() {
-              autoCompleteClicked = true;
               scope.setValueFromAutoComplete();
             }
 
@@ -502,7 +524,7 @@ angular.module('nag.extendText', [
              *
              * @param {object} $event Event
              */
-            scope.keyUp = function($event) {
+            scope.keyDown = function($event) {
               //handle prevent of enter submitted form
               if((scope.options.tagOptions.enabled === true || scope.options.preventSubmitOnEnter === true) && $event.which === 13) {
                   $event.preventDefault();
@@ -543,9 +565,13 @@ angular.module('nag.extendText', [
                 } else if(angular.isNumber(scope.options.tagOptions.selectedTagIndex)) { //if no other matches, make sure that nothing is selected
                   scope.resetSelectedTag();
                 }
-              } else if(scope.options.autoCompleteOptions.enabled === true && scope.options.autoCompleteOptions.allowFreeForm === true) {
+              }/* else if(scope.options.autoCompleteOptions.enabled === true && scope.options.autoCompleteOptions.allowFreeForm === true) {
                 scope.newValue($(element).find('input.display').val());
-              }
+
+                if($event.which === 9) { //tab
+                  $(element).find('input.display').select();
+                }
+              }*/
 
               if(scope.options.autoCompleteOptions.enabled === true) {
                 if($event.which === 13) { //enter
@@ -553,12 +579,13 @@ angular.module('nag.extendText', [
                     $event.preventDefault();
                     scope.setValueFromAutoComplete();
                   }
-                } else if($event.which === 9) { //tab
+                }/* else if($event.which === 9 && $event.shiftKey === false) { //tab
                   if(scope.options.autoCompleteOptions.options.length > 0) {
                     $event.preventDefault();
                     scope.setValueFromAutoComplete();
+                    $($event.target).next(':input').focus();
                   }
-                } else if($event.which == 38) { //up arrow
+                }*/ else if($event.which == 38) { //up arrow
                   $event.preventDefault();
                   scope.options.autoCompleteOptions.selectedOptionIndex =
                   (scope.options.autoCompleteOptions.selectedOptionIndex - 1 < 0
@@ -570,15 +597,33 @@ angular.module('nag.extendText', [
                   (scope.options.autoCompleteOptions.selectedOptionIndex + 1 >= scope.options.autoCompleteOptions.options.length
                   ? 0
                   : scope.options.autoCompleteOptions.selectedOptionIndex + 1);
+                }
+              }
+            };
+
+            scope.keyUp = function($event) {
+              if(scope.options.autoCompleteOptions.enabled === true) {
+                if($event.which == 38 || $event.which == 40) {
+                  $event.preventDefault();
                 } else if(_.indexOf(noneAffectingTextKeys, $event.which) === -1) {
                   //using any character that affects text should reset the value if not allowing free form with auto complete
-                  if(scope.options.autoCompleteOptions.allowFreeForm !== true) {
+                  var textAreaValue = $(element).find('input.display').val();
+
+                  if(scope.options.autoCompleteOptions.allowFreeForm !== true || textAreaValue == '') {
                     scope.modelController.$setViewValue('');
                   }
 
-                  var textAreaValue = $(element).find('input.display').val();
+                  if(scope.options.autoCompleteOptions.allowFreeForm === true) {
+                    scope.newValue(textAreaValue);
+                  }
 
                   if(textAreaValue.length >= scope.options.autoCompleteOptions.loadCharacterCount) {
+                    //show the auto complete options once the user start entering enough data
+                    if(scope.options.autoCompleteOptions.display === false) {
+                      scope.options.autoCompleteOptions.selectedOptionIndex = 0;
+                      displayAutoComplete();
+                    }
+
                     if(scope.options.autoCompleteOptions.allowFreeForm === true) {
                       scope.options.autoCompleteOptions.options = [{
                         display: scope.getNewItemValue(),
@@ -592,6 +637,8 @@ angular.module('nag.extendText', [
                       once: true,
                       overwrite: true
                     });
+                  } else if(scope.options.autoCompleteOptions.display === true) {
+                    hideAutoComplete();
                   }
                 }
               }
@@ -612,22 +659,21 @@ angular.module('nag.extendText', [
               }
 
               if(scope.options.autoCompleteOptions.enabled === true) {
-                hideAutoComplete();
-
-                if(autoCompleteClicked !== true && scope.options.autoCompleteOptions.selectOnBlur === true && scope.options.autoCompleteOptions.options[scope.options.autoCompleteOptions.selectedOptionIndex]) {
+                if(scope.options.autoCompleteOptions.selectOnBlur === true && scope.options.autoCompleteOptions.options[scope.options.autoCompleteOptions.selectedOptionIndex]) {
                   scope.setValueFromAutoComplete();
                 }
 
                 if(scope.options.autoCompleteOptions.allowFreeForm !== true && scope.$eval('model.' + scope.modelController.$name) == '') {
-                  //scope.resetValues();
+                  scope.resetValues();
                 }
+
+                hideAutoComplete();
 
                 scope.options.autoCompleteOptions.selectedOptionIndex = null;
                 scope.options.autoCompleteOptions.options = defaultAutoCompleteOptions;
               }
 
               scope.isActive = false;
-              autoCompleteClicked = false;
             };
 
             /**
@@ -639,24 +685,6 @@ angular.module('nag.extendText', [
              * @param {object} $event Event
              */
             scope.focus = function($event) {
-              if(scope.options.autoCompleteOptions.enabled === true) {
-                scope.options.autoCompleteOptions.selectedOptionIndex = 0;
-                displayAutoComplete();
-              }
-
-              var textAreaValue = $(element).find('input.display').val();
-
-              if(textAreaValue.length >= scope.options.autoCompleteOptions.loadCharacterCount) {
-                if(scope.options.autoCompleteOptions.allowFreeForm === true) {
-                  scope.options.autoCompleteOptions.options = [{
-                    display: scope.getNewItemValue(),
-                    value: scope.getVisibleValue()
-                  }];
-                }
-
-                getData();
-              }
-
               scope.isActive = true;
             };
 
@@ -697,7 +725,7 @@ angular.module('nag.extendText', [
              * @returns {string} The display value for "new item"
              */
             scope.getNewItemValue = function() {
-              return scope.getVisibleValue() + ' (' + scope.options.autoCompleteOptions.newText + ')';
+              return scope.getTextAreaValue();// + ' (' + scope.options.autoCompleteOptions.newText + ')';
             },
 
             /**
@@ -706,13 +734,10 @@ angular.module('nag.extendText', [
              * @ngwatch options.data
              */
             scope.$watch('options.data', function(newValue, oldValue) {
-              var hiddenValue = scope.getHiddenValue();
-              element.find('input[type="hidden"]').val(scope.getHiddenValue());
-              element.find('input.display').val(scope.getVisibleValue());
-
-              if(hiddenValue != '') {
-                scope.modelController.$setViewValue(scope.getHiddenValue());
-              }
+              //console.log('data updating');
+              //console.log(newValue);
+              //console.log(oldValue);
+              dataUpdate();
 
               //need to make sure that the DOM is available to modify
               $timeout(function(){
@@ -721,6 +746,16 @@ angular.module('nag.extendText', [
                 //setElementHeight();
               }, 0);
             }, true);
+
+            var dataUpdate = function() {
+              var hiddenValue = scope.getHiddenValue();
+              element.find('input[type="hidden"]').val(scope.getHiddenValue());
+              element.find('input.display').val(scope.getVisibleValue());
+
+              if(hiddenValue != '') {
+                scope.modelController.$setViewValue(scope.getHiddenValue());
+              }
+            }
 
             /**
              * Update auto complete position when auto complete options change
@@ -741,7 +776,9 @@ angular.module('nag.extendText', [
              * @respondto extend-text-[data-id]::set-data
              */
             scope.$on('extend-text-' + attributes.id + '::set-data', function(self, data) {
+              //reset the data to the passed in data
               scope.options.data = data;
+              dataUpdate();
             });
           }
         };
