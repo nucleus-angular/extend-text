@@ -10,7 +10,8 @@
 angular.module('nag.extendText', [
   'nag.core',
   'nag.beat',
-  'nag.event'
+  'nag.event',
+  'nag.form.input'
 ])
 .directive('nagExtendText', [
   '$timeout',
@@ -64,22 +65,6 @@ angular.module('nag.extendText', [
                 });
               }
             }
-
-            /*scope.options = nagDefaults.getExtendTextOptions(scope.options);
-
-            //var template = $(nagHelper.getAsyncTemplate(scope.options.templateUrl, scope.options));
-            element.find('input[type="hidden"]').attr('ng-model', 'model.' + scope.options.ngModel);
-//            template.find('input').attr('ng-model', 'model.' + scope.options.ngModel);
-
-            if(scope.options.autoFocus === true) {
-                element.find('input.display').attr('nag-auto-focus', '');
-            }
-
-            element.addClass('extend-text');
-            //console.log(element.attr('ng-model'));
-            //template.attr('ng-model', element.attr('ng-model'));
-
-            //element.html($compile(template)(scope));*/
           },
           post: function(scope, element, attributes, controllers) {
             transclude(scope, function(clone) {
@@ -103,7 +88,6 @@ angular.module('nag.extendText', [
              *   @property {boolean} [options.selectOnFocus=false] Whether or not to select of data when focusing on input
              *   @property {boolean} [options.preventSubmitOnEnter=true] Whether or not the prevent form submission on the enter key when input focused
              *   @property {array} [options.data] The data for the input
-             *   @proeprty {boolean} [options.autoFocus=false] Whether
              *   @property {string} [options.templateUrl="extend-text.html"] Main template url
              *   @property {string} [options.template=""] Template HTML
              */
@@ -211,7 +195,6 @@ angular.module('nag.extendText', [
             };
 
             updateAutoCompletePosition = function() {
-              //console.log($(element).html());
               var elementPosition = $(element).find('input.display').position();
               var elementHeight = $(element).find('input.display').outerHeight();
               var elementWidth = $(element).find('input.display').outerWidth();
@@ -359,7 +342,6 @@ angular.module('nag.extendText', [
                 scope.options.data.splice(removeKey, 1);
               } else {
                 //since there is no tagging, we should only be store one value so just clear it out
-                //console.log('clearing data');
                 scope.options.data = [];
               }
             };
@@ -376,10 +358,6 @@ angular.module('nag.extendText', [
               if(scope.options.tagOptions.enabled === true) {
                 return scope.options.data.length > 0 ? angular.toJson(scope.options.data) : '';
               } else {
-                if(scope.options.data[0]) {
-                  //console.log('hidden value');
-                  //console.log(scope.options.data[0].value);
-                }
                 return (scope.options.data[0] ? scope.options.data[0].value : '');
               }
             }
@@ -396,10 +374,6 @@ angular.module('nag.extendText', [
               if(scope.options.tagOptions.enabled === true) {
                 return '';
               } else {
-                if(scope.options.data[0]) {
-                  //console.log('visible value');
-                  //console.log(scope.options.data[0].display);
-                }
                 return (scope.options.data[0] ? scope.options.data[0].display : '');
               }
             };
@@ -641,6 +615,8 @@ angular.module('nag.extendText', [
                     hideAutoComplete();
                   }
                 }
+              } else if(scope.options.autoCompleteOptions.enabled === false && scope.options.tagOptions.enabled === false) {
+                scope.newValue($(element).find('input.display').val());
               }
             };
 
@@ -663,7 +639,7 @@ angular.module('nag.extendText', [
                   scope.setValueFromAutoComplete();
                 }
 
-                if(scope.options.autoCompleteOptions.allowFreeForm !== true && scope.$eval('model.' + scope.modelController.$name) == '') {
+                if(scope.options.autoCompleteOptions.allowFreeForm !== true && _.isEmpty(scope.$eval('model.' + scope.modelController.$name))) {
                   scope.resetValues();
                 }
 
@@ -734,9 +710,6 @@ angular.module('nag.extendText', [
              * @ngwatch options.data
              */
             scope.$watch('options.data', function(newValue, oldValue) {
-              //console.log('data updating');
-              //console.log(newValue);
-              //console.log(oldValue);
               dataUpdate();
 
               //need to make sure that the DOM is available to modify
