@@ -8,9 +8,12 @@
     "nucleus-angular-form": "latest"
   },
   "devDependencies": {
-    "jquery": "1.9.1",
-    "angular": "1.0.6",
-    "angular-mocks": "1.0.6",
-    "unstable-angular-complete": "1.1.4"
+    "lodash": "1.2.1",
+    "angular-ui-router": "latest",
+    "jquery": "2.0.2",
+    "angular": "1.0.7",
+    "angular-mocks": "1.0.7",
+    "unstable-angular-complete": "1.1.5",
+    "nucleus-angular-auto-focus": "latest"
   }
 }
