@@ -18,7 +18,7 @@ module.exports = {
       test.open('http://localhost:3000/auto-complete-load-character-count')
       //angular - need to wait for angular to render this container
       .waitForElement('[data-id="test"] .container')
-      .type('.display', 'tes\uE003')
+      .type('.display', 'tes')
       //todo: need to wait for the wait() method to be fixed
       //.wait(1000)
         .assert.doesntExist('auto-complete-options ul li', 'auto complete options should not be visible until 3 character have been insert in the input')

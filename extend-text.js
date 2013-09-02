@@ -140,7 +140,7 @@ angular.module('nag.extendText', [
             scope.options = nagDefaults.getExtendTextOptions(scope.options);
             var defaultAutoCompleteOptions = _.clone(scope.options.autoCompleteOptions.options);
             var beatName = 'extend-text-' + scope.$id;
-            var addValue, setValue, updateTextAreaPadding, updateAutoCompletePosition, displayAutoComplete, hideAutoComplete, setElementHeight, getData, originalPadding, borderSize, originalMargin, resetAutoCompleteOptions;
+            var addValue, setValue, updateTextAreaPadding, updateAutoCompletePosition, displayAutoComplete, hideAutoComplete, setElementHeight, getData, originalPadding, borderSize, originalMargin, resetAutoCompleteOptions, setDisplayInput, dataUpdate;
 
             //todo: research: not sure why but I need to have the $timeout here for this to properly be able to pull the original padding
             $timeout(function() {
@@ -243,8 +243,16 @@ angular.module('nag.extendText', [
                   if(angular.isObject(response)) {
                     var data = scope.options.autoCompleteOptions.responseParser(response);
 
-                    if(_.isArray(data) && data.length > 0) {
+                    if(_.isArray(data)) {
                       scope.options.autoCompleteOptions.options = data;
+
+                      if(data.length == 0 || _.map(data, function(option){return option.display;}).indexOf(scope.getVisibleValue()) == -1) {
+                        scope.options.autoCompleteOptions.isNew = true;
+                      } else {
+                        scope.options.autoCompleteOptions.isNew = false;
+                      }
+                    } else {
+                      scope.options.autoCompleteOptions.isNew = false;
                     }
                   }
 
@@ -261,17 +269,37 @@ angular.module('nag.extendText', [
               var defaultOptions;
               defaultOptions = defaultAutoCompleteOptions;
 
-              if(scope.options.autoCompleteOptions.allowFreeForm && scope.getVisibleValue() != '') {
+              /*if(scope.options.autoCompleteOptions.allowFreeForm && scope.getVisibleValue() != '') {
                 defaultOptions = [{
                   display: scope.getNewItemValue(),
                   value: scope.getVisibleValue()
                 }];
-              }
+              }*/
 
               scope.options.autoCompleteOptions.options = defaultOptions;
               scope.options.autoCompleteOptions.variableCache = null;
               scope.options.autoCompleteOptions.selectedOptionIndex = 0;
-            },
+            };
+
+            setDisplayInput = function(value) {
+              var currentPosition = $(element).find('input.display')[0].selectionStart;
+              var positionCursor = (currentPosition < $(element).find('input.display').val().length);
+              $(element).find('input.display').val(value)
+
+              if(positionCursor) {
+                $(element).find('input.display')[0].setSelectionRange(currentPosition, currentPosition);
+              }
+            };
+
+            dataUpdate = function() {
+              var hiddenValue = scope.getHiddenValue();
+              element.find('input[type="hidden"]').val(scope.getHiddenValue());
+              setDisplayInput(scope.getVisibleValue());
+
+              if(hiddenValue != '') {
+                scope.modelController.$setViewValue(scope.getHiddenValue());
+              }
+            };
 
             /**
              * Whether or not it is active
@@ -299,10 +327,10 @@ angular.module('nag.extendText', [
 
               if(scope.options.tagOptions.enabled === true) {
                 addValue(display, value);
-                $(element).find('input.display').val('');
+                setDisplayInput('');
               } else {
                 setValue(display, value);
-                $(element).find('input.display').val(display);
+                //setDisplayInput(display, true);
               }
             };
 
@@ -316,7 +344,7 @@ angular.module('nag.extendText', [
              */
             scope.resetValues = function(leaveDisplayValue) {
               if(leaveDisplayValue !== true) {
-                $(element).find('input.display').val('');
+                setDisplayInput('');
               }
 
               resetAutoCompleteOptions();
@@ -464,6 +492,7 @@ angular.module('nag.extendText', [
               var newItem = scope.options.autoCompleteOptions.options[scope.options.autoCompleteOptions.selectedOptionIndex];
               scope.newValue(newItem.display, newItem.value);
               resetAutoCompleteOptions();
+              scope.options.autoCompleteOptions.isNew = false;
             };
 
             /**
@@ -491,10 +520,10 @@ angular.module('nag.extendText', [
             };
 
             /**
-             * Keyup event handler
+             * Key down event handler
              *
              * @ngscope
-             * @method keyUp
+             * @method keyDown
              *
              * @param {object} $event Event
              */
@@ -539,13 +568,7 @@ angular.module('nag.extendText', [
                 } else if(angular.isNumber(scope.options.tagOptions.selectedTagIndex)) { //if no other matches, make sure that nothing is selected
                   scope.resetSelectedTag();
                 }
-              }/* else if(scope.options.autoCompleteOptions.enabled === true && scope.options.autoCompleteOptions.allowFreeForm === true) {
-                scope.newValue($(element).find('input.display').val());
-
-                if($event.which === 9) { //tab
-                  $(element).find('input.display').select();
-                }
-              }*/
+              }
 
               if(scope.options.autoCompleteOptions.enabled === true) {
                 if($event.which === 13) { //enter
@@ -575,6 +598,15 @@ angular.module('nag.extendText', [
               }
             };
 
+
+            /**
+             * Key up event handler
+             *
+             * @ngscope
+             * @method keyUp
+             *
+             * @param {object} $event Event
+             */
             scope.keyUp = function($event) {
               if(scope.options.autoCompleteOptions.enabled === true) {
                 if($event.which == 38 || $event.which == 40) {
@@ -598,12 +630,12 @@ angular.module('nag.extendText', [
                       displayAutoComplete();
                     }
 
-                    if(scope.options.autoCompleteOptions.allowFreeForm === true) {
+                    /*if(scope.options.autoCompleteOptions.allowFreeForm === true) {
                       scope.options.autoCompleteOptions.options = [{
                         display: scope.getNewItemValue(),
                         value: scope.getVisibleValue()
                       }];
-                    }
+                    }*/
 
                     nagBeat.add(beatName, function() {
                       getData();
@@ -621,7 +653,7 @@ angular.module('nag.extendText', [
             };
 
             /**
-             * Blue event handler
+             * Blur event handler
              *
              * @ngscope
              * @method blue
@@ -630,7 +662,7 @@ angular.module('nag.extendText', [
              */
             scope.blur = function($event) {
               if(scope.options.tagOptions.enabled === true) {
-                $(element).find('input.display').val('');
+                setDisplayInput('');
                 scope.options.tagOptions.selectedTagIndex = null;
               }
 
@@ -675,7 +707,7 @@ angular.module('nag.extendText', [
             scope.doubleClick = function($event, value) {
               if(scope.options.tagOptions.doubleClickEdit === true) {
                 scope.removeValue(value);
-                $(element).find('input.display').val(value);
+                setDisplayInput(value);
               }
             };
 
@@ -719,16 +751,6 @@ angular.module('nag.extendText', [
                 //setElementHeight();
               }, 0);
             }, true);
-
-            var dataUpdate = function() {
-              var hiddenValue = scope.getHiddenValue();
-              element.find('input[type="hidden"]').val(scope.getHiddenValue());
-              element.find('input.display').val(scope.getVisibleValue());
-
-              if(hiddenValue != '') {
-                scope.modelController.$setViewValue(scope.getHiddenValue());
-              }
-            }
 
             /**
              * Update auto complete position when auto complete options change
