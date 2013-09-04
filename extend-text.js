@@ -21,7 +21,8 @@ angular.module('nag.extendText', [
   'nagHelper',
   'nagDefaults',
   'noneAffectingTextKeys',
-  function($timeout, $http, nagBeat, $compile, nagHelper, nagDefaults, noneAffectingTextKeys){
+  '$rootScope',
+  function($timeout, $http, nagBeat, $compile, nagHelper, nagDefaults, noneAffectingTextKeys, $rootScope){
     return {
       restrict: 'A',
       scope: {
@@ -35,6 +36,24 @@ angular.module('nag.extendText', [
         '$scope',
         function($scope) {
           /**
+           * Unregisters the form reset event
+           *
+           * @ngscope
+           * @property unregisterResetFormEvent
+           * @type function
+           */
+          $scope.unregisterResetFormEvent = null;
+
+          /**
+           * Unregisters the set data event
+           *
+           * @ngscope
+           * @property unregisterSetDataEvent
+           * @type function
+           */
+          $scope.unregisterSetDataEvent = null;
+
+          /**
            * Sets the model controller
            *
            * @ngdirectivecontroller
@@ -45,6 +64,17 @@ angular.module('nag.extendText', [
           this.setModelController = function(modelController) {
             $scope.modelController = modelController;
           }
+
+          //unregister callback on destructure
+          $scope.$on('$destroy', function() {
+            if($scope.unregisterResetFormEvent) {
+              $scope.unregisterResetFormEvent();
+            }
+
+            if($scope.unregisterSetDataEvent) {
+              $scope.unregisterSetDataEvent();
+            }
+          });
         }
       ],
       templateUrl: 'components/nucleus-angular-extend-text/assets/templates/extend-text.html',
@@ -58,13 +88,13 @@ angular.module('nag.extendText', [
           pre: function(scope, element, attributes, controllers) {
             //add callback if this form is a resettable form
             //todo: refactor: use events instead of callbacks
-            if(controllers) {
+            /*if(controllers) {
               if(controllers[0]) {
                 controllers[0].addCallback(function() {
-                  scope.resetValues();
+                  scope.resetAutoCompleteValues();
                 });
               }
-            }
+            }*/
           },
           post: function(scope, element, attributes, controllers) {
             transclude(scope, function(clone) {
@@ -140,7 +170,8 @@ angular.module('nag.extendText', [
             scope.options = nagDefaults.getExtendTextOptions(scope.options);
             var defaultAutoCompleteOptions = _.clone(scope.options.autoCompleteOptions.options);
             var beatName = 'extend-text-' + scope.$id;
-            var addValue, setValue, updateTextAreaPadding, updateAutoCompletePosition, displayAutoComplete, hideAutoComplete, setElementHeight, getData, originalPadding, borderSize, originalMargin, resetAutoCompleteOptions, setDisplayInput, dataUpdate;
+            var addValue, setValue, updateTextAreaPadding, updateAutoCompletePosition, displayAutoComplete, hideAutoComplete, setElementHeight, getData, originalPadding, borderSize, originalMargin, resetAutoCompleteOptions, setDisplayInput, dataUpdate, dontFocusOnCursorPlacement;
+            dontFocusOnCursorPlacement = false;
 
             //todo: research: not sure why but I need to have the $timeout here for this to properly be able to pull the original padding
             $timeout(function() {
@@ -286,9 +317,13 @@ angular.module('nag.extendText', [
               var positionCursor = (currentPosition < $(element).find('input.display').val().length);
               $(element).find('input.display').val(value)
 
-              if(positionCursor) {
+              //if positionCursor is zero all browser except IE won't do anything but IE will focus the element which is not desired effect
+              //so we need something additional to track whether or not the auto focus the element
+              if(positionCursor && !dontFocusOnCursorPlacement) {
                 $(element).find('input.display')[0].setSelectionRange(currentPosition, currentPosition);
               }
+
+              dontFocusOnCursorPlacement = false;
             };
 
             dataUpdate = function() {
@@ -338,13 +373,14 @@ angular.module('nag.extendText', [
              * Clear out the current input values
              *
              * @ngscope
-             * @method resetValues
+             * @method resetAutoCompleteValues
              *
-             * @param {boolean} [leaveDisplayValue=false] Whether or not to clear out the display value too
+             * @param {boolean} [clearDataValues=false] Whether or not to clear out the display value too
              */
-            scope.resetValues = function(leaveDisplayValue) {
-              if(leaveDisplayValue !== true) {
+            scope.resetAutoCompleteValues = function(clearDataValues) {
+              if(clearDataValues === true) {
                 setDisplayInput('');
+                scope.options.data = [];
               }
 
               resetAutoCompleteOptions();
@@ -672,7 +708,7 @@ angular.module('nag.extendText', [
                 }
 
                 if(scope.options.autoCompleteOptions.allowFreeForm !== true && _.isEmpty(scope.$eval('model.' + scope.modelController.$name))) {
-                  scope.resetValues();
+                  scope.resetAutoCompleteValues();
                 }
 
                 hideAutoComplete();
@@ -768,13 +804,28 @@ angular.module('nag.extendText', [
             /**
              * Set the data when the set-data event is triggered for the extend box, event name uses the data-id attribute to listen to a unique event name
              *
-             * @respondto extend-text-[data-id]::set-data
+             * @respondto NagExtendText[attribute id]/setData
+             * @eventlevel root
              */
-            scope.$on('extend-text-' + attributes.id + '::set-data', function(self, data) {
+            scope.unregisterSetDataEvent = $rootScope.$on('NagExtendText[' + attributes.id.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');}) + ']/setData', function(self, data) {
               //reset the data to the passed in data
+              dontFocusOnCursorPlacement = true;
               scope.options.data = data;
-              dataUpdate();
             });
+
+            var parentFormName = element.parents('form').slice(0, 1).attr('name');
+
+            if(parentFormName) {
+              /**
+               * Set the data when the set-data event is triggered for the extend box, event name uses the data-id attribute to listen to a unique event name
+               *
+               * @respondto NagForm[form name]/reset
+               * @eventlevel root
+               */
+              scope.unregisterResetFormEvent = $rootScope.$on('NagForm[' + parentFormName +']/reset', function(self) {
+                  scope.resetAutoCompleteValues();
+              });
+            }
           }
         };
       }
