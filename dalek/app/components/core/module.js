@@ -27,7 +27,7 @@ angular.module('demo.core.routing', [
 ]);
 
 angular.module('demo.core', [
-  'ui.compat',
+  'ui.router',
   'demo.core.routing',
   'demo.core.constants'
 ]);

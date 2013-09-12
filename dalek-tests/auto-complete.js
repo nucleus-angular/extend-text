@@ -197,7 +197,7 @@ module.exports = {
       //todo: wait for wait() implementation to be fixed
       //.wait(50)
       .assert.doesntExist('auto-complete-options ul li', 'debug')
-        .assert.attr('.auto-complete-options ul li:nth-child(1)', 'class').is('ng-scope ng-binding focus', 'has focused class')
+        .assert.attr('.auto-complete-options ul li:nth-child(1)', 'class').to.contain('is-focus', 'has focused class')
       .done();
     },
 

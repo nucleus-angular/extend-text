@@ -85,17 +85,6 @@ angular.module('nag.extendText', [
         }
         element.addClass('extend-text');
         return {
-          pre: function(scope, element, attributes, controllers) {
-            //add callback if this form is a resettable form
-            //todo: refactor: use events instead of callbacks
-            /*if(controllers) {
-              if(controllers[0]) {
-                controllers[0].addCallback(function() {
-                  scope.resetAutoCompleteValues();
-                });
-              }
-            }*/
-          },
           post: function(scope, element, attributes, controllers) {
             transclude(scope, function(clone) {
               var displayElement = clone.filter('input.display');
@@ -188,7 +177,7 @@ angular.module('nag.extendText', [
                 left: parseInt($(element).find('input.display').css('marginLeft'), 10)
               };
 
-              //todo: research: the -1 is to account for the border the tag has because I am not sure how to handle that programmatically
+              //todo: research: the -1 is to account for the border the tag has because I am not sure how to handle that programmatically (attribute value???)
               //todo: if someone where remove the border or make it thicker, this would have to change
               element.find('.tag-container').css({
                 top: originalPadding.top + borderSize.top + originalMargin.top - 1,
@@ -462,13 +451,12 @@ angular.module('nag.extendText', [
              * @ngscope
              * @method isSelectedTag
              *
-             * @todo: refactor: rename key to index
-             * @param {number} key Number of the index (zero-based) to check for current selection
+             * @param {number} index Number of the index (zero-based) to check for current selection
              *
              * @returns {boolean} Whether passed index is selected tag
              */
-            scope.isSelectedTag = function(key) {
-              return key === scope.options.tagOptions.selectedTagIndex;
+            scope.isSelectedTag = function(index) {
+              return index === scope.options.tagOptions.selectedTagIndex;
             };
 
             /**
@@ -487,13 +475,12 @@ angular.module('nag.extendText', [
              * @ngscope
              * @method isSelectedOption
              *
-             * @todo: refactor: rename key to index
-             * @param {number} key Number of the index (zero-based) to check for current auto complete option
+             * @param {number} index Number of the index (zero-based) to check for current auto complete option
              *
              * @returns {boolean} Whether passed index is selected auto complete option
              */
-            scope.isSelectedOption = function(key) {
-              return key === scope.options.autoCompleteOptions.selectedOptionIndex;
+            scope.isSelectedOption = function(index) {
+              return index === scope.options.autoCompleteOptions.selectedOptionIndex;
             };
 
             /**
@@ -705,10 +692,8 @@ angular.module('nag.extendText', [
               if(scope.options.autoCompleteOptions.enabled === true) {
                 if(scope.options.autoCompleteOptions.selectOnBlur === true && scope.options.autoCompleteOptions.options[scope.options.autoCompleteOptions.selectedOptionIndex]) {
                   scope.setValueFromAutoComplete();
-                }
-
-                if(scope.options.autoCompleteOptions.allowFreeForm !== true && _.isEmpty(scope.$eval('model.' + scope.modelController.$name))) {
-                  scope.resetAutoCompleteValues();
+                } else if(scope.options.autoCompleteOptions.allowFreeForm !== true && _.isEmpty(scope.$eval('model.' + scope.modelController.$name))) {
+                  scope.resetAutoCompleteValues(true);
                 }
 
                 hideAutoComplete();
