@@ -789,6 +789,7 @@ angular.module('nag.extendText', [
             /**
              * Set the data when the set-data event is triggered for the extend box, event name uses the data-id attribute to listen to a unique event name
              *
+             * @todo: replace the call the .replace with a method that wrap this functionality
              * @respondto NagExtendText[attribute id]/setData
              * @eventlevel root
              */

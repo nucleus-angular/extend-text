@@ -6,8 +6,8 @@
   "devDependencies": {
     "express": "3.1.x",
     "connect": "2.7.x",
-    "dalekjs": "0.0.1",
-    "dalek-browser-chrome": "0.0.1"
+    "dalekjs-canary": "0.0.1",
+    "dalek-browser-chrome-canary": "0.0.1"
   },
   "engines": {
     "node": ">=0.10.4"

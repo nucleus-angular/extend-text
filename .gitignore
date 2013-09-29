@@ -2,6 +2,6 @@
 bower_components
 coverage
 node_modules
-out
+docs
 libpeerconnection.log
 chromedriver.log

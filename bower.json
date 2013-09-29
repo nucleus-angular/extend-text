@@ -2,18 +2,16 @@
   "name": "nucleus-angular-extend-text",
   "version": "0.2.13",
   "dependencies": {
-    "nucleus-angular-core": "latest",
-    "nucleus-angular-beat": "latest",
-    "nucleus-angular-event": "latest",
-    "nucleus-angular-form": "latest"
+    "nucleus-angular-core": "master",
+    "nucleus-angular-beat": "master",
+    "nucleus-angular-event": "master",
+    "nucleus-angular-form": "master"
   },
   "devDependencies": {
     "lodash": "1.2.1",
-    "angular-ui-router": "latest",
-    "jquery": "2.0.2",
-    "angular": "1.0.7",
-    "angular-mocks": "1.0.7",
-    "unstable-angular-complete": "1.1.5",
-    "nucleus-angular-auto-focus": "latest"
+    "angular-ui-router": "0.2.0",
+    "jquery": "2.0.3",
+    "unstable-angular-complete": "1.2.0rc2",
+    "nucleus-angular-auto-focus": "master"
   }
 }
