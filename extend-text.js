@@ -103,12 +103,12 @@ angular.module('nag.extendText', [
              *
              * @ngscope
              * @property {object} options
-             *   @property {string} [options.rootTemplatePath=rootTemplatePath+'/nucleus-angular-extend-text/assets/templates'] Root path for templates
-             *   @property {boolean} [options.selectOnFocus=false] Whether or not to select of data when focusing on input
-             *   @property {boolean} [options.preventSubmitOnEnter=true] Whether or not the prevent form submission on the enter key when input focused
-             *   @property {array} [options.data] The data for the input
-             *   @property {string} [options.templateUrl="extend-text.html"] Main template url
-             *   @property {string} [options.template=""] Template HTML
+             *   @property {string} [rootTemplatePath=rootTemplatePath+'/nucleus-angular-extend-text/assets/templates'] Root path for templates
+             *   @property {boolean} [selectOnFocus=false] Whether or not to select of data when focusing on input
+             *   @property {boolean} [preventSubmitOnEnter=true] Whether or not the prevent form submission on the enter key when input focused
+             *   @property {array} [data] The data for the input
+             *   @property {string} [templateUrl="extend-text.html"] Main template url
+             *   @property {string} [template=""] Template HTML
              */
 
             /**
@@ -116,33 +116,33 @@ angular.module('nag.extendText', [
              *
              * @ngscope
              * @property {object} options.autoCompleteOptions
-             *   @property {string} [options.autoCompleteOptions.rootTemplatePath=rootTemplatePath+'/nucleus-angular-extend-text/assets/templates']
+             *   @property {string} [rootTemplatePath=rootTemplatePath+'/nucleus-angular-extend-text/assets/templates']
              *   Root path for templates
-             *   @property {boolean} [options.autoCompleteOptions.enabled=false] Whether or not auto complete functionality is enabled
-             *   @property {boolean} [options.autoCompleteOptions.display=false] Whether or not the auto complete is currently being displayed
-             *   @property {string} [options.autoCompleteOptions.url=null] Base url for where the auto complete data is retrieved from from
-             *   @property {string} [options.autoCompleteOptions.variable="input"] Variable name to use in the query string when retrieving the auto complete data
-             *   @property {string} [options.autoCompleteOptions.variableCache=null]
+             *   @property {boolean} [enabled=false] Whether or not auto complete functionality is enabled
+             *   @property {boolean} [display=false] Whether or not the auto complete is currently being displayed
+             *   @property {string} [url=null] Base url for where the auto complete data is retrieved from from
+             *   @property {string} [variable="input"] Variable name to use in the query string when retrieving the auto complete data
+             *   @property {string} [variableCache=null]
              *   The last value sent when retrieving the auto complete data in order to prevent duplicate requests for the same data
-             *   @property {number} [options.autoCompleteOptions.loadCharacterCount=3]
+             *   @property {number} [loadCharacterCount=3]
              *   Number of character needed to be enter before attempting to retrieve data for the auto complete
-             *   @property {number} [options.autoCompleteOptions.searchDelay=350]
+             *   @property {number} [searchDelay=350]
              *   Number of milliseconds to wait from last key entered to search for data to prevent unnecessary request if the user was not done typing there search
-             *   @property {cache} [options.autoCompleteOptions.cache=false]
+             *   @property {cache} [cache=false]
              *   Whether or not to cache the result from the server, useful for smaller data sets where the entire set can be easily cached and parsed on the javascript side
-             *   @property {array} [options.autoCompleteOptions.cachedData] Cached data is cache is set to true
-             *   @property {array} [options.autoCompleteOptions.options] Current set of auto complete options being displayed
-             *   @property {number} [options.autoCompleteOptions.selectedOptionIndex=0] Index (zero-based) or the currently selected option
-             *   @property {boolean} [options.autoCompleteOptions.selectOnBlur=true] Selected the currently higlighted option when blurring on the input
-             *   @property {boolean} [options.autoCompleteOptions.allowFreeForm=false]
+             *   @property {array} [cachedData] Cached data is cache is set to true
+             *   @property {array} [options] Current set of auto complete options being displayed
+             *   @property {number} [selectedOptionIndex=0] Index (zero-based) or the currently selected option
+             *   @property {boolean} [selectOnBlur=true] Selected the currently higlighted option when blurring on the input
+             *   @property {boolean} [allowFreeForm=false]
              *   Allow the user to enter in free form text (does not have to match something in the auto complete)
-             *   @property {function} [options.autoCompleteOptions.generateDataUrl]
+             *   @property {function} [generateDataUrl]
              *   Generate the URL used to retrieve the auto complete data form the remote service
-             *   @property {string} [options.autoCompleteOptions.remoteDataMethod="GET"] HTTP method to use when requesting data from the remote service
-             *   @property {boolean} [options.autoCompleteOptions.loadingData=false] Whether or not to display the loaded data message
-             *   @property {function} [options.autoCompleteOptions.responseParser] Function to parse the response when retrieving the auto complete data
-             *   @property {function} [options.autoCompleteOptions.formatVariable] Function used to format the variable when generating the URL
-             *   @property {function} [options.autoCompleteOptions.filter] Function to use to filter the data when cache is set to true
+             *   @property {string} [remoteDataMethod="GET"] HTTP method to use when requesting data from the remote service
+             *   @property {boolean} [loadingData=false] Whether or not to display the loaded data message
+             *   @property {function} [responseParser] Function to parse the response when retrieving the auto complete data
+             *   @property {function} [formatVariable] Function used to format the variable when generating the URL
+             *   @property {function} [filter] Function to use to filter the data when cache is set to true
              */
 
             /**
@@ -150,11 +150,11 @@ angular.module('nag.extendText', [
              *
              * @ngscope
              * @property {object} options.tagOptions
-             *   @property {string} [options.rootTemplatePath=rootTemplatePath+'/nucleus-angular-extend-text/assets/templates'] Root path for templates
-             *   @property {boolean} [options.tagOptions.enabled=false] Whether or not tagging is enabled
-             *   @property {boolean} [options.tagOptions.allowDuplicates=false] Whether or not to allow duplicate values
-             *   @property {number} [options.tagOptions.enabled=null] The index (zero-based) or the currently selected name
-             *   @property {boolean} [options.tagOptions.doubleClickEdit=false] Whether or not to enable tag editing on double click
+             *   @property {string} [rootTemplatePath=rootTemplatePath+'/nucleus-angular-extend-text/assets/templates'] Root path for templates
+             *   @property {boolean} [enabled=false] Whether or not tagging is enabled
+             *   @property {boolean} [allowDuplicates=false] Whether or not to allow duplicate values
+             *   @property {number} [enabled=null] The index (zero-based) or the currently selected name
+             *   @property {boolean} [doubleClickEdit=false] Whether or not to enable tag editing on double click
              */
             scope.options = nagDefaults.getExtendTextOptions(scope.options);
             var defaultAutoCompleteOptions = _.clone(scope.options.autoCompleteOptions.options);
