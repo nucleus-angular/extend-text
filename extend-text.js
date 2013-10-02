@@ -1,5 +1,19 @@
 /**
- * Extend text component
+ * # Nucleus Angalar Extend Text
+ *
+ * The extend text component allows you to extend a text box input field with additional functionality.
+ *
+ * ## Basic Functionality
+ *
+ * TBD
+ *
+ * ## Auto Complete
+ *
+ * TBD
+ *
+ * ## Tagging
+ *
+ * TBD
  *
  * @module nag.extendText
  * @ngdirective nagExtendText
