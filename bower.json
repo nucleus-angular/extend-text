@@ -12,6 +12,7 @@
     "angular-ui-router": "0.2.0",
     "jquery": "2.0.3",
     "unstable-angular-complete": "1.2.0rc2",
-    "nucleus-angular-auto-focus": "master"
+    "nucleus-angular-auto-focus": "master",
+    "angular-mockable-http-provider": "latest"
   }
 }

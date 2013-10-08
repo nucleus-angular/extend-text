@@ -5,3 +5,4 @@ node_modules
 docs
 libpeerconnection.log
 chromedriver.log
+.DS_Store
