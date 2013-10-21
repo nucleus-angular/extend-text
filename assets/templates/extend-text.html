@@ -1,0 +1,21 @@
+<div class="container" ng-class="{'is-active': isActive, 'auto-complete': options.autoCompleteOptions.enabled}">
+  <div class="inputs"></div>
+  <div class="tag-container" ng-if="options.tagOptions.enabled">
+    <ul class="tags" ng-click="ulClick($event)">
+      <li class="tag" ng-repeat="(key, item) in options.data" ng-class="{selected: isSelectedTag(key)}" ng-dblclick="doubleClick($event, item.value)">
+        <span class="text" data-value="{{ item.value }}">{{ item.display }}
+          <span class="remove" ng-click="removeValue(item.value)">X</span>
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div class="new-indicator" ng-if="options.autoCompleteOptions.allowFreeForm == true && options.autoCompleteOptions.isNew == true && getTextAreaValue().length > 0">{{ options.autoCompleteOptions.newText }}</div>
+  <div class="auto-complete-options" ng-if="options.autoCompleteOptions.enabled" ng-show="options.autoCompleteOptions.display && (options.autoCompleteOptions.allowFreeForm == false || options.autoCompleteOptions.options.length > 0)">
+    <div ng-show="options.autoCompleteOptions.options.length == 0 && options.autoCompleteOptions.loadingData == false && options.autoCompleteOptions.loadCharacterCount > getTextAreaValue().length">Starting typing to get a list of options</div>
+    <div ng-show="options.autoCompleteOptions.options.length == 0 && options.autoCompleteOptions.loadingData == true">Loading data...</div>
+    <div ng-show="options.autoCompleteOptions.options.length == 0 && options.autoCompleteOptions.loadingData == false && options.autoCompleteOptions.loadCharacterCount <= getTextAreaValue().length">No Options Found</div>
+    <ul ng-show="options.autoCompleteOptions.options.length > 0">
+      <li ng-repeat="(key, option) in options.autoCompleteOptions.options" data-value="{{ option.value }}" ng-class="{'is-focused': isSelectedOption(key)}" ng-mouseenter="selectOption(key)" ng-mousedown="setValueAutoCompleteMouseDown()">{{ option.display }}</li>
+    </ul>
+  </div>
+</div>

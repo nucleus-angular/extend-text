@@ -91,7 +91,7 @@ angular.module('nag.extendText', [
           });
         }
       ],
-      templateUrl: 'components/nucleus-angular-extend-text/assets/templates/extend-text.html',
+      templateUrl: '/components/nucleus-angular-extend-text/assets/templates/extend-text.html',
       transclude: true,
       compile: function(element, attributes, transclude) {
         if(!attributes.id) {
@@ -567,7 +567,7 @@ angular.module('nag.extendText', [
             scope.keyDown = function($event) {
               //handle prevent of enter submitted form
               if((scope.options.tagOptions.enabled === true || scope.options.preventSubmitOnEnter === true) && $event.which === 13) {
-                  $event.preventDefault();
+                $event.preventDefault();
               }
 
               //handling tag mode key binging
