@@ -823,7 +823,7 @@ angular.module('nag.extendText', [
                * @eventlevel root
                */
               scope.unregisterResetFormEvent = $rootScope.$on('NagForm[' + parentFormName +']/reset', function(self) {
-                  scope.resetAutoCompleteValues();
+                  scope.resetAutoCompleteValues(true);
               });
             }
           }
