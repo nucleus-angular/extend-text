@@ -204,8 +204,7 @@ angular.module('nag.extendText', [
       ],
       controller: [
         '$scope',
-        '$element',
-        function($scope, $element) {
+        function($scope) {
           /**
            * Unregisters the form reset event
            *
@@ -245,8 +244,6 @@ angular.module('nag.extendText', [
             if($scope.unregisterSetDataEvent) {
               $scope.unregisterSetDataEvent();
             }
-
-            $element.remove();
           });
         }
       ],
