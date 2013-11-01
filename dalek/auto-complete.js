@@ -8,7 +8,7 @@ module.exports = {
     .type('[data-id="auto-complete"] .display', 'tes')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete"] .auto-complete-options ul li:nth-child(5)')
-      .assert.numberOfVisibleElements('.auto-complete-options ul li', 5, 'auto complete should have 5 options available')
+      .assert.numberOfVisibleElements('[data-id="auto-complete"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
     .done();
   },
 
@@ -125,19 +125,28 @@ module.exports = {
     .done();
   },
 
-  //todo: implement
-  'should be able to define the method used for retriving the data': function(test) {
-    test.done();
-  },
-
-  //todo: implement
   'should be able to define a custom url generator': function(test) {
-    test.done();
+    test.open('http://localhost:3000/home')
+    //angular - need to wait for angular to render this container
+    .waitForElement('[data-id="auto-complete-custom-data-url-generator"] .container')
+    .type('[data-id="auto-complete-custom-data-url-generator"] .display', 'cus')
+    //angular - need to wait for angular to render this container
+    .waitForElement('[data-id="auto-complete-custom-data-url-generator"] .auto-complete-options ul li:nth-child(5')
+      .assert.numberOfVisibleElements('[data-id="auto-complete-custom-data-url-generator"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
+    .done();
   },
 
-  //todo: implement
-  'should not attempt to pul data until that search deley time have been reached': function(test) {
-    test.done();
+  'should not attempt to pull data until that search deley time have been reached': function(test) {
+    test.open('http://localhost:3000/home')
+    //angular - need to wait for angular to render this container
+    .waitForElement('[data-id="auto-complete-delay"] .container')
+    .type('[data-id="auto-complete-delay"] .display', 'del')
+    .wait(500)
+      .assert.notVisible('[data-id="auto-complete-delay"] .auto-complete-options ul', 'the list should not be visible yet because we should not have the data')
+    //angular - need to wait for angular to render this container
+    .waitForElement('[data-id="auto-complete-delay"] .auto-complete-options ul li:nth-child(5')
+      .assert.numberOfVisibleElements('[data-id="auto-complete-delay"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
+    .done();
   },
 
   'should select first item in auto complete options list': function(test) {
@@ -165,7 +174,7 @@ module.exports = {
     .done();
   },
 
-  'should allow free form text should have single option': function(test) {
+  'should set input values properly when allowing free form text': function(test) {
     test.open('http://localhost:3000/home')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-allow-free-form-text"] .container')
@@ -174,6 +183,48 @@ module.exports = {
     .waitForElement('[data-id="auto-complete-allow-free-form-text"] .auto-complete-options ul li:nth-child(1)')
       .assert.val('[data-id="auto-complete-allow-free-form-text"] .display', 'freeform', 'display input should be set to the display value of the input')
       .assert.val('[data-id="auto-complete-allow-free-form-text"] input[type="hidden"]', 'freeform', "hidden input should be set to the value of the input")
+    .done();
+  },
+
+  'should load options on click when using local data': function(test) {
+    test.open('http://localhost:3000/home')
+    .waitForElement('[data-id="auto-complete-local-data"] .container')
+    .click('[data-id="auto-complete-local-data"] .display')
+    //angular - need to wait for angular to render this container
+    .waitForElement('[data-id="auto-complete-local-data"] .auto-complete-options ul li:nth-child(5)')
+      .assert.numberOfVisibleElements('[data-id="auto-complete-local-data"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
+    .done();
+  },
+
+  'should use filter method when using local data': function(test) {
+    test.open('http://localhost:3000/home')
+    .waitForElement('[data-id="auto-complete-local-data"] .container')
+    .click('[data-id="auto-complete-local-data"] .display')
+    //angular - need to wait for angular to render this container
+    .waitForElement('[data-id="auto-complete-local-data"] .auto-complete-options ul li:nth-child(5)')
+      .assert.numberOfVisibleElements('[data-id="auto-complete-local-data"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
+    .done();
+  },
+
+  'should be able to define a custom filter method for local data': function(test) {
+    test.open('http://localhost:3000/home')
+    .waitForElement('[data-id="auto-complete-local-data-custom-filter"] .container')
+    .type('[data-id="auto-complete-local-data-custom-filter"] .display', 'tes')
+      .assert.doesntExist('[data-id="auto-complete-local-data-custom-filter"] auto-complete-options ul li', 'auto complete options should not be visible custom filter is meet')
+    .type('[data-id="auto-complete-local-data-custom-filter"] .display', 't')
+    //angular - need to wait for angular to render this container
+    .waitForElement('[data-id="auto-complete-local-data-custom-filter"] .auto-complete-options ul li:nth-child(5)')
+      .assert.numberOfVisibleElements('[data-id="auto-complete-local-data-custom-filter"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
+    .done();
+  },
+
+  'should show new indicator when allowing free form and what the user entered does not match any value in the auto complete list': function(test) {
+    test.open('http://localhost:3000/home')
+    .waitForElement('[data-id="auto-complete-local-data-allow-free-form"] .container')
+    .type('[data-id="auto-complete-local-data-allow-free-form"] .display', 'local')
+    //angular - need to wait for angular to render this container
+    .waitForElement('[data-id="auto-complete-local-data-allow-free-form"] .new-indicator')
+      .assert.visible('[data-id="auto-complete-local-data-allow-free-form"] .new-indicator', 'new indicator is visible')
     .done();
   }
 }

@@ -31,14 +31,14 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     build: {
-      path: 'web',
+      path: 'dalek-web/web',
       buildFileName: 'index.html',
       sourceFileName: 'index-dev.html'
     },
     watch: {
       sass: {
         files: [
-          'web/app/**/*.scss'
+          'dalek-web/web/app/**/*.scss'
         ],
         tasks: ['sass'],
         options: {
@@ -52,8 +52,8 @@ module.exports = function(grunt) {
     sass: {
       dist: {
         files: {
-          'web/app/styles/main.css': [
-            'web/app/styles/main.scss'
+          'dalek-web/web/app/styles/main.css': [
+            'dalek-web/web/app/styles/main.scss'
           ]
         }
       }

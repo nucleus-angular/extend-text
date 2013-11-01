@@ -118,7 +118,96 @@ angular.module('demo.home.home', [
     $scope.autoCompleteAllowFreeFormTextOptions = {
       autoCompleteOptions: {
         enabled: true,
-        allowFreeForm: true
+        allowFreeForm: true,
+        url: '/api/freeform'
+      }
+    };
+    $scope.autoCompleteLocalDataOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        source: 'local',
+        localData: [{
+          display: 'local 1',
+          value: 'l1'
+        }, {
+          display: 'lcal 2',
+          value: 'l2'
+        }, {
+          display: 'local 3',
+          value: 'l3'
+        }, {
+          display: 'lcal 4',
+          value: 'l4'
+        }, {
+          display: 'local 5',
+          value: 'l5'
+        }]
+      }
+    };
+    $scope.autoCompleteLocalDataCustomFilterOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        source: 'local',
+        filter: function(data, filter) {
+          return _.filter(data, function(item) {
+            return filter === 'test' ? true : false;
+          });
+        },
+        localData: [{
+          display: 'local 1',
+          value: 'l1'
+        }, {
+          display: 'lcal 2',
+          value: 'l2'
+        }, {
+          display: 'local 3',
+          value: 'l3'
+        }, {
+          display: 'lcal 4',
+          value: 'l4'
+        }, {
+          display: 'local 5',
+          value: 'l5'
+        }]
+      }
+    };
+    $scope.autoCompleteLocalDataAllowFreeFormOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        source: 'local',
+        allowFreeForm: true,
+        localData: [{
+          display: 'local 1',
+          value: 'l1'
+        }, {
+          display: 'lcal 2',
+          value: 'l2'
+        }, {
+          display: 'local 3',
+          value: 'l3'
+        }, {
+          display: 'lcal 4',
+          value: 'l4'
+        }, {
+          display: 'local 5',
+          value: 'l5'
+        }]
+      }
+    };
+    $scope.autoCompleteDelayOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        url: '/api/delay',
+        searchDelay: 1000
+      }
+    };
+    $scope.autoCompleteCustomDataUrlGeneratorOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        url: '/api/delay',
+        generateDataUrl: function() {
+          return '/api/custom-url?customUrl=' + this.getTextAreaValue();
+        }
       }
     };
   }

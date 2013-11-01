@@ -94,5 +94,38 @@ angular.module('demo', [
       "display": "selectblur2",
       "value": 2
     }]));
+    httpMocker.register('GET', '/api/freeform?input=selectblur', JSON.stringify([]));
+    httpMocker.register('GET', '/api/delay?input=del', JSON.stringify([{
+      "value": 1,
+      "display": "delay1"
+    },{
+      "value": 2,
+      "display": "delay2"
+    },{
+      "value": 3,
+      "display": "delay3"
+    },{
+      "value": 4,
+      "display": "delay4"
+    },{
+      "value": 5,
+      "display": "delay5"
+    }]));
+    httpMocker.register('GET', '/api/custom-url?customUrl=cus', JSON.stringify([{
+      "value": 1,
+      "display": "custom url1"
+    },{
+      "value": 2,
+      "display": "custom url2"
+    },{
+      "value": 3,
+      "display": "custom url3"
+    },{
+      "value": 4,
+      "display": "custom url4"
+    },{
+      "value": 5,
+      "display": "custom url5"
+    }]));
   }
 ]);
