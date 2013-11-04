@@ -247,7 +247,9 @@ angular.module('nag.extendText', [
           });
         }
       ],
-      templateUrl: '/components/nucleus-angular-extend-text/assets/templates/extend-text.html',
+      templateUrl: function(){
+        return nagDefaults.getRootTemplatePath() + '/nucleus-angular-extend-text/assets/templates/extend-text.html';
+      },
       transclude: true,
       compile: function(element, attributes, transclude) {
         if(!attributes.id) {
