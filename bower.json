@@ -10,8 +10,8 @@
   "devDependencies": {
     "lodash": "1.2.1",
     "angular-ui-router": "0.2.0",
-    "jquery": "2.0.3",
-    "unstable-angular-complete": "1.2.0rc2",
+    "jquery": "1.10.x",
+    "angular": "1.2.0",
     "nucleus-angular-auto-focus": "master",
     "angular-mockable-http-provider": "master",
     "nucleus-angular-sass-framework": "master"
