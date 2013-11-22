@@ -304,7 +304,7 @@ angular.module('nag.extendText', [
             }, 0);
 
             addValue = function(display, value) {
-              if(scope.options.tagOptions.allowDuplicates === true || ObjectArray.getKeyByPropertyValue(scope.options.data, 'value', value) === -1) {
+              if(scope.options.tagOptions.allowDuplicates === true || utilities.getKeyByPropertyValue(scope.options.data, 'value', value) === -1) {
                 scope.options.data.push({
                   display: display,
                   value: value
@@ -524,7 +524,7 @@ angular.module('nag.extendText', [
                   $(element).find('input.display').focus();
                 }
 
-                var removeKey = ObjectArray.getKeyByPropertyValue(scope.options.data, 'value', value);
+                var removeKey = utilities.getKeyByPropertyValue(scope.options.data, 'value', value);
                 scope.options.data.splice(removeKey, 1);
               } else {
                 //since there is no tagging, we should only be store one value so just clear it out
@@ -814,9 +814,15 @@ angular.module('nag.extendText', [
               }
 
               if(scope.options.autoCompleteOptions.enabled === true) {
-                if(scope.options.autoCompleteOptions.selectOnBlur === true && scope.options.autoCompleteOptions.options[scope.options.autoCompleteOptions.selectedOptionIndex]) {
+                if(
+                  scope.options.autoCompleteOptions.selectOnBlur === true
+                  && scope.options.autoCompleteOptions.options[scope.options.autoCompleteOptions.selectedOptionIndex]
+                ) {
                   scope.setValueFromAutoComplete();
-                } else if(scope.options.autoCompleteOptions.allowFreeForm !== true && _.isEmpty(scope.$eval('model.' + scope.modelController.$name))) {
+                } else if(
+                  scope.options.autoCompleteOptions.allowFreeForm !== true
+                  && (_.isEmpty(scope.modelController.$viewValue) && !_.isNumber(scope.modelController.$viewValue))
+                ) {
                   scope.resetAutoCompleteValues(true);
                 }
 
@@ -922,6 +928,7 @@ angular.module('nag.extendText', [
              */
             scope.unregisterSetDataEvent = $rootScope.$on('NagExtendText[' + attributes.id.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');}) + ']/setData', function(self, data) {
               //reset the data to the passed in data
+              console.log(data);
               dontFocusOnCursorPlacement = true;
               scope.options.data = data;
             });

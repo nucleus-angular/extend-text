@@ -12,6 +12,32 @@ module.exports = {
     .done();
   },
 
+  'should be able to select an option that has a value of a string': function(test) {
+    test.open('http://localhost:3000/home')
+    //angular - need to wait for angular to render this container
+    .waitForElement('[data-id="auto-complete-string-value"] .container')
+    .type('[data-id="auto-complete-string-value"] .display', 'tes')
+    //angular - need to wait for angular to render this container
+    .waitForElement('[data-id="auto-complete-string-value"] .auto-complete-options ul li:nth-child(5)')
+    .click('[data-id="auto-complete-string-value"] .auto-complete-options ul li:nth-child(4)')
+    .click('body')
+      .assert.val('[data-id="auto-complete-string-value"] input[type="hidden"]', 't4', 'option selected')
+    .done();
+  },
+
+  'should be able to select an option that has a value of a number': function(test) {
+    test.open('http://localhost:3000/home')
+    //angular - need to wait for angular to render this container
+    .waitForElement('[data-id="auto-complete-number-value"] .container')
+    .type('[data-id="auto-complete-number-value"] .display', 'tes')
+    //angular - need to wait for angular to render this container
+    .waitForElement('[data-id="auto-complete-number-value"] .auto-complete-options ul li:nth-child(5)')
+    .click('[data-id="auto-complete-number-value"] .auto-complete-options ul li:nth-child(2)')
+    .click('body')
+      .assert.val('[data-id="auto-complete-number-value"] input[type="hidden"]', '2', 'option selected')
+    .done();
+  },
+
   'should not load auto complete options until the load character count has been reached': function(test) {
     test.open('http://localhost:3000/home')
     //angular - need to wait for angular to render this container
@@ -193,6 +219,18 @@ module.exports = {
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-local-data"] .auto-complete-options ul li:nth-child(5)')
       .assert.numberOfVisibleElements('[data-id="auto-complete-local-data"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
+    .done();
+  },
+
+  'should be able to select option when using local data': function(test) {
+    test.open('http://localhost:3000/home')
+    .waitForElement('[data-id="auto-complete-local-data"] .container')
+    .click('[data-id="auto-complete-local-data"] .display')
+    //angular - need to wait for angular to render this container
+    .waitForElement('[data-id="auto-complete-local-data"] .auto-complete-options ul li:nth-child(5)')
+    .click('[data-id="auto-complete-local-data"] .auto-complete-options ul li:nth-child(3)')
+    .click('body')
+      .assert.val('[data-id="auto-complete-local-data"] input[type="hidden"]', 'l3', 'value has been selected')
     .done();
   },
 

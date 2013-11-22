@@ -1,3 +1,32 @@
+<header>Extend Text Reset Form</header>
+<form name="extendTextResettable" data-ut="extend-text-resettable" nag-resettable-form>
+  {{ $id }}
+  <ul>
+    <li>
+      <label for="first-name">
+        First Name:
+        <div nag-extend-text="autoCompleteResetFirstNameOptions" data-id="auto-complete-reset-first-name" data-ut="auto-complete-reset-first-name">
+          <input type="text" class="display" />
+          <input type="hidden" ng-model="extendTextResettableObject.firstName" nag-input />
+        </div>
+      </label>
+    </li>
+    <li>
+      <label for="last-name">
+        Last Name:
+        <div nag-extend-text="autoCompleteResetLastNameOptions" data-id="auto-complete-reset-last-name" data-ut="auto-complete-reset-last-name">
+          <input type="text" class="display" />
+          <input type="hidden" ng-model="extendTextResettableObject.lastName" nag-input />
+        </div>
+      </label>
+    </li>
+    <li>
+      <button>Submit</button>
+      <button ng-click="resetExtendTextResettableForm()" data-ut="reset-extend-text-resettable">Reset (with event)</button>
+    </li>
+  </ul>
+</form>
+
 <form name="testForm" action="/home" method="get">
   <header>Auto Complete Custom Url Data Generator</header>
   <div nag-extend-text="autoCompleteCustomDataUrlGeneratorOptions" data-id="auto-complete-custom-data-url-generator">
@@ -61,6 +90,16 @@
   </div>
   <header>Auto Complete</header>
   <div nag-extend-text="autoCompleteOptions" data-id="auto-complete">
+    <input type="text" class="display" />
+    <input type="hidden" ng-model="test" nag-input />
+  </div>
+  <header>Auto Complete Number Value</header>
+  <div nag-extend-text="autoCompleteNumberValueOptions" data-id="auto-complete-number-value">
+    <input type="text" class="display" />
+    <input type="hidden" ng-model="test" nag-input />
+  </div>
+  <header>Auto Complete String Value</header>
+  <div nag-extend-text="autoCompleteStringValueOptions" data-id="auto-complete-string-value">
     <input type="text" class="display" />
     <input type="hidden" ng-model="test" nag-input />
   </div>

@@ -5,7 +5,8 @@
     "nucleus-angular-core": "master",
     "nucleus-angular-beat": "master",
     "nucleus-angular-event": "master",
-    "nucleus-angular-form": "master"
+    "nucleus-angular-form": "master",
+    "javascript-utilities": "master"
   },
   "devDependencies": {
     "lodash": "1.2.1",

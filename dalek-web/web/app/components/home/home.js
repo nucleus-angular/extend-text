@@ -18,7 +18,9 @@ angular.module('demo.home.home', [
 ])
 .controller('HomeCtrl', [
   '$scope',
-  function($scope) {
+  '$rootScope',
+  '$timeout',
+  function($scope, $rootScope, $timeout) {
     $scope.emptyOptions = {};
     $scope.selectOnFocusOptions = {
       selectOnFocus: true
@@ -41,6 +43,18 @@ angular.module('demo.home.home', [
       autoCompleteOptions: {
         enabled: true,
         url: '/api/test'
+      }
+    };
+    $scope.autoCompleteNumberValueOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        url: '/api/number-value'
+      }
+    };
+    $scope.autoCompleteStringValueOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        url: '/api/string-value'
       }
     };
     $scope.autoCompleteCharacterCountOptions = {
@@ -210,5 +224,60 @@ angular.module('demo.home.home', [
         }
       }
     };
+    $scope.autoCompleteResetFirstNameOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        source: 'local',
+        localData: [{
+          display: 'John',
+          value: 'John'
+        }, {
+          display: 'Jane',
+          value: 'Jane'
+        }, {
+          display: 'Tom',
+          value: 'Tom'
+        }]
+      }
+    };
+    $scope.autoCompleteResetLastNameOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        source: 'local',
+        localData: [{
+          display: 'Smith',
+          value: 'Smith'
+        }, {
+          display: 'Doe',
+          value: 'Doe'
+        }, {
+          display: 'Deer',
+          value: 'Deer'
+        }]
+      }
+    };
+    $scope.extendTextResettableObject = {
+      firstName: null,
+      lastNAme: null
+    };
+    $scope.extendTextResettableDefaults = {
+      firstName: null,
+      lastNAme: null
+    };
+    $scope.resetExtendTextResettableForm = function() {
+      $rootScope.$broadcast('NagForm[extendTextResettable]/reset', $scope.extendTextResettableDefaults);
+    };
+
+    //todo: figure out why it needs the delay and see if it is possible to resolved
+    $timeout(function() {
+      $rootScope.$broadcast('NagExtendText[autoCompleteResetFirstName]/setData', [{
+        'display': 'John',
+        'value': 'John'
+      }]);
+      $rootScope.$broadcast('NagExtendText[autoCompleteResetLastName]/setData', [{
+        'display': 'Doe',
+        'value': 'Doe'
+      }]);
+    }, 200);
   }
 ]);

@@ -52,6 +52,38 @@ angular.module('demo', [
       "display": "test5",
       "value": 5
     }]));
+    httpMocker.register('GET', '/api/number-value?input=tes', JSON.stringify([{
+      "display": "test1",
+      "value": 1
+    },{
+      "display": "test2",
+      "value": 2
+    },{
+      "display": "test3",
+      "value": 3
+    },{
+      "display": "test4",
+      "value": 4
+    },{
+      "display": "test5",
+      "value": 5
+    }]));
+    httpMocker.register('GET', '/api/string-value?input=tes', JSON.stringify([{
+      "display": "test1",
+      "value": 't1'
+    },{
+      "display": "test2",
+      "value": 't2'
+    },{
+      "display": "test3",
+      "value": 't3'
+    },{
+      "display": "test4",
+      "value": 't4'
+    },{
+      "display": "test5",
+      "value": 't5'
+    }]));
     httpMocker.register('GET', '/api/test?var=varname', JSON.stringify([{
       "display": "varname1",
       "value": 1
