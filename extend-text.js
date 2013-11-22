@@ -928,7 +928,6 @@ angular.module('nag.extendText', [
              */
             scope.unregisterSetDataEvent = $rootScope.$on('NagExtendText[' + attributes.id.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');}) + ']/setData', function(self, data) {
               //reset the data to the passed in data
-              console.log(data);
               dontFocusOnCursorPlacement = true;
               scope.options.data = data;
             });
