@@ -197,7 +197,7 @@ angular.module('nag.extendText', [
       restrict: 'A',
       scope: {
         options: '=?nagExtendText',
-        model: '=dataModel'
+        model: '='
       },
       require: [
         '^?nagResettableForm'
