@@ -9,10 +9,10 @@
     "javascript-utilities": "master"
   },
   "devDependencies": {
-    "lodash": "1.2.1",
+    "lodash": "2.x.x",
     "angular-ui-router": "0.2.0",
-    "jquery": "1.10.x",
-    "angular": "1.2.0",
+    "jquery": "2.x.x",
+    "angular": "1.2.x",
     "nucleus-angular-auto-focus": "master",
     "angular-mockable-http-provider": "master",
     "nucleus-angular-sass-framework": "master"

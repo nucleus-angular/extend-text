@@ -19,9 +19,9 @@ module.exports = {
     .type('[data-id="auto-complete-string-value"] .display', 'tes')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-string-value"] .auto-complete-options ul li:nth-child(5)')
-    .click('[data-id="auto-complete-string-value"] .auto-complete-options ul li:nth-child(4)')
+    .click('[data-id="auto-complete-string-value"] .auto-complete-options ul li:nth-child(1)')
     .click('body')
-      .assert.val('[data-id="auto-complete-string-value"] input[type="hidden"]', 't4', 'option selected')
+      .assert.val('[data-id="auto-complete-string-value"] input[type="hidden"]', 't1', 'option selected')
     .done();
   },
 

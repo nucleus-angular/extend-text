@@ -21,15 +21,12 @@
  * @nghtmlattribute {object} nag-extend-text Tells AngularJS this element is an extend text component and the passed object overwrite default for $scope.options
  * @nghtmlattribute {object} data-model Data model to use for this component
  */
-angular.module('nag.extendText', [
-  'nag.core',
-  'nag.beat',
-  'nag.event',
-  'nag.form.input'
+angular.module('nag.extendText.configurator', [
+  'nag.core'
 ])
-.config([
-  'nagDefaultsProvider',
-  function(nagDefaultsProvider) {
+.run([
+  'nagDefaults',
+  function(nagDefaults) {
     /**
      * Options
      *
@@ -42,8 +39,8 @@ angular.module('nag.extendText', [
      *   @property {string} [templateUrl="extend-text.html"] Main template url
      *   @property {string} [template=""] Template HTML
      */
-    nagDefaultsProvider.setOptions('extendText', {
-      rootTemplatePath: nagDefaultsProvider.getRootTemplatePath() + '/nucleus-angular-extend-text/assets/templates',
+    nagDefaults.setOptions('extendText', {
+      rootTemplatePath: nagDefaults.getRootTemplatePath() + '/nucleus-angular-extend-text/assets/templates',
       selectOnFocus: false, //whether or not to select the existing text in the input when focusing
       preventSubmitOnEnter: true,
       data: [],
@@ -62,8 +59,8 @@ angular.module('nag.extendText', [
      *   @property {number} [enabled=null] The index (zero-based) or the currently selected name
      *   @property {boolean} [doubleClickEdit=false] Whether or not to enable tag editing on double click
      */
-    nagDefaultsProvider.setOptions('extendTextTagOptions', {
-      rootTemplatePath: nagDefaultsProvider.getRootTemplatePath() + '/nucleus-angular-extend-text/assets/templates',
+    nagDefaults.setOptions('extendTextTagOptions', {
+      rootTemplatePath: nagDefaults.getRootTemplatePath() + '/nucleus-angular-extend-text/assets/templates',
       enabled: false,
       allowDuplicates: false,
       selectedTagIndex: null,
@@ -105,8 +102,8 @@ angular.module('nag.extendText', [
      *   @property {function} [formatVariable] Function used to format the variable when generating the URL
      *   @property {function} [filter] Function to use to filter the data when cache is set to true
      */
-    nagDefaultsProvider.setOptions('extendTextAutoCompleteOptions', {
-      rootTemplatePath: nagDefaultsProvider.getRootTemplatePath() + '/nucleus-angular-extend-text/assets/templates',
+    nagDefaults.setOptions('extendTextAutoCompleteOptions', {
+      rootTemplatePath: nagDefaults.getRootTemplatePath() + '/nucleus-angular-extend-text/assets/templates',
       enabled: false,
       display: false,
       url: null,
@@ -160,10 +157,10 @@ angular.module('nag.extendText', [
       }
     });
 
-    nagDefaultsProvider.setOptionsGetter('extendTextTest', function(options) {
-      var extendTextDefaults = nagDefaultsProvider.getOptions('extendText');
-      var extendTextTagDefaults = nagDefaultsProvider.getOptions('extendTextTagOptions');
-      var extendTextAutoCompleteDefaults = nagDefaultsProvider.getOptions('extendTextAutoCompleteOptions');
+    nagDefaults.setOptionsGetter('extendTextOptions', function(options) {
+      var extendTextDefaults = nagDefaults.getOptions('extendText');
+      var extendTextTagDefaults = nagDefaults.getOptions('extendTextTagOptions');
+      var extendTextAutoCompleteDefaults = nagDefaults.getOptions('extendTextAutoCompleteOptions');
 
       var results = angular.extend(extendTextDefaults, options);
 
@@ -180,8 +177,16 @@ angular.module('nag.extendText', [
       }
 
       return results;
-    })
+    });
   }
+]);
+
+angular.module('nag.extendText', [
+  'nag.core',
+  'nag.beat',
+  'nag.event',
+  'nag.form.input',
+  'nag.extendText.configurator'
 ])
 .directive('nagExtendText', [
   '$timeout',
@@ -274,7 +279,7 @@ angular.module('nag.extendText', [
               hiddenElement = null;
             });
 
-            scope.options = nagDefaults.getOptions('extendTextTest', scope.options);
+            scope.options = nagDefaults.getOptions('extendTextOptions', scope.options);
             var defaultAutoCompleteOptions = _.clone(scope.options.autoCompleteOptions.options);
             var beatName = 'extend-text-' + scope.$id;
             var addValue, setValue, updateTextAreaPadding, updateAutoCompletePosition, displayAutoComplete, hideAutoComplete, setElementHeight, getData, originalPadding, borderSize, originalMargin, resetAutoCompleteOptions, setDisplayInput, dataUpdate, dontFocusOnCursorPlacement;
