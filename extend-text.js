@@ -32,7 +32,6 @@ angular.module('nag.extendText.configurator', [
      *
      * @ngscope
      * @property {object} options
-     *   @property {string} [rootTemplatePath=rootTemplatePath+'/nucleus-angular-extend-text/assets/templates'] Root path for templates
      *   @property {boolean} [selectOnFocus=false] Whether or not to select of data when focusing on input
      *   @property {boolean} [preventSubmitOnEnter=true] Whether or not the prevent form submission on the enter key when input focused
      *   @property {array} [data] The data for the input
@@ -40,11 +39,10 @@ angular.module('nag.extendText.configurator', [
      *   @property {string} [template=""] Template HTML
      */
     nagDefaults.setOptions('extendText', {
-      rootTemplatePath: nagDefaults.getRootTemplatePath() + '/nucleus-angular-extend-text/assets/templates',
       selectOnFocus: false, //whether or not to select the existing text in the input when focusing
       preventSubmitOnEnter: true,
       data: [],
-      templateUrl: 'extend-text.html',
+      templateUrl: 'nucleus-angular-extend-text/assets/templates/extend-text.html',
       template: null
     });
 
@@ -53,14 +51,12 @@ angular.module('nag.extendText.configurator', [
      *
      * @ngscope
      * @property {object} options.tagOptions
-     *   @property {string} [rootTemplatePath=rootTemplatePath+'/nucleus-angular-extend-text/assets/templates'] Root path for templates
      *   @property {boolean} [enabled=false] Whether or not tagging is enabled
      *   @property {boolean} [allowDuplicates=false] Whether or not to allow duplicate values
      *   @property {number} [enabled=null] The index (zero-based) or the currently selected name
      *   @property {boolean} [doubleClickEdit=false] Whether or not to enable tag editing on double click
      */
     nagDefaults.setOptions('extendTextTagOptions', {
-      rootTemplatePath: nagDefaults.getRootTemplatePath() + '/nucleus-angular-extend-text/assets/templates',
       enabled: false,
       allowDuplicates: false,
       selectedTagIndex: null,
@@ -72,8 +68,6 @@ angular.module('nag.extendText.configurator', [
      *
      * @ngscope
      * @property {object} options.autoCompleteOptions
-     *   @property {string} [rootTemplatePath=rootTemplatePath+'/nucleus-angular-extend-text/assets/templates']
-     *   Root path for templates
      *   @property {boolean} [enabled=false] Whether or not auto complete functionality is enabled
      *   @property {boolean} [display=false] Whether or not the auto complete is currently being displayed
      *   @property {string} [url=null] Base url for where the auto complete data is retrieved from from
@@ -103,7 +97,6 @@ angular.module('nag.extendText.configurator', [
      *   @property {function} [filter] Function to use to filter the data when cache is set to true
      */
     nagDefaults.setOptions('extendTextAutoCompleteOptions', {
-      rootTemplatePath: nagDefaults.getRootTemplatePath() + '/nucleus-angular-extend-text/assets/templates',
       enabled: false,
       display: false,
       url: null,
@@ -253,7 +246,7 @@ angular.module('nag.extendText', [
         }
       ],
       templateUrl: function(){
-        return nagDefaults.getRootTemplatePath() + '/nucleus-angular-extend-text/assets/templates/extend-text.html';
+        return nagHelper.getTemplatePath('extendText');
       },
       transclude: true,
       compile: function(element, attributes, transclude) {

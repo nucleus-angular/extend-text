@@ -1,0 +1,11 @@
+{
+  "tests": [
+    "dalek/auto-complete.js",
+    "dalek/basic.js",
+    "dalek/form-integration.js",
+    "dalek/tagging.js"
+  ],
+  "browser": [
+    "chrome"
+  ]
+}
