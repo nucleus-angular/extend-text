@@ -1,3 +1,13 @@
+/**
+ * # Extend Text
+ * 
+ * An enhanced input element that add support for the following functionality:
+ *
+ * - Auto Complete
+ * - Tagging
+ *
+ * @module nag.extendText
+ */
 angular.module('nag.extendText', [
   'nag.core',
   'nag.beat',
@@ -7,6 +17,11 @@ angular.module('nag.extendText', [
 .run([
   'nagDefaults',
   function(nagDefaults) {
+    /**
+     * @ignore Properties definations for extend text directive 
+     *
+     * @ngdirective nagExtendText
+     */
     /**
      * Options
      *
