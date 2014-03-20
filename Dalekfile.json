@@ -5,6 +5,7 @@
     "dalek/form-integration.js",
     "dalek/tagging.js"
   ],
+  "logLevel": "1",
   "browser": [
     "chrome"
   ]
