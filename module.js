@@ -105,6 +105,7 @@ angular.module('nag.extendText', [
       selectedOptionIndex: 0,
       selectOnBlur: false,
       allowFreeForm: false,
+      freeFormIndicator: 'text',
       newText: 'New',
       isNew: false,
       generateDataUrl: function() {

@@ -136,6 +136,30 @@ angular.module('demo.home.home', [
         url: '/api/freeform'
       }
     };
+    $scope.autoCompleteAllowFreeFormTextInOptionsOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        source: 'local',
+        allowFreeForm: true,
+        localData: [{
+          display: 'local 1',
+          value: 'l1'
+        }, {
+          display: 'lcal 2',
+          value: 'l2'
+        }, {
+          display: 'local 3',
+          value: 'l3'
+        }, {
+          display: 'lcal 4',
+          value: 'l4'
+        }, {
+          display: 'local 5',
+          value: 'l5'
+        }],
+        freeFormIndicator: 'option'
+      }
+    };
     $scope.autoCompleteLocalDataOptions = {
       autoCompleteOptions: {
         enabled: true,

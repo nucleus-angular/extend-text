@@ -9,13 +9,14 @@
       </li>
     </ul>
   </div>
-  <div class="new-indicator" ng-if="options.autoCompleteOptions.allowFreeForm == true && options.autoCompleteOptions.isNew == true && getTextAreaValue().length > 0">{{ options.autoCompleteOptions.newText }}</div>
-  <div class="auto-complete-options" ng-if="options.autoCompleteOptions.enabled" ng-show="options.autoCompleteOptions.display && (options.autoCompleteOptions.allowFreeForm == false || options.autoCompleteOptions.options.length > 0)">
+  <div class="new-indicator" ng-if="options.autoCompleteOptions.allowFreeForm == true && options.autoCompleteOptions.isNew == true && getTextAreaValue().length > 0 && options.autoCompleteOptions.freeFormIndicator == 'text'">{{ options.autoCompleteOptions.newText }}</div>
+  <div class="auto-complete-options" ng-if="options.autoCompleteOptions.enabled" ng-show="options.autoCompleteOptions.display && ((options.autoCompleteOptions.allowFreeForm == false || options.autoCompleteOptions.options.length > 0) || (options.autoCompleteOptions.allowFreeForm == true && options.autoCompleteOptions.freeFormIndicator == 'option' && getVisibleValue() != ''))">
     <div ng-show="options.autoCompleteOptions.source == 'remote' && options.autoCompleteOptions.options.length == 0 && options.autoCompleteOptions.loadingData == false && options.autoCompleteOptions.loadCharacterCount > getTextAreaValue().length">Starting typing to get a list of options</div>
     <div ng-show="options.autoCompleteOptions.options.length == 0 && options.autoCompleteOptions.loadingData == true">Loading data...</div>
-    <div ng-show="options.autoCompleteOptions.options.length == 0 && options.autoCompleteOptions.loadingData == false && (options.autoCompleteOptions.loadCharacterCount <= getTextAreaValue().length || options.autoCompleteOptions.source == 'local')">No Options Found</div>
+    <div ng-show="options.autoCompleteOptions.options.length == 0 && options.autoCompleteOptions.loadingData == false && options.autoCompleteOptions.freeFormIndicator != 'option' && (options.autoCompleteOptions.loadCharacterCount <= getTextAreaValue().length || options.autoCompleteOptions.source == 'local')">No Options Found</div>
     <ul ng-show="options.autoCompleteOptions.options.length > 0">
       <li ng-repeat="(key, option) in options.autoCompleteOptions.options" data-value="{{ option.value }}" ng-class="{'is-focused': isSelectedOption(key)}" ng-mouseenter="selectOption(key)" ng-mousedown="setValueAutoCompleteMouseDown()">{{ option.display }}</li>
     </ul>
+    <div class="new" ng-class="{'is-focused': isSelectedOption('new')}" data-value="{{ getVisibleValue() }}" ng-if="options.autoCompleteOptions.allowFreeForm == true && options.autoCompleteOptions.isNew == true && getTextAreaValue().length > 0 && options.autoCompleteOptions.freeFormIndicator == 'option'" ng-mouseenter="selectOption('new')" ng-mousedown="setValueFromAutoComplete()">{{ getVisibleValue() }} ({{ options.autoCompleteOptions.newText }})</div>
   </div>
 </div>

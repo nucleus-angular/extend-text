@@ -264,5 +264,17 @@ module.exports = {
     .waitForElement('[data-id="auto-complete-local-data-allow-free-form"] .new-indicator')
       .assert.visible('[data-id="auto-complete-local-data-allow-free-form"] .new-indicator', 'new indicator is visible')
     .done();
+  },
+
+  'should show new indicator as an option instead of text in the input': function(test) {
+    test.open('http://localhost:3000/home')
+    .waitForElement('[data-id="auto-complete-allow-free-form-text-in-options"] .container')
+    .type('[data-id="auto-complete-allow-free-form-text-in-options"] .display', 'local')
+    //angular - need to wait for angular to render this container
+    .waitForElement('[data-id="auto-complete-allow-free-form-text-in-options"] .auto-complete-options .new')
+      .assert.doesntExist('[data-id="auto-complete-allow-free-form-text-in-options"] .new-indicator', 'new indicator is visible')
+      .assert.visible('[data-id="auto-complete-allow-free-form-text-in-options"] .auto-complete-options .new', 'new option visible')
+      .assert.text('[data-id="auto-complete-allow-free-form-text-in-options"] .auto-complete-options .new', 'local (New)', 'new option text matches input with new indicator')
+    .done();
   }
 }

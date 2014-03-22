@@ -202,6 +202,7 @@ angular.module('nag.extendText')
             hideAutoComplete = function() {
               //if we are hiding the auto complete, no need to perform any outstanding request for data
               nagBeat.remove(beatName);
+              scope.options.autoCompleteOptions.isNew = false;
               scope.options.autoCompleteOptions.variableCache = null;
               scope.options.autoCompleteOptions.display = false;
             };
@@ -487,7 +488,7 @@ angular.module('nag.extendText')
               var newItem = scope.options.autoCompleteOptions.options[scope.options.autoCompleteOptions.selectedOptionIndex];
               scope.newValue(newItem.display, newItem.value);
               resetAutoCompleteOptions();
-              scope.options.autoCompleteOptions.isNew = false;
+              hideAutoComplete();
             };
 
             /**
@@ -571,7 +572,9 @@ angular.module('nag.extendText')
                     $event.preventDefault();
                     scope.setValueFromAutoComplete();
                   }
-                }/* else if($event.which === 9 && $event.shiftKey === false) { //tab
+                }
+                //todo: should this is a configurable option?
+                /* else if($event.which === 9 && $event.shiftKey === false) { //tab
                   if(scope.options.autoCompleteOptions.options.length > 0) {
                     $event.preventDefault();
                     scope.setValueFromAutoComplete();
@@ -579,15 +582,27 @@ angular.module('nag.extendText')
                   }
                 }*/ else if($event.which == 38) { //up arrow
                   $event.preventDefault();
+
+                  var autoCompleteWrapValue =
+                  (scope.showFreeFormAsOption() && _.isNumber(scope.options.autoCompleteOptions.selectedOptionIndex))
+                  ? 'new' 
+                  : scope.options.autoCompleteOptions.options.length - 1;
+                  
                   scope.options.autoCompleteOptions.selectedOptionIndex =
-                  (scope.options.autoCompleteOptions.selectedOptionIndex - 1 < 0
-                  ? scope.options.autoCompleteOptions.options.length - 1
+                  (scope.options.autoCompleteOptions.selectedOptionIndex - 1 < 0 || !_.isNumber(scope.options.autoCompleteOptions.selectedOptionIndex)
+                  ? autoCompleteWrapValue
                   : scope.options.autoCompleteOptions.selectedOptionIndex - 1);
                 } else if($event.which == 40) { //down arrow
                   $event.preventDefault();
+
+                  var autoCompleteWrapValue =
+                  (scope.showFreeFormAsOption() && _.isNumber(scope.options.autoCompleteOptions.selectedOptionIndex))
+                  ? 'new' 
+                  : 0;
+
                   scope.options.autoCompleteOptions.selectedOptionIndex =
-                  (scope.options.autoCompleteOptions.selectedOptionIndex + 1 >= scope.options.autoCompleteOptions.options.length
-                  ? 0
+                  (scope.options.autoCompleteOptions.selectedOptionIndex + 1 >= scope.options.autoCompleteOptions.options.length || !_.isNumber(scope.options.autoCompleteOptions.selectedOptionIndex)
+                  ? autoCompleteWrapValue
                   : scope.options.autoCompleteOptions.selectedOptionIndex + 1);
                 }
               }
@@ -729,7 +744,22 @@ angular.module('nag.extendText')
              */
             scope.getNewItemValue = function() {
               return scope.getTextAreaValue();// + ' (' + scope.options.autoCompleteOptions.newText + ')';
-            },
+            };
+
+            /**
+             * Whether or not we should be show the free form text as an option
+             * 
+             * @ngscope
+             * method showFreeFormAsOption
+             *
+             * @returns {boolean} Whether or not we should be show the free form text as an option
+             */
+            scope.showFreeFormAsOption = function() {
+              return scope.options.autoCompleteOptions.allowFreeForm == true
+                     && scope.options.autoCompleteOptions.isNew == true
+                     && scope.getTextAreaValue().length > 0
+                     && scope.options.autoCompleteOptions.freeFormIndicator == 'option';
+            };
 
             /**
              * Update visible/hidden inputs when data changes
