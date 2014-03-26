@@ -34,11 +34,6 @@ angular.module('demo.home.home', [
         value: 'config'
       }]
     };
-    $scope.taggingOptions = {
-      tagOptions: {
-        enabled: true
-      }
-    };
     $scope.autoCompleteOptions = {
       autoCompleteOptions: {
         enabled: true,
@@ -303,5 +298,24 @@ angular.module('demo.home.home', [
         'value': 'Doe'
       }]);
     }, 200);
+
+    //tagging
+    $scope.taggingBasicOptions = {
+      tagOptions: {
+        enabled: true
+      }
+    };
+    $scope.taggingAllowDuplicatesOptions = {
+      tagOptions: {
+        enabled: true,
+        allowDuplicates: true
+      }
+    };
+    $scope.taggingDoubleClickEditOptions = {
+      tagOptions: {
+        enabled: true,
+        doubleClickEdit: true
+      }
+    };
   }
 ]);

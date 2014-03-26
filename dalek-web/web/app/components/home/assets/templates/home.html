@@ -88,11 +88,6 @@
     <input type="text" class="display" />
     <input type="hidden" ng-model="test" nag-input />
   </div>
-  <header>Tagging</header>
-  <div nag-extend-text="taggingOptions" data-id="tagging">
-    <input type="text" class="display" />
-    <input type="hidden" ng-model="test" nag-input />
-  </div>
 
   <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
@@ -159,6 +154,21 @@
   <header>Auto Complete Allow Free Form Text</header>
   <div nag-extend-text="autoCompleteAllowFreeFormTextOptions" data-id="auto-complete-allow-free-form-text">
     <input type="text" class="display" />
+    <input type="hidden" ng-model="test" nag-input />
+  </div>
+  <header>Tagging</header>
+  <div nag-extend-text="taggingBasicOptions" data-id="tagging-basic">
+    <input type="text" class="display" style="width: 500px;"/>
+    <input type="hidden" ng-model="test" nag-input />
+  </div>
+  <header>Tagging Allow Duplicates</header>
+  <div nag-extend-text="taggingAllowDuplicatesOptions" data-id="tagging-allow-duplicates">
+    <input type="text" class="display" style="width: 500px;"/>
+    <input type="hidden" ng-model="test" nag-input />
+  </div>
+  <header>Tagging Double Click Edit</header>
+  <div nag-extend-text="taggingDoubleClickEditOptions" data-id="tagging-allow-duplicates">
+    <input type="text" class="display" style="width: 500px;"/>
     <input type="hidden" ng-model="test" nag-input />
   </div>
   <input type="submit" value="Test" />
