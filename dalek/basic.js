@@ -3,7 +3,7 @@ module.exports = {
   name: 'extend text component',
 
   'should keep display and hidden input in sync with empty configuration': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/empty')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="empty-options"] .container')
     .type('[data-id="empty-options"] .display', 'test')
@@ -14,7 +14,7 @@ module.exports = {
 
   //todo: figure out how to test that an element is focus
   'should work well with the auto focus component': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-focus')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="empty-options-auto-focus"] .container')
       //.assert.attr('[data-id="empty-options-auto-focus"] .display', 'focus', true) : todo : figure out how to select active component
@@ -23,7 +23,7 @@ module.exports = {
 
   //todo: research
   'should be able to configure that text gets selected when input is focused': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/select-on-focus')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="select-on-focus"] .container')
     .type('[data-id="select-on-focus"] .display', 'test')
@@ -35,16 +35,16 @@ module.exports = {
   },
 
   'should be able to configure that the form submit when hitting enter on none tagging element': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/allow-submit-on-enter')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="allow-submit-on-enter"] .container')
     .type('[data-id="allow-submit-on-enter"] .display', 'test\uE007')
-      .assert.url('http://localhost:3000/home?allowSubmitOnEnter=test', 'URL has the form data in it')
+      .assert.url('http://localhost:3000/allow-submit-on-enter?allowSubmitOnEnter=test', 'URL has the form data in it')
     .done();
   },
 
   'should be able to configure the initial value': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/set-data')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="set-data"] .container')
       .assert.val('[data-id="set-data"] .display', 'Configuration', 'Display input defaults to configured value')

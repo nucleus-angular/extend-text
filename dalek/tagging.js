@@ -19,7 +19,7 @@ module.exports = {
   name: 'extend text with tagging enabled',
   
   'should add item when pressing enter key': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/tagging-basic')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="tagging"] .container')
     .type('[data-id="tagging-basic"] .display', 'test\uE007');
@@ -30,7 +30,7 @@ module.exports = {
   },
   
   'should add item when pressing tab key': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/tagging-basic')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="tagging"] .container')
     .type('[data-id="tagging-basic"] .display', 'test\uE004');
@@ -41,7 +41,7 @@ module.exports = {
   },
   
   'should allow for spaces': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/tagging-basic')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="tagging"] .container')
     .type('[data-id="tagging-basic"] .display', 'test 1\uE007');
@@ -52,7 +52,7 @@ module.exports = {
   },
   
   'should not allow for duplicate tags': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/tagging-basic')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="tagging"] .container')
     .type('[data-id="tagging-basic"] .display', 'test 1\uE007test 1\uE007');
@@ -63,7 +63,7 @@ module.exports = {
   },
   
   'should allow for multiple tags': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/tagging-allow-duplicates')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="tagging-allow-duplicates"] .container')
     .type('[data-id="tagging-allow-duplicates"] .display', 'test\uE007test\uE007');
@@ -79,7 +79,7 @@ module.exports = {
   },
 
   'should select last tag when presssing delete': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/tagging-basic')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="tagging-basic"] .container')
     .type('[data-id="tagging-basic"] .display', 'test\uE007test1\uE007')
@@ -91,7 +91,7 @@ module.exports = {
   },
 
   'should delete selected tag when pressing delete and a tag is selected': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/tagging-basic')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="tagging-basic"] .container')
     .type('[data-id="tagging-basic"] .display', 'test\uE007test1\uE007')
@@ -104,7 +104,7 @@ module.exports = {
   },
 
   'should select select the last tag when pressing the left arrow': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/tagging-basic')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="tagging-basic"] .container')
     .type('[data-id="tagging-basic"] .display', 'test\uE007test1\uE007')
@@ -116,7 +116,7 @@ module.exports = {
   },
 
   'should select the previous tag when pressing the left arrow when a tag is currently selected': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/tagging-basic')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="tagging-basic"] .container')
     .type('[data-id="tagging-basic"] .display', 'test\uE007test1\uE007')

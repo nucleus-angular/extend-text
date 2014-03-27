@@ -10,7 +10,7 @@ angular.module('demo', [
   function($locationProvider, $urlRouterProvider) {
     $locationProvider.html5Mode(true);
 
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/empty');
   }
 ])
 .run([
@@ -126,7 +126,22 @@ angular.module('demo', [
       "display": "selectblur2",
       "value": 2
     }]));
-    httpMocker.register('GET', '/api/freeform?input=selectblur', JSON.stringify([]));
+    httpMocker.register('GET', '/api/freeform?input=freeform', JSON.stringify([{
+      "value": 1,
+      "display": "freeform1"
+    },{
+      "value": 2,
+      "display": "freeform2"
+    },{
+      "value": 3,
+      "display": "freeform3"
+    },{
+      "value": 4,
+      "display": "freeform4"
+    },{
+      "value": 5,
+      "display": "freeform5"
+    }]));
     httpMocker.register('GET', '/api/delay?input=del', JSON.stringify([{
       "value": 1,
       "display": "delay1"

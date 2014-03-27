@@ -2,7 +2,7 @@ module.exports = {
   name: 'extend text component with auto complete enabled',
 
   'should be able to get a list of auto complete options': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-basic')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete"] .container')
     .type('[data-id="auto-complete"] .display', 'tes')
@@ -13,7 +13,7 @@ module.exports = {
   },
 
   'should be able to select an option that has a value of a string': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-string-value')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-string-value"] .container')
     .type('[data-id="auto-complete-string-value"] .display', 'tes')
@@ -26,7 +26,7 @@ module.exports = {
   },
 
   'should be able to select an option that has a value of a number': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-number-value')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-number-value"] .container')
     .type('[data-id="auto-complete-number-value"] .display', 'tes')
@@ -39,7 +39,7 @@ module.exports = {
   },
 
   'should not load auto complete options until the load character count has been reached': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-character-count')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-character-count"] .container')
     .type('[data-id="auto-complete-character-count"] .display', 'te')
@@ -52,7 +52,7 @@ module.exports = {
   },
 
   'should properly set the display value for the auto complete options': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-display-value')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-display-value"] .container')
     .type('[data-id="auto-complete-display-value"] .display', 'tes')
@@ -70,7 +70,7 @@ module.exports = {
   },
 
   'should properly set the data-value attribute for the auto complete options': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-attribute-value')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-attribute-value"] .container')
     .type('[data-id="auto-complete-attribute-value"] .display', 'tes')
@@ -88,7 +88,7 @@ module.exports = {
   },
 
   'should not allow free form data by default': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-no-free-form-text')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-no-free-form-text"] .container')
     .type('[data-id="auto-complete-no-free-form-text"] .display', 'testa')
@@ -101,7 +101,7 @@ module.exports = {
   },
 
   'should be able to define a custom response parser': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-custom-response-parser')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-custom-response-parser"] .container')
     .type('[data-id="auto-complete-custom-response-parser"] .display', 'use')
@@ -118,7 +118,7 @@ module.exports = {
   },
 
   'should be able to define a custom variable name': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-custom-variable-name')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-custom-variable-name"] .container')
     .type('[data-id="auto-complete-custom-variable-name"] .display', 'varname')
@@ -135,7 +135,7 @@ module.exports = {
   },
 
   'should be able to define a custom variable formatter': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-custom-variable-format')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-custom-variable-format"] .container')
     .type('[data-id="auto-complete-custom-variable-format"] .display', 'varformat')
@@ -152,7 +152,7 @@ module.exports = {
   },
 
   'should be able to define a custom url generator': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-custom-data-url-generator')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-custom-data-url-generator"] .container')
     .type('[data-id="auto-complete-custom-data-url-generator"] .display', 'cus')
@@ -163,7 +163,7 @@ module.exports = {
   },
 
   'should not attempt to pull data until that search deley time have been reached': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-delay')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-delay"] .container')
     .type('[data-id="auto-complete-delay"] .display', 'del')
@@ -176,7 +176,7 @@ module.exports = {
   },
 
   'should select first item in auto complete options list': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-select-first-option')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-select-first-option"] .container')
     .type('[data-id="auto-complete-select-first-option"] .display', 'tes')
@@ -187,7 +187,7 @@ module.exports = {
   },
 
   'should select items when bluring input': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-select-on-blur')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-select-on-blur"] .container')
     .type('[data-id="auto-complete-select-on-blur"] .display', 'selectblur')
@@ -201,7 +201,7 @@ module.exports = {
   },
 
   'should set input values properly when allowing free form text': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-allow-free-form-text')
     //angular - need to wait for angular to render this container
     .waitForElement('[data-id="auto-complete-allow-free-form-text"] .container')
     .type('[data-id="auto-complete-allow-free-form-text"] .display', 'freeform')
@@ -213,7 +213,7 @@ module.exports = {
   },
 
   'should load options on click when using local data': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-local-data')
     .waitForElement('[data-id="auto-complete-local-data"] .container')
     .click('[data-id="auto-complete-local-data"] .display')
     //angular - need to wait for angular to render this container
@@ -223,7 +223,7 @@ module.exports = {
   },
 
   'should be able to select option when using local data': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-local-data')
     .waitForElement('[data-id="auto-complete-local-data"] .container')
     .click('[data-id="auto-complete-local-data"] .display')
     //angular - need to wait for angular to render this container
@@ -235,7 +235,7 @@ module.exports = {
   },
 
   'should use filter method when using local data': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-local-data')
     .waitForElement('[data-id="auto-complete-local-data"] .container')
     .click('[data-id="auto-complete-local-data"] .display')
     //angular - need to wait for angular to render this container
@@ -245,7 +245,7 @@ module.exports = {
   },
 
   'should be able to define a custom filter method for local data': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-local-data-custom-filter')
     .waitForElement('[data-id="auto-complete-local-data-custom-filter"] .container')
     .type('[data-id="auto-complete-local-data-custom-filter"] .display', 'tes')
       .assert.doesntExist('[data-id="auto-complete-local-data-custom-filter"] auto-complete-options ul li', 'auto complete options should not be visible custom filter is meet')
@@ -257,7 +257,7 @@ module.exports = {
   },
 
   'should show new indicator when allowing free form and what the user entered does not match any value in the auto complete list': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-local-data-allow-free-form-text')
     .waitForElement('[data-id="auto-complete-local-data-allow-free-form"] .container')
     .type('[data-id="auto-complete-local-data-allow-free-form"] .display', 'local')
     //angular - need to wait for angular to render this container
@@ -266,8 +266,18 @@ module.exports = {
     .done();
   },
 
+  'should show new indicator when allowing free form and what the user entered does not filter to include any data': function(test) {
+    test.open('http://localhost:3000/auto-complete-allow-free-form-text')
+    .waitForElement('[data-id="auto-complete-allow-free-form-text"] .container')
+    .type('[data-id="auto-complete-allow-free-form-text"] .display', 'data')
+    //angular - need to wait for angular to render this container
+    .waitForElement('[data-id="auto-complete-allow-free-form-text"] .new-indicator')
+      .assert.visible('[data-id="auto-complete-allow-free-form-text"] .new-indicator', 'new indicator is visible')
+    .done();
+  },
+
   'should show new indicator as an option instead of text in the input': function(test) {
-    test.open('http://localhost:3000/home')
+    test.open('http://localhost:3000/auto-complete-allow-free-form-text-in-options')
     .waitForElement('[data-id="auto-complete-allow-free-form-text-in-options"] .container')
     .type('[data-id="auto-complete-allow-free-form-text-in-options"] .display', 'local')
     //angular - need to wait for angular to render this container

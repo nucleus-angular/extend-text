@@ -99,7 +99,7 @@ angular.module('nag.extendText')
         return {
           post: function(scope, element, attributes, controllers) {
             transclude(scope, function(clone) {
-              var displayElement = clone.filter('input.display');
+              var displayElement = clone.filter('.display');
               var hiddenElement = clone.filter('input[type="hidden"]');
 
               displayElement.attr('ng-class', "{'ng-valid': modelController.$dirty && modelController.$valid, 'ng-invalid': modelController.$dirty && modelController.$invalid}")
@@ -122,16 +122,16 @@ angular.module('nag.extendText')
             //todo: research: not sure why but I need to have the $timeout here for this to properly be able to pull the original padding
             $timeout(function() {
               originalPadding = {
-                left: parseInt($(element).find('input.display').css('paddingLeft'), 10),
-                top: parseInt($(element).find('input.display').css('paddingTop'), 10)
+                left: parseInt($(element).find('.display').css('paddingLeft'), 10),
+                top: parseInt($(element).find('.display').css('paddingTop'), 10)
               };
               borderSize = {
-                top: parseInt($(element).find('input.display').css('borderTopWidth'), 10),
-                left: parseInt($(element).find('input.display').css('borderLeftWidth'), 10)
+                top: parseInt($(element).find('.display').css('borderTopWidth'), 10),
+                left: parseInt($(element).find('.display').css('borderLeftWidth'), 10)
               };
               originalMargin = {
-                top: parseInt($(element).find('input.display').css('marginTop'), 10),
-                left: parseInt($(element).find('input.display').css('marginLeft'), 10)
+                top: parseInt($(element).find('.display').css('marginTop'), 10),
+                left: parseInt($(element).find('.display').css('marginLeft'), 10)
               };
 
               //todo: research: the -1 is to account for the border the tag has because I am not sure how to handle that programmatically (attribute value???)
@@ -163,18 +163,18 @@ angular.module('nag.extendText')
                 var position = $(element).find('.tag:last-child').position();
                 var tagWidth = $(element).find('.tag:last-child').outerWidth(true);
                 var positionTop = position.top < originalPadding.top ? originalPadding.top : position.top + originalPadding.top;
-                $(element).find('input.display').css('paddingLeft', position.left + tagWidth + originalPadding.left);
-                $(element).find('input.display').css('paddingTop', positionTop);
+                $(element).find('.display').css('paddingLeft', position.left + tagWidth + originalPadding.left);
+                $(element).find('.display').css('paddingTop', positionTop);
               } else {
-                $(element).find('input.display').css('paddingLeft', originalPadding.left);
-                $(element).find('input.display').css('paddingTop', originalPadding.top);
+                $(element).find('.display').css('paddingLeft', originalPadding.left);
+                $(element).find('.display').css('paddingTop', originalPadding.top);
               }
             };
 
             updateAutoCompletePosition = function() {
-              var elementPosition = $(element).find('input.display').position();
-              var elementHeight = $(element).find('input.display').outerHeight();
-              var elementWidth = $(element).find('input.display').outerWidth();
+              var elementPosition = $(element).find('.display').position();
+              var elementHeight = $(element).find('.display').outerHeight();
+              var elementWidth = $(element).find('.display').outerWidth();
               var top = parseInt(elementPosition.top + elementHeight + originalMargin.top, 10);
               var left = parseInt(elementPosition.left, 10);
 
@@ -208,7 +208,7 @@ angular.module('nag.extendText')
             };
 
             setElementHeight = function() {
-              var elementHeight = $(element).find('input.display').outerHeight();
+              var elementHeight = $(element).find('.display').outerHeight();
 
               $(element).css({
                 'minHeight': elementHeight
@@ -230,7 +230,7 @@ angular.module('nag.extendText')
                 }
               };
 
-              var textAreaValue = $(element).find('input.display').val();
+              var textAreaValue = $(element).find('.display').val();
 
               if(scope.options.autoCompleteOptions.source === 'local') {
                 var data = textAreaValue.length > 0
@@ -247,6 +247,8 @@ angular.module('nag.extendText')
                 success(function(response, status, headers, config) {
                   if(angular.isObject(response)) {
                     processData(scope.options.autoCompleteOptions.responseParser(response));
+                  } else {
+                    scope.options.autoCompleteOptions.isNew = true;
                   }
 
                   scope.options.autoCompleteOptions.loadingData = false;
@@ -275,14 +277,14 @@ angular.module('nag.extendText')
             };
 
             setDisplayInput = function(value) {
-              var currentPosition = $(element).find('input.display')[0].selectionStart;
-              var positionCursor = (currentPosition < $(element).find('input.display').val().length);
-              $(element).find('input.display').val(value)
+              var currentPosition = $(element).find('.display')[0].selectionStart;
+              var positionCursor = (currentPosition < $(element).find('.display').val().length);
+              $(element).find('.display').val(value)
 
               //if positionCursor is zero all browser except IE won't do anything but IE will focus the element which is not desired effect
               //so we need something additional to track whether or not the auto focus the element
               if(positionCursor && !dontFocusOnCursorPlacement) {
-                $(element).find('input.display')[0].setSelectionRange(currentPosition, currentPosition);
+                $(element).find('.display')[0].setSelectionRange(currentPosition, currentPosition);
               }
 
               dontFocusOnCursorPlacement = false;
@@ -361,7 +363,7 @@ angular.module('nag.extendText')
               focusTextArea = focusTextArea || true;
               if(scope.options.tagOptions.enabled === true) {
                 if(focusTextArea === true) {
-                  $(element).find('input.display').focus();
+                  $(element).find('.display').focus();
                 }
 
                 var removeKey = utilities.getKeyByPropertyValue(scope.options.data, 'value', value);
@@ -407,13 +409,15 @@ angular.module('nag.extendText')
             /**
              * Retrieve the value in the simulated text area
              *
+             * @TODO: rename since this is sometimes an input and sometimes a textarea
+             *
              * @ngscope
              * @method getTextAreaValue
              *
              * @returns {string} Simulate text area value
              */
             scope.getTextAreaValue = function() {
-              return $(element).find('input.display').val();
+              return $(element).find('.display').val();
             };
 
             this.getTextAreaValue = scope.getTextAreaValue;
@@ -511,7 +515,7 @@ angular.module('nag.extendText')
              */
             scope.mouseUp = function($event) {
               if(scope.options.selectOnFocus === true) {
-                $(element).find('input.display').select();
+                $(element).find('.display').select();
               }
             };
 
@@ -533,12 +537,12 @@ angular.module('nag.extendText')
               if(scope.options.tagOptions.enabled === true) {
                 if($event.which === 13 && scope.options.autoCompleteOptions.options.length === 0 && scope.options.autoCompleteOptions.enabled === false) { //enter
                   $event.preventDefault();
-                  scope.newValue($(element).find('input.display').val());
+                  scope.newValue($(element).find('.display').val());
                 } else if($event.which === 9 && scope.options.autoCompleteOptions.options.length === 0 && scope.options.autoCompleteOptions.enabled === false) { //tab
                   $event.preventDefault();
-                  scope.newValue($(element).find('input.display').val());
+                  scope.newValue($(element).find('.display').val());
                 } else if($event.which === 9) {
-                } else if($event.which === 37 && $(element).find('input.display').val() === '') { //left arrow
+                } else if($event.which === 37 && $(element).find('.display').val() === '') { //left arrow
                   if(angular.isNumber(scope.options.tagOptions.selectedTagIndex)) {
                     scope.options.tagOptions.selectedTagIndex =
                     (scope.options.tagOptions.selectedTagIndex - 1 < 0
@@ -547,7 +551,7 @@ angular.module('nag.extendText')
                   } else {
                     scope.options.tagOptions.selectedTagIndex = scope.options.data.length - 1;
                   }
-                } else if($event.which === 39 && $(element).find('input.display').val() === '') { //right arrow
+                } else if($event.which === 39 && $(element).find('.display').val() === '') { //right arrow
                   if(angular.isNumber(scope.options.tagOptions.selectedTagIndex)) {
                     scope.options.tagOptions.selectedTagIndex =
                     (scope.options.tagOptions.selectedTagIndex + 1 >= scope.options.data.length
@@ -558,7 +562,7 @@ angular.module('nag.extendText')
                   if(angular.isNumber(scope.options.tagOptions.selectedTagIndex) && scope.options.data[scope.options.tagOptions.selectedTagIndex]) {
                     scope.removeValue(scope.options.data[scope.options.tagOptions.selectedTagIndex].value);
                     scope.resetSelectedTag();
-                  } else if($(element).find('input.display').val() === '') {
+                  } else if($(element).find('.display').val() === '') {
                     scope.options.tagOptions.selectedTagIndex = scope.options.data.length - 1;
                   }
                 } else if(angular.isNumber(scope.options.tagOptions.selectedTagIndex)) { //if no other matches, make sure that nothing is selected
@@ -622,7 +626,7 @@ angular.module('nag.extendText')
                   $event.preventDefault();
                 } else if(_.indexOf(noneAffectingTextKeys, $event.which) === -1) {
                   //using any character that affects text should reset the value if not allowing free form with auto complete
-                  var textAreaValue = $(element).find('input.display').val();
+                  var textAreaValue = $(element).find('.display').val();
 
                   if(scope.options.autoCompleteOptions.allowFreeForm !== true || textAreaValue == '') {
                     scope.modelController.$setViewValue('');
@@ -649,7 +653,7 @@ angular.module('nag.extendText')
                   }
                 }
               } else if(scope.options.autoCompleteOptions.enabled === false && scope.options.tagOptions.enabled === false) {
-                scope.newValue($(element).find('input.display').val());
+                scope.newValue($(element).find('.display').val());
               }
             };
 
@@ -731,7 +735,7 @@ angular.module('nag.extendText')
              */
             scope.ulClick = function($event) {
               $event.stopPropagation();
-              element.find('input.display').focus();
+              element.find('.display').focus();
             };
 
             /**
