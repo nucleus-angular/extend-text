@@ -1,11 +1,11 @@
 <header>Extend Text Reset Form</header>
-<form name="extendTextResettable" data-ut="extend-text-resettable" nag-resettable-form>
+<form name="extendTextResettable" nag-resettable-form>
   {{ $id }}
   <ul>
     <li>
       <label for="first-name">
         First Name:
-        <div nag-extend-text="autoCompleteResetFirstNameOptions" data-id="auto-complete-reset-first-name" data-ut="auto-complete-reset-first-name">
+        <div nag-extend-text="firstNameOption" data-id="input">
           <input type="text" class="display" />
           <input type="hidden" ng-model="extendTextResettableObject.firstName" nag-input />
         </div>
@@ -14,15 +14,15 @@
     <li>
       <label for="last-name">
         Last Name:
-        <div nag-extend-text="autoCompleteResetLastNameOptions" data-id="auto-complete-reset-last-name" data-ut="auto-complete-reset-last-name">
-          <input type="text" class="display" />
+        <div nag-extend-text="lastNameOptions" data-id="textarea">
+          <textarea class="display"></textarea>
           <input type="hidden" ng-model="extendTextResettableObject.lastName" nag-input />
         </div>
       </label>
     </li>
     <li>
       <button>Submit</button>
-      <button ng-click="resetExtendTextResettableForm()" data-ut="reset-extend-text-resettable">Reset (with event)</button>
+      <button ng-click="resetExtendTextResettableForm()" class="reset-form">Reset (with event)</button>
     </li>
   </ul>
 </form>

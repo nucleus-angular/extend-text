@@ -1,130 +1,131 @@
-var _ = require('lodash');
+var GenericPage = require('./lib/objects/pages/generic');
+var testBuilder = require('./lib/test-builder');
 
-var hasTags = function(test, baseSelector, displayValues, hiddenValue) {
-  test.assert.visible(baseSelector + ' .tag-container .tag:nth-child(' + displayValues.length + ')', 'tag list visible');
+var tests = {
+  'should add item when pressing enter key': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'tagging-basic');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
 
-  _.forEach(displayValues, function(displayValue, key) {
-    test.assert.attr(baseSelector + ' .tag-container .tag:nth-child(' + (key + 1) + ') .text', 'data-value').is(displayValue, displayValue + ' entered in tag list');
-  });
+    extendTextComponent.type('test\uE007');
 
-  test.assert.attr(baseSelector + ' input[type="hidden"]', 'value').is(hiddenValue, 'tag data entered into hidden input');
-  test.assert.attr(baseSelector + ' input.display', 'value').is('', 'display input empty');
-};
+    extendTextComponent.hasTags(['test']);
+    extendTextComponent.hiddenValueIs('[{"display":"test","value":"test"}]');
 
-var tagSelected = function(test, baseSelector, tagValue) {
-  test.assert.attr(baseSelector + ' .tag-container .tag.selected .text', 'data-value').is(tagValue, tagValue + ' tag selected')
-};
-
-module.exports = {
-  name: 'extend text with tagging enabled',
-  
-  'should add item when pressing enter key': function(test) {
-    test.open('http://localhost:3000/tagging-basic')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="tagging"] .container')
-    .type('[data-id="tagging-basic"] .display', 'test\uE007');
-    
-    hasTags(test, '[data-id="tagging-basic"]', ['test'], '[{"display":"test","value":"test"}]');
-
-    test.done();
-  },
-  
-  'should add item when pressing tab key': function(test) {
-    test.open('http://localhost:3000/tagging-basic')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="tagging"] .container')
-    .type('[data-id="tagging-basic"] .display', 'test\uE004');
-    
-    hasTags(test, '[data-id="tagging-basic"]', ['test'], '[{"display":"test","value":"test"}]');
-
-    test.done();
-  },
-  
-  'should allow for spaces': function(test) {
-    test.open('http://localhost:3000/tagging-basic')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="tagging"] .container')
-    .type('[data-id="tagging-basic"] .display', 'test 1\uE007');
-    
-    hasTags(test, '[data-id="tagging-basic"]', ['test 1'], '[{"display":"test 1","value":"test 1"}]');
-
-    test.done();
-  },
-  
-  'should not allow for duplicate tags': function(test) {
-    test.open('http://localhost:3000/tagging-basic')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="tagging"] .container')
-    .type('[data-id="tagging-basic"] .display', 'test 1\uE007test 1\uE007');
-    
-    hasTags(test, '[data-id="tagging-basic"]', ['test 1'], '[{"display":"test 1","value":"test 1"}]');
-
-    test.done();
-  },
-  
-  'should allow for multiple tags': function(test) {
-    test.open('http://localhost:3000/tagging-allow-duplicates')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="tagging-allow-duplicates"] .container')
-    .type('[data-id="tagging-allow-duplicates"] .display', 'test\uE007test\uE007');
-    
-    hasTags(test, '[data-id="tagging-allow-duplicates"]', ['test', 'test'], '[{"display":"test","value":"test"},{"display":"test","value":"test"}]');
-
-    test.done();
+    extendTextComponent.done();
   },
 
-  'should be able to double click tag to edit': function(test) {
+  'should add item when pressing tab key': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'tagging-basic');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('test\uE007');
+
+    extendTextComponent.hasTags(['test']);
+    extendTextComponent.hiddenValueIs('[{"display":"test","value":"test"}]');
+
+    extendTextComponent.done();
+  },
+
+  'should allow for spaces': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'tagging-basic');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('test 1\uE007');
+
+    extendTextComponent.hasTags(['test 1']);
+    extendTextComponent.hiddenValueIs('[{"display":"test 1","value":"test 1"}]');
+
+    extendTextComponent.done();
+  },
+
+  'should not allow for duplicate tags': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'tagging-basic');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('test 1\uE007test 1\uE007');
+
+    extendTextComponent.hasTags(['test 1']);
+    extendTextComponent.hiddenValueIs('[{"display":"test 1","value":"test 1"}]');
+
+    extendTextComponent.done();
+  },
+
+  'should allow for multiple tags': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'tagging-allow-duplicates');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('test\uE007test2\uE007');
+
+    extendTextComponent.hasTags(['test', 'test2']);
+    extendTextComponent.hiddenValueIs('[{"display":"test","value":"test"},{"display":"test2","value":"test2"}]');
+
+    extendTextComponent.done();
+  },
+
+  'should be able to double click tag to edit': function(test, type) {
     //TODO: implement - waiting on dalekjs to support double click
     test.done();
   },
 
-  'should select last tag when presssing delete': function(test) {
-    test.open('http://localhost:3000/tagging-basic')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="tagging-basic"] .container')
-    .type('[data-id="tagging-basic"] .display', 'test\uE007test1\uE007')
-    .type('[data-id="tagging-basic"] .display', '\uE003');
-    
-    tagSelected(test, '[data-id="tagging-basic"]', 'test1');
+  'should select last tag when presssing delete': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'tagging-basic');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
 
-    test.done();
+    extendTextComponent.type('test\uE007test1\uE007');
+    extendTextComponent.type('\uE003');
+
+    extendTextComponent.tagSelected('test1');
+
+    extendTextComponent.done();
   },
 
-  'should delete selected tag when pressing delete and a tag is selected': function(test) {
-    test.open('http://localhost:3000/tagging-basic')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="tagging-basic"] .container')
-    .type('[data-id="tagging-basic"] .display', 'test\uE007test1\uE007')
-    .type('[data-id="tagging-basic"] .display', '\uE003')
-    .type('[data-id="tagging-basic"] .display', '\uE003');
-    
-    hasTags(test, '[data-id="tagging-basic"]', ['test'], '[{"display":"test","value":"test"}]');
+  'should delete selected tag when pressing delete and a tag is selected': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'tagging-basic');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
 
-    test.done();
+    extendTextComponent.type('test\uE007test1\uE007');
+    extendTextComponent.type('\uE003');
+    extendTextComponent.type('\uE003');
+
+    extendTextComponent.hasTags(['test']);
+    extendTextComponent.hiddenValueIs('[{"display":"test","value":"test"}]');
+
+    extendTextComponent.done();
   },
 
-  'should select select the last tag when pressing the left arrow': function(test) {
-    test.open('http://localhost:3000/tagging-basic')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="tagging-basic"] .container')
-    .type('[data-id="tagging-basic"] .display', 'test\uE007test1\uE007')
-    .type('[data-id="tagging-basic"] .display', '\uE012');
-    
-    tagSelected(test, '[data-id="tagging-basic"]', 'test1');
+  'should select select the last tag when pressing the left arrow': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'tagging-basic');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
 
-    test.done();
+    extendTextComponent.type('test\uE007test1\uE007');
+    extendTextComponent.type('\uE012');
+
+    extendTextComponent.tagSelected('test1');
+
+    extendTextComponent.done();
   },
 
-  'should select the previous tag when pressing the left arrow when a tag is currently selected': function(test) {
-    test.open('http://localhost:3000/tagging-basic')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="tagging-basic"] .container')
-    .type('[data-id="tagging-basic"] .display', 'test\uE007test1\uE007')
-    .type('[data-id="tagging-basic"] .display', '\uE012')
-    .type('[data-id="tagging-basic"] .display', '\uE012');
-    
-    tagSelected(test, '[data-id="tagging-basic"]', 'test');
+  'should select the previous tag when pressing the left arrow when a tag is currently selected': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'tagging-basic');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
 
-    test.done();
+    extendTextComponent.type('test\uE007test1\uE007');
+    extendTextComponent.type('\uE012');
+    extendTextComponent.type('\uE012');
+
+    extendTextComponent.tagSelected('test');
+
+    extendTextComponent.done();
   }
 };
+
+module.exports = testBuilder('extend text with tagging enabled', tests);

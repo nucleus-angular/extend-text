@@ -52,6 +52,9 @@ angular.module('demo', [
       "display": "test5",
       "value": 5
     }]));
+    httpMocker.register('GET', '/api/test?input=dataloading', JSON.stringify([]), {
+      delay: 5000
+    });
     httpMocker.register('GET', '/api/number-value?input=tes', JSON.stringify([{
       "display": "test1",
       "value": 1

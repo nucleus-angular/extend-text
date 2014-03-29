@@ -1,290 +1,388 @@
-module.exports = {
-  name: 'extend text component with auto complete enabled',
+var GenericPage = require('./lib/objects/pages/generic');
+var testBuilder = require('./lib/test-builder');
+var searchDelay = 350;
 
-  'should be able to get a list of auto complete options': function(test) {
-    test.open('http://localhost:3000/auto-complete-basic')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete"] .container')
-    .type('[data-id="auto-complete"] .display', 'tes')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete"] .auto-complete-options ul li:nth-child(5)')
-      .assert.numberOfVisibleElements('[data-id="auto-complete"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
-    .done();
+var tests = {
+  'should show no options message when no matched found and free form in not enabled': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-basic');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('nomatch');
+    test.wait(searchDelay);
+
+    extendTextComponent.noMatches();
+
+    extendTextComponent.done();
   },
 
-  'should be able to select an option that has a value of a string': function(test) {
-    test.open('http://localhost:3000/auto-complete-string-value')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-string-value"] .container')
-    .type('[data-id="auto-complete-string-value"] .display', 'tes')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-string-value"] .auto-complete-options ul li:nth-child(5)')
-    .click('[data-id="auto-complete-string-value"] .auto-complete-options ul li:nth-child(1)')
-    .click('body')
-      .assert.val('[data-id="auto-complete-string-value"] input[type="hidden"]', 't1', 'option selected')
-    .done();
+  'should show loading message while data in being retrieved': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-basic');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('dataloading');
+    test.wait(searchDelay);
+
+    extendTextComponent.loadingIndicatorVisible();
+
+    extendTextComponent.done();
   },
 
-  'should be able to select an option that has a value of a number': function(test) {
-    test.open('http://localhost:3000/auto-complete-number-value')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-number-value"] .container')
-    .type('[data-id="auto-complete-number-value"] .display', 'tes')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-number-value"] .auto-complete-options ul li:nth-child(5)')
-    .click('[data-id="auto-complete-number-value"] .auto-complete-options ul li:nth-child(2)')
-    .click('body')
-      .assert.val('[data-id="auto-complete-number-value"] input[type="hidden"]', '2', 'option selected')
-    .done();
+  'should be able to get a list of auto complete options': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-basic');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('tes');
+    test.wait(searchDelay);
+
+    extendTextComponent.hasAutoCompleteOptions([
+      {display: 'test1', valaue: 1},
+      {display: 'test2', valaue: 2},
+      {display: 'test3', valaue: 3},
+      {display: 'test4', valaue: 4},
+      {display: 'test5', valaue: 5}
+    ]);
+
+    extendTextComponent.done();
   },
 
-  'should not load auto complete options until the load character count has been reached': function(test) {
-    test.open('http://localhost:3000/auto-complete-character-count')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-character-count"] .container')
-    .type('[data-id="auto-complete-character-count"] .display', 'te')
-      .assert.doesntExist('[data-id="auto-complete-character-count"] auto-complete-options ul li', 'auto complete options should not be visible until 3 character have been insert in the input')
-    .type('[data-id="auto-complete-character-count"] .display', 's')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-character-count"] .auto-complete-options ul li:nth-child(5')
-      .assert.numberOfVisibleElements('[data-id="auto-complete-character-count"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
-    .done();
+  'should be able to select an option that has a value of a string': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-string-value');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('tes');
+    test.wait(searchDelay);
+    extendTextComponent.clickAutoCompleteItem(1);
+    extendTextComponent.clickBody();
+
+    extendTextComponent.displayValueIs('test1');
+    extendTextComponent.hiddenValueIs('t1');
+
+    extendTextComponent.done();
   },
 
-  'should properly set the display value for the auto complete options': function(test) {
-    test.open('http://localhost:3000/auto-complete-display-value')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-display-value"] .container')
-    .type('[data-id="auto-complete-display-value"] .display', 'tes')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-display-value"] .auto-complete-options ul li:nth-child(5)')
-      .assert.chain()
-        .numberOfElements('[data-id="auto-complete-display-value"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
-        .text('[data-id="auto-complete-display-value"] .auto-complete-options ul li:nth-child(1)', 'test1', 'auto complete options should have proper display value')
-        .text('[data-id="auto-complete-display-value"] .auto-complete-options ul li:nth-child(2)', 'test2', 'auto complete options should have proper display value')
-        .text('[data-id="auto-complete-display-value"] .auto-complete-options ul li:nth-child(3)', 'test3', 'auto complete options should have proper display value')
-        .text('[data-id="auto-complete-display-value"] .auto-complete-options ul li:nth-child(4)', 'test4', 'auto complete options should have proper display value')
-        .text('[data-id="auto-complete-display-value"] .auto-complete-options ul li:nth-child(5)', 'test5', 'auto complete options should have proper display value')
-      .end()
-    .done();
+  'should be able to select an option that has a value of a number': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-number-value');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('tes');
+    test.wait(searchDelay);
+    extendTextComponent.clickAutoCompleteItem(2);
+    extendTextComponent.clickBody();
+
+    extendTextComponent.displayValueIs('test2');
+    extendTextComponent.hiddenValueIs('2');
+
+    extendTextComponent.done();
   },
 
-  'should properly set the data-value attribute for the auto complete options': function(test) {
-    test.open('http://localhost:3000/auto-complete-attribute-value')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-attribute-value"] .container')
-    .type('[data-id="auto-complete-attribute-value"] .display', 'tes')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-attribute-value"] .auto-complete-options ul li:nth-child(5)')
-      .assert.chain()
-        .numberOfElements('[data-id="auto-complete-attribute-value"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
-        .attr('[data-id="auto-complete-attribute-value"] .auto-complete-options ul li:nth-child(1)', 'data-value', 1, 'auto complete options should have proper attribute value')
-        .attr('[data-id="auto-complete-attribute-value"] .auto-complete-options ul li:nth-child(2)', 'data-value', 2, 'auto complete options should have proper attribute value')
-        .attr('[data-id="auto-complete-attribute-value"] .auto-complete-options ul li:nth-child(3)', 'data-value', 3, 'auto complete options should have proper attribute value')
-        .attr('[data-id="auto-complete-attribute-value"] .auto-complete-options ul li:nth-child(4)', 'data-value', 4, 'auto complete options should have proper attribute value')
-        .attr('[data-id="auto-complete-attribute-value"] .auto-complete-options ul li:nth-child(5)', 'data-value', 5, 'auto complete options should have proper attribute value')
-      .end()
-    .done();
+  'should not load auto complete options until the load character count has been reached': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-character-count');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('te');
+    test.wait(searchDelay);
+
+    extendTextComponent.autoCompleteHidden();
+
+    extendTextComponent.type('s');
+    test.wait(searchDelay);
+
+    extendTextComponent.hasAutoCompleteOptions([
+      {display: 'test1', valaue: 1},
+      {display: 'test2', valaue: 2},
+      {display: 'test3', valaue: 3},
+      {display: 'test4', valaue: 4},
+      {display: 'test5', valaue: 5}
+    ]);
+
+    extendTextComponent.done();
   },
 
-  'should not allow free form data by default': function(test) {
-    test.open('http://localhost:3000/auto-complete-no-free-form-text')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-no-free-form-text"] .container')
-    .type('[data-id="auto-complete-no-free-form-text"] .display', 'testa')
-    .click('body')
-      .assert.chain()
-        .val('[data-id="auto-complete-no-free-form-text"] .display', '', 'display input should be empty when clicking outside of the input and no option is selected')
-        .val('[data-id="auto-complete-no-free-form-text"] input[type="hidden"]', '', "hidden input should be empty when clicking outside of the input and no option is selected")
-      .end()
-    .done();
+  'should properly set the display value and data-value attribute for the auto complete options': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-display-value');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('tes');
+    test.wait(searchDelay);
+
+    extendTextComponent.hasAutoCompleteOptions([
+      {display: 'test1', valaue: 1},
+      {display: 'test2', valaue: 2},
+      {display: 'test3', valaue: 3},
+      {display: 'test4', valaue: 4},
+      {display: 'test5', valaue: 5}
+    ]);
+
+    extendTextComponent.done();
   },
 
-  'should be able to define a custom response parser': function(test) {
-    test.open('http://localhost:3000/auto-complete-custom-response-parser')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-custom-response-parser"] .container')
-    .type('[data-id="auto-complete-custom-response-parser"] .display', 'use')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-custom-response-parser"] .auto-complete-options ul li:nth-child(5)')
-      .assert.chain()
-        .numberOfElements('[data-id="auto-complete-custom-response-parser"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
-        .query('[data-id="auto-complete-custom-response-parser"] .auto-complete-options ul li:nth-child(1)')
-          .text('user1', 'auto complete options should have proper display value')
-          .attr('data-value', 1, 'auto complete options should have proper attribute value')
-        .end()
-      .end()
-    .done();
+  'should not allow free form data by default': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-no-free-form-text');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('testa');
+    extendTextComponent.clickBody();
+
+    extendTextComponent.displayValueIs('');
+    extendTextComponent.hiddenValueIs('');
+
+    extendTextComponent.done();
   },
 
-  'should be able to define a custom variable name': function(test) {
-    test.open('http://localhost:3000/auto-complete-custom-variable-name')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-custom-variable-name"] .container')
-    .type('[data-id="auto-complete-custom-variable-name"] .display', 'varname')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-custom-variable-name"] .auto-complete-options ul li:nth-child(2)')
-      .assert.chain()
-        .numberOfElements('[data-id="auto-complete-custom-variable-name"] .auto-complete-options ul li', 2, 'auto complete should have 5 options available')
-        .query('[data-id="auto-complete-custom-variable-name"] .auto-complete-options ul li:nth-child(1)')
-          .text('varname1', 'auto complete options should have proper display value')
-          .attr('data-value', 1, 'auto complete options should have proper attribute value')
-        .end()
-      .end()
-    .done();
+  'should be able to define a custom response parser': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-custom-response-parser');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('use');
+    test.wait(searchDelay);
+
+    extendTextComponent.hasAutoCompleteOptions([
+      {display: 'user1', valaue: 1},
+      {display: 'user2', valaue: 2},
+      {display: 'user3', valaue: 3},
+      {display: 'user4', valaue: 4},
+      {display: 'user5', valaue: 5}
+    ]);
+
+    extendTextComponent.done();
   },
 
-  'should be able to define a custom variable formatter': function(test) {
-    test.open('http://localhost:3000/auto-complete-custom-variable-format')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-custom-variable-format"] .container')
-    .type('[data-id="auto-complete-custom-variable-format"] .display', 'varformat')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-custom-variable-format"] .auto-complete-options ul li:nth-child(2)')
-      .assert.chain()
-        .numberOfElements('[data-id="auto-complete-custom-variable-format"] .auto-complete-options ul li', 2, 'auto complete should have 5 options available')
-        .query('[data-id="auto-complete-custom-variable-format"] .auto-complete-options ul li:nth-child(1)')
-          .text('varformat1', 'auto complete options should have proper display value')
-          .attr('data-value', 1, 'auto complete options should have proper attribute value')
-        .end()
-      .end()
-    .done();
+  'should be able to define a custom variable name': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-custom-variable-name');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('varname');
+    test.wait(searchDelay);
+
+    extendTextComponent.hasAutoCompleteOptions([
+      {display: 'varname1', valaue: 1},
+      {display: 'varname2', valaue: 2}
+    ]);
+
+    extendTextComponent.done();
   },
 
-  'should be able to define a custom url generator': function(test) {
-    test.open('http://localhost:3000/auto-complete-custom-data-url-generator')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-custom-data-url-generator"] .container')
-    .type('[data-id="auto-complete-custom-data-url-generator"] .display', 'cus')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-custom-data-url-generator"] .auto-complete-options ul li:nth-child(5')
-      .assert.numberOfVisibleElements('[data-id="auto-complete-custom-data-url-generator"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
-    .done();
+  'should be able to define a custom variable formatter': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-custom-variable-format');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('varformat');
+    test.wait(searchDelay);
+
+    extendTextComponent.hasAutoCompleteOptions([
+      {display: 'varformat1', valaue: 1},
+      {display: 'varformat2', valaue: 2}
+    ]);
+
+    extendTextComponent.done();
   },
 
-  'should not attempt to pull data until that search deley time have been reached': function(test) {
-    test.open('http://localhost:3000/auto-complete-delay')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-delay"] .container')
-    .type('[data-id="auto-complete-delay"] .display', 'del')
-    .wait(500)
-      .assert.notVisible('[data-id="auto-complete-delay"] .auto-complete-options ul', 'the list should not be visible yet because we should not have the data')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-delay"] .auto-complete-options ul li:nth-child(5')
-      .assert.numberOfVisibleElements('[data-id="auto-complete-delay"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
-    .done();
+  'should be able to define a custom url generator': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-custom-data-url-generator');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('cus');
+    test.wait(searchDelay);
+
+    extendTextComponent.hasAutoCompleteOptions([
+      {display: 'custom url1', valaue: 1},
+      {display: 'custom url2', valaue: 2},
+      {display: 'custom url3', valaue: 3},
+      {display: 'custom url4', valaue: 4},
+      {display: 'custom url5', valaue: 5}
+    ]);
+
+    extendTextComponent.done();
   },
 
-  'should select first item in auto complete options list': function(test) {
-    test.open('http://localhost:3000/auto-complete-select-first-option')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-select-first-option"] .container')
-    .type('[data-id="auto-complete-select-first-option"] .display', 'tes')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-select-first-option"] .auto-complete-options ul li:nth-child(5)')
-      .assert.attr('[data-id="auto-complete-select-first-option"] .auto-complete-options ul li:nth-child(1)', 'class').to.contain('is-focus', 'has focused class')
-    .done();
+  'should not attempt to pull data until that search deley time have been reached': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-delay');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('del');
+    test.wait(450);
+
+    extendTextComponent.autoCompleteHidden();
+
+    test.wait(500);
+
+    extendTextComponent.hasAutoCompleteOptions([
+      {display: 'delay1', valaue: 1},
+      {display: 'delay2', valaue: 2},
+      {display: 'delay3', valaue: 3},
+      {display: 'delay4', valaue: 4},
+      {display: 'delay5', valaue: 5}
+    ]);
+
+    extendTextComponent.done();
   },
 
-  'should select items when bluring input': function(test) {
-    test.open('http://localhost:3000/auto-complete-select-on-blur')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-select-on-blur"] .container')
-    .type('[data-id="auto-complete-select-on-blur"] .display', 'selectblur')
-    //angular - need to wait for angular to render this container
-    .wait(1000)
-    .click('body')
-    .wait(1000)
-      .assert.val('[data-id="auto-complete-select-on-blur"] .display', 'selectblur1', 'display input should be set to the display value of the first option')
-      .assert.val('[data-id="auto-complete-select-on-blur"] input[type="hidden"]', '1', "hidden input should be set to thevalue of the data-value attribute of the first option")
-    .done();
+  'should select first item in auto complete options list': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-select-first-option');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('tes');
+    test.wait(searchDelay);
+
+    extendTextComponent.hasAutoCompleteOptions([
+      {display: 'test1', valaue: 1},
+      {display: 'test2', valaue: 2},
+      {display: 'test3', valaue: 3},
+      {display: 'test4', valaue: 4},
+      {display: 'test5', valaue: 5}
+    ]);
+
+    extendTextComponent.done();
   },
 
-  'should set input values properly when allowing free form text': function(test) {
-    test.open('http://localhost:3000/auto-complete-allow-free-form-text')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-allow-free-form-text"] .container')
-    .type('[data-id="auto-complete-allow-free-form-text"] .display', 'freeform')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-allow-free-form-text"] .auto-complete-options ul li:nth-child(1)')
-      .assert.val('[data-id="auto-complete-allow-free-form-text"] .display', 'freeform', 'display input should be set to the display value of the input')
-      .assert.val('[data-id="auto-complete-allow-free-form-text"] input[type="hidden"]', 'freeform', "hidden input should be set to the value of the input")
-    .done();
+  'should select items when bluring input': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-select-on-blur');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('selectblur');
+    test.wait(searchDelay);
+    extendTextComponent.clickBody();
+
+    extendTextComponent.displayValueIs('selectblur1');
+    extendTextComponent.hiddenValueIs(1)
+
+    extendTextComponent.done();
   },
 
-  'should load options on click when using local data': function(test) {
-    test.open('http://localhost:3000/auto-complete-local-data')
-    .waitForElement('[data-id="auto-complete-local-data"] .container')
-    .click('[data-id="auto-complete-local-data"] .display')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-local-data"] .auto-complete-options ul li:nth-child(5)')
-      .assert.numberOfVisibleElements('[data-id="auto-complete-local-data"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
-    .done();
+  'should set input values properly when allowing free form text': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-allow-free-form-text');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('freeform');
+
+    extendTextComponent.displayValueIs('freeform');
+    extendTextComponent.hiddenValueIs('freeform');
+
+    extendTextComponent.done();
   },
 
-  'should be able to select option when using local data': function(test) {
-    test.open('http://localhost:3000/auto-complete-local-data')
-    .waitForElement('[data-id="auto-complete-local-data"] .container')
-    .click('[data-id="auto-complete-local-data"] .display')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-local-data"] .auto-complete-options ul li:nth-child(5)')
-    .click('[data-id="auto-complete-local-data"] .auto-complete-options ul li:nth-child(3)')
-    .click('body')
-      .assert.val('[data-id="auto-complete-local-data"] input[type="hidden"]', 'l3', 'value has been selected')
-    .done();
+  'should load options on click when using local data': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-local-data');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.clickInput();
+
+    extendTextComponent.hasAutoCompleteOptions([
+      {display: 'local 1', valaue: 'l1'},
+      {display: 'lcal 2', valaue: 'l2'},
+      {display: 'local 3', valaue: 'l3'},
+      {display: 'lcal 4', valaue: 'l4'},
+      {display: 'local 5', valaue: 'l5'}
+    ]);
+
+    extendTextComponent.done();
   },
 
-  'should use filter method when using local data': function(test) {
-    test.open('http://localhost:3000/auto-complete-local-data')
-    .waitForElement('[data-id="auto-complete-local-data"] .container')
-    .click('[data-id="auto-complete-local-data"] .display')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-local-data"] .auto-complete-options ul li:nth-child(5)')
-      .assert.numberOfVisibleElements('[data-id="auto-complete-local-data"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
-    .done();
+  'should be able to select option when using local data': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-local-data');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.clickInput();
+    extendTextComponent.clickAutoCompleteItem(3);
+
+    extendTextComponent.displayValueIs('local 3');
+    extendTextComponent.hiddenValueIs('l3');
+
+    extendTextComponent.done();
   },
 
-  'should be able to define a custom filter method for local data': function(test) {
-    test.open('http://localhost:3000/auto-complete-local-data-custom-filter')
-    .waitForElement('[data-id="auto-complete-local-data-custom-filter"] .container')
-    .type('[data-id="auto-complete-local-data-custom-filter"] .display', 'tes')
-      .assert.doesntExist('[data-id="auto-complete-local-data-custom-filter"] auto-complete-options ul li', 'auto complete options should not be visible custom filter is meet')
-    .type('[data-id="auto-complete-local-data-custom-filter"] .display', 't')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-local-data-custom-filter"] .auto-complete-options ul li:nth-child(5)')
-      .assert.numberOfVisibleElements('[data-id="auto-complete-local-data-custom-filter"] .auto-complete-options ul li', 5, 'auto complete should have 5 options available')
-    .done();
+  'should use filter method when using local data': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-local-data');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('lo');
+
+    extendTextComponent.hasAutoCompleteOptions([
+      {display: 'local 1', valaue: 'l1'},
+      {display: 'local 3', valaue: 'l3'},
+      {display: 'local 5', valaue: 'l5'}
+    ]);
+
+    extendTextComponent.done();
   },
 
-  'should show new indicator when allowing free form and what the user entered does not match any value in the auto complete list': function(test) {
-    test.open('http://localhost:3000/auto-complete-local-data-allow-free-form-text')
-    .waitForElement('[data-id="auto-complete-local-data-allow-free-form"] .container')
-    .type('[data-id="auto-complete-local-data-allow-free-form"] .display', 'local')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-local-data-allow-free-form"] .new-indicator')
-      .assert.visible('[data-id="auto-complete-local-data-allow-free-form"] .new-indicator', 'new indicator is visible')
-    .done();
+  'should be able to define a custom filter method for local data': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-local-data-custom-filter');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('tes');
+
+    extendTextComponent.autoCompleteHidden();
+
+    extendTextComponent.type('t');
+
+    extendTextComponent.hasAutoCompleteOptions([
+      {display: 'local 1', valaue: 'l1'},
+      {display: 'lcal 2', valaue: 'l2'},
+      {display: 'local 3', valaue: 'l3'},
+      {display: 'lcal 4', valaue: 'l4'},
+      {display: 'local 5', valaue: 'l5'}
+    ]);
+
+    extendTextComponent.done();
   },
 
-  'should show new indicator when allowing free form and what the user entered does not filter to include any data': function(test) {
-    test.open('http://localhost:3000/auto-complete-allow-free-form-text')
-    .waitForElement('[data-id="auto-complete-allow-free-form-text"] .container')
-    .type('[data-id="auto-complete-allow-free-form-text"] .display', 'data')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-allow-free-form-text"] .new-indicator')
-      .assert.visible('[data-id="auto-complete-allow-free-form-text"] .new-indicator', 'new indicator is visible')
-    .done();
+  'should show new indicator when allowing free form and what the user entered does not match any values in the auto complete list': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-local-data-allow-free-form-text');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('local');
+
+    extendTextComponent.newInlineIndicatorVisible();
+
+    extendTextComponent.done();
   },
 
-  'should show new indicator as an option instead of text in the input': function(test) {
-    test.open('http://localhost:3000/auto-complete-allow-free-form-text-in-options')
-    .waitForElement('[data-id="auto-complete-allow-free-form-text-in-options"] .container')
-    .type('[data-id="auto-complete-allow-free-form-text-in-options"] .display', 'local')
-    //angular - need to wait for angular to render this container
-    .waitForElement('[data-id="auto-complete-allow-free-form-text-in-options"] .auto-complete-options .new')
-      .assert.doesntExist('[data-id="auto-complete-allow-free-form-text-in-options"] .new-indicator', 'new indicator is visible')
-      .assert.visible('[data-id="auto-complete-allow-free-form-text-in-options"] .auto-complete-options .new', 'new option visible')
-      .assert.text('[data-id="auto-complete-allow-free-form-text-in-options"] .auto-complete-options .new', 'local (New)', 'new option text matches input with new indicator')
-    .done();
+  'should show new indicator when allowing free form and what the user entered does not filter to include any data': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-allow-free-form-text');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('data');
+
+    extendTextComponent.newInlineIndicatorVisible();
+
+    extendTextComponent.done();
+  },
+
+  'should show new indicator as an option instead of text in the input': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-allow-free-form-text-in-options');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('local')
+
+    extendTextComponent.newInlineIndicatorHidden();
+    extendTextComponent.newAutoCompleteIndicatorVisible('local');
+
+    extendTextComponent.done();
   }
-}
+};
+
+module.exports = testBuilder('extend text component with auto complete enabled', tests);
