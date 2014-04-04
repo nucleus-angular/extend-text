@@ -80,11 +80,14 @@ angular.module('nag.extendText', [
      *   @property {array} [localData] Data used when source is "local"
      *   @property {array} [options] Current set of auto complete options being displayed
      *   @property {number} [selectedOptionIndex=0] Index (zero-based) or the currently selected option
-     *   @property {boolean} [selectOnBlur=true] Selected the currently higlighted option when blurring on the input
+     *   @property {boolean} [selectOnBlur=true] Selected the currently highlighted option when blurring on the input
+     *   @property {null|function} [setValue=true]
+     *   Function that can be used to modify data before it is set to the inputs (returns an object with display and value property)
      *   @property {boolean} [allowFreeForm=false]
      *   Allow the user to enter in free form text (does not have to match something in the auto complete)
      *   @property {function} [generateDataUrl]
      *   Generate the URL used to retrieve the auto complete data form the remote service
+     *   @property {null|function} [getData] Retrieve and set the data for the auto complete
      *   @property {string} [remoteDataMethod="GET"] HTTP method to use when requesting data from the remote service
      *   @property {boolean} [loadingData=false] Whether or not to display the loaded data message
      *   @property {function} [responseParser] Function to parse the response when retrieving the auto complete data
@@ -104,6 +107,7 @@ angular.module('nag.extendText', [
       options: [],
       selectedOptionIndex: 0,
       selectOnBlur: false,
+      setValue: null,
       allowFreeForm: false,
       freeFormIndicator: 'text',
       newText: 'New',
@@ -121,6 +125,7 @@ angular.module('nag.extendText', [
 
         return url;
       },
+      getaData: null,
       remoteDataMethod: 'GET',
       loadingData: false,
       responseParser: function(response) {

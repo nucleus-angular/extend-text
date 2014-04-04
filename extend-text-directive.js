@@ -232,31 +232,39 @@ angular.module('nag.extendText')
 
               var textAreaValue = $(element).find('.display').val();
 
-              if(scope.options.autoCompleteOptions.source === 'local') {
-                var data = textAreaValue.length > 0
-                ? scope.options.autoCompleteOptions.filter(scope.options.autoCompleteOptions.localData, textAreaValue)
-                : scope.options.autoCompleteOptions.localData;
-                
-                processData(data);
-                scope.options.autoCompleteOptions.loadingData = false;
-              } else if(textAreaValue != scope.options.autoCompleteOptions.variableCache) {
-                var url = scope.options.autoCompleteOptions.generateDataUrl.apply(scope, []);
-                scope.options.autoCompleteOptions.loadingData = true;
+              if(!_.isFunction(scope.options.autoCompleteOptions.getData)) {
+                if(scope.options.autoCompleteOptions.source === 'local') {
+                  var data = textAreaValue.length > 0
+                  ? scope.options.autoCompleteOptions.filter(scope.options.autoCompleteOptions.localData, textAreaValue)
+                  : scope.options.autoCompleteOptions.localData;
 
-                $http({method: scope.options.autoCompleteOptions.remoteDataMethod, url: url}).
-                success(function(response, status, headers, config) {
-                  if(angular.isObject(response)) {
-                    processData(scope.options.autoCompleteOptions.responseParser(response));
-                  } else {
-                    scope.options.autoCompleteOptions.isNew = true;
-                  }
+                  processData(data);
+                  scope.options.autoCompleteOptions.loadingData = false;
+                } else if(textAreaValue != scope.options.autoCompleteOptions.variableCache) {
+                  var url = scope.options.autoCompleteOptions.generateDataUrl.apply(scope, []);
+                  scope.options.autoCompleteOptions.loadingData = true;
 
-                  scope.options.autoCompleteOptions.loadingData = false;
-                }).
-                error(function(data, status, headers, config) {
-                  scope.options.autoCompleteOptions.loadingData = false;
-                  //todo: proper error handling
-                });
+                  $http({method: scope.options.autoCompleteOptions.remoteDataMethod, url: url}).
+                  success(function(response, status, headers, config) {
+                    if(angular.isObject(response)) {
+                      processData(scope.options.autoCompleteOptions.responseParser(response));
+                    } else {
+                      scope.options.autoCompleteOptions.isNew = true;
+                    }
+
+                    scope.options.autoCompleteOptions.loadingData = false;
+                  }).
+                  error(function(data, status, headers, config) {
+                    scope.options.autoCompleteOptions.loadingData = false;
+                    //todo: proper error handling
+                  });
+                }
+              } else {
+                var getData = scope.options.autoCompleteOptions.getData.apply({
+                  processData: processData,
+                  filter: function(data) {
+                    return scope.options.autoCompleteOptions.filter(data, textAreaValue);
+                  }}, []);
               }
             };
 
@@ -322,6 +330,13 @@ angular.module('nag.extendText')
 
               if(scope.options.tagOptions.enabled === true && value === '') {
                 return;
+              }
+
+              if(_.isFunction(scope.options.autoCompleteOptions.setValue)) {
+                  var test = scope.options.autoCompleteOptions.setValue(scope.getTextAreaValue(), display, value);
+
+                  display = test.display;
+                  value = test.value;
               }
 
               if(scope.options.tagOptions.enabled === true) {

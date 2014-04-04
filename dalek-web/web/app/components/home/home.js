@@ -256,6 +256,24 @@ angular.module('demo.home.home', [
           controller: 'AutoFocusCtrl'
         }
       }
+    })
+    .state('demo.home.autoCompleteCustomGetData', {
+      url: '/auto-complete-custom-get-data',
+      views: {
+        '': {
+          templateUrl: '/app/components/home/assets/templates/auto-complete-custom-get-data.html',
+          controller: 'AutoCompleteCustomGetDataCtrl'
+        }
+      }
+    })
+    .state('demo.home.autoCompleteCustomSetValue', {
+      url: '/auto-complete-custom-set-value',
+      views: {
+        '': {
+          templateUrl: '/app/components/home/assets/templates/auto-complete-custom-set-value.html',
+          controller: 'AutoCompleteCustomSetValueCtrl'
+        }
+      }
     });
   }
 ])
@@ -675,7 +693,7 @@ angular.module('demo.home.home', [
         source: 'local',
         filter: function(data, filter) {
           return _.filter(data, function(item) {
-            return filter === 'test' ? true : false;
+            return filter === 'test';
           });
         },
         localData: [{
@@ -866,7 +884,7 @@ angular.module('demo.home.home', [
       firstName: null,
       lastNAme: null
     };
-    
+
     $scope.resetExtendTextResettableForm = function() {
       $rootScope.$broadcast('NagForm[extendTextResettable]/reset', $scope.extendTextResettableDefaults);
     };
@@ -938,5 +956,71 @@ angular.module('demo.home.home', [
   function($scope) {
     $scope.options = {};
     $scope.textareaOptions = {};
+  }
+])
+.controller('AutoCompleteCustomGetDataCtrl', [
+  '$scope',
+  function($scope) {
+    var getData = function() {
+      this.processData(this.filter([
+        {
+          display: 'getdata 1',
+          value: 1
+        },
+        {
+          display: 'getdata 2',
+          value: 2
+        }
+      ]));
+    };
+
+    $scope.options = {
+      autoCompleteOptions: {
+        enabled: true,
+        url: '/api/test',
+        searchDelay: 0,
+        getData: getData
+      }
+    };
+    $scope.textareaOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        url: '/api/test',
+        searchDelay: 0,
+        getData: getData
+      }
+    };
+  }
+])
+.controller('AutoCompleteCustomSetValueCtrl', [
+  '$scope',
+  function($scope) {
+    var setValue = function(currentDisplayItem, newDisplay, newValue) {
+      console.log(currentDisplayItem);
+      newDisplay = currentDisplayItem.replace('s', newDisplay);
+      newValue += '-value';
+
+      return {
+        display: newDisplay,
+        value: newValue
+      };
+    };
+
+    $scope.options = {
+      autoCompleteOptions: {
+        enabled: true,
+        url: '/api/test',
+        searchDelay: 0,
+        setValue: setValue
+      }
+    };
+    $scope.textareaOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        url: '/api/test',
+        searchDelay: 0,
+        setValue: setValue
+      }
+    };
   }
 ]);

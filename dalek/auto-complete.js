@@ -376,10 +376,39 @@ var tests = {
     var genericPage = GenericPage.new(test, 'auto-complete-allow-free-form-text-in-options');
     var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
 
-    extendTextComponent.type('local')
+    extendTextComponent.type('local');
 
     extendTextComponent.newInlineIndicatorHidden();
     extendTextComponent.newAutoCompleteIndicatorVisible('local');
+
+    extendTextComponent.done();
+  },
+
+  'should be able to set custom setValue method': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-custom-set-value');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('tes');
+    extendTextComponent.clickAutoCompleteItem(1);
+
+    extendTextComponent.displayValueIs('tetest1');
+    extendTextComponent.hiddenValueIs('1-value');
+
+    extendTextComponent.done();
+  },
+
+  'should be able to set custom get data method': function(test, type) {
+    var isTextarea = type === 'textarea' ? true : false;
+    var genericPage = GenericPage.new(test, 'auto-complete-custom-get-data');
+    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
+
+    extendTextComponent.type('get');
+
+    extendTextComponent.hasAutoCompleteOptions([
+      {display: 'getdata 1', valaue: 1},
+      {display: 'getdata 2', valaue: 2}
+    ]);
 
     extendTextComponent.done();
   }
