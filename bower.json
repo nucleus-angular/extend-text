@@ -6,13 +6,17 @@
     "nucleus-angular-beat": "master",
     "nucleus-angular-event": "master",
     "nucleus-angular-form": "master",
-    "javascript-utilities": "master"
+    "nucleus-angular-tooltip": "master",
+    "javascript-utilities": "master",
+    "search-query": "master"
   },
   "devDependencies": {
     "lodash": "2.x.x",
     "angular-ui-router": "0.2.0",
     "jquery": "2.x.x",
     "angular": "1.2.x",
+    "bourbon": "3.1.8",
+    "neat": "1.6.0",
     "nucleus-angular-auto-focus": "master",
     "angular-mockable-http-provider": "master",
     "nucleus-angular-sass-framework": "master"

@@ -46,7 +46,7 @@ var tests = {
   }
 };
 
-var dalekExportObject = testBuilder('extend text component basic', tests);
+var dalekExportObject = testBuilder('extend text basic', tests);
 
 //specific tests for input
 dalekExportObject['should be able to configure that the form submit when hitting enter on none tagging element'] = function(test) {

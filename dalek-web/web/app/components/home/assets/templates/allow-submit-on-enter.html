@@ -1,12 +1,14 @@
 <form name="testForm" action="/allow-submit-on-enter" method="get">
   <header>Allow Submit On Enter</header>
-  <div nag-extend-text="options" data-id="input">
-    <input type="text" class="display" name="allowSubmitOnEnterInput" />
-    <input type="hidden" ng-model="test" nag-input />
-  </div>
-  <div nag-extend-text="textareaOptions" data-id="textarea">
-    <textarea class="display" name="allowSubmitOnEnterTextarea"></textarea>
-    <input type="hidden" ng-model="test" nag-input />
-  </div>
+  <div nag-extend-text="options"
+       data-id="input"
+       data-model="test"
+       data-model-property="test"
+       data-input-name="allowSubmitOnEnterInput"></div>
+  <div nag-extend-text="textareaOptions"
+       data-id="textarea"
+       data-type="textarea"
+       data-model="test"
+       data-model-property="test"></div>
   <input type="submit" value="Test" />
 </form>

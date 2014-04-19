@@ -128,4 +128,4 @@ var tests = {
   }
 };
 
-module.exports = testBuilder('extend text with tagging enabled', tests);
+module.exports = testBuilder('extend text tagging', tests);

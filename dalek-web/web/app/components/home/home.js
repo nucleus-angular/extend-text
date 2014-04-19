@@ -274,6 +274,24 @@ angular.module('demo.home.home', [
           controller: 'AutoCompleteCustomSetValueCtrl'
         }
       }
+    })
+    .state('demo.home.searchQueryNoAutoHeight', {
+      url: '/search-query-no-auto-height',
+      views: {
+        '': {
+          templateUrl: '/app/components/home/assets/templates/search-query-no-auto-height.html',
+          controller: 'searchQueryNoAutoHeightCtrl'
+        }
+      }
+    })
+    .state('demo.home.searchQueryAutoHeight', {
+      url: '/search-query-auto-height',
+      views: {
+        '': {
+          templateUrl: '/app/components/home/assets/templates/search-query-auto-height.html',
+          controller: 'searchQueryAutoHeightCtrl'
+        }
+      }
     });
   }
 ])
@@ -858,7 +876,7 @@ angular.module('demo.home.home', [
       }
     };
 
-    $scope.secondNameOptions = {
+    $scope.lastNameOptions = {
       autoCompleteOptions: {
         enabled: true,
         source: 'local',
@@ -877,12 +895,12 @@ angular.module('demo.home.home', [
 
     $scope.extendTextResettableObject = {
       firstName: null,
-      lastNAme: null
+      lastName: null
     };
 
     $scope.extendTextResettableDefaults = {
       firstName: null,
-      lastNAme: null
+      lastName: null
     };
 
     $scope.resetExtendTextResettableForm = function() {
@@ -1020,6 +1038,27 @@ angular.module('demo.home.home', [
         url: '/api/test',
         searchDelay: 0,
         setValue: setValue
+      }
+    };
+  }
+])
+.controller('searchQueryNoAutoHeightCtrl', [
+  '$scope',
+  function($scope) {
+    $scope.options = {
+      searchQueryOptions: {
+        enabled: true,
+        autoHeight: false
+      }
+    };
+  }
+])
+.controller('searchQueryAutoHeightCtrl', [
+  '$scope',
+  function($scope) {
+    $scope.options = {
+      searchQueryOptions: {
+        enabled: true
       }
     };
   }

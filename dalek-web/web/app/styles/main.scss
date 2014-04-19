@@ -1,3 +1,12 @@
 @import "../../components/bourbon/app/assets/stylesheets/_bourbon";
 @import "../../components/nucleus-angular-sass-framework/assets/styles/framework/_variables";
 @import "../../components/nucleus-angular-sass-framework/assets/styles/framework";
+
+.extend-text input,
+.extend-text textarea {
+  width: 300px;
+}
+
+.extend-text .search-query textarea {
+  height: 28px;
+}

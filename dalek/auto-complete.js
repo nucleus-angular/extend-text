@@ -414,4 +414,4 @@ var tests = {
   }
 };
 
-module.exports = testBuilder('extend text component with auto complete enabled', tests);
+module.exports = testBuilder('extend text auto complete', tests);

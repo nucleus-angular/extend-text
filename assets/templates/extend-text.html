@@ -1,5 +1,13 @@
-<div class="container" ng-class="{'is-active': isActive, 'auto-complete': options.autoCompleteOptions.enabled}">
-  <div class="inputs"></div>
+<div class="container" ng-class="{'is-active': isActive, 'auto-complete': options.autoCompleteOptions.enabled, 'search-query': options.searchQueryOptions.enabled}">
+  <div class="inputs" ng-class="{'empty': searchQuery.length === 0, 'valid': searchQueryValidation === true, 'invalid': searchQueryValidation !== true}">
+    <input type="text" class="display" ng-class="{'ng-valid': modelController.$dirty && modelController.$valid, 'ng-invalid': modelController.$dirty && modelController.$invalid}" nag-event="{keydown: 'keyDown($event)', keyup: 'keyUp($event)', blur: 'blur($event)', focus: 'focus($event)'}" value="{{ getVisibleValue() }}" ng-mouseup="mouseUp($event)" />
+    <input type="hidden" nag-input />
+    <span ng-if="options.searchQueryOptions.enabled === true && searchQuery.length === 0 || searchQueryValidation === true" class="validation-icon"></span>
+    <div ng-if="options.searchQueryOptions.enabled === true && searchQuery.length !== 0 && searchQueryValidation !== true" ng-click="cursorToError()" nag-tooltip class="help" data-model="tooltipModel">
+      <span class="handle validation-icon"></span>
+      <div class="content" ng-bind-html="model.getContent()"></div>
+    </div>
+  </div>
   <div class="tag-container" ng-if="options.tagOptions.enabled">
     <ul class="tags" ng-click="ulClick($event)">
       <li class="tag" ng-repeat="(key, item) in options.data" ng-class="{selected: isSelectedTag(key)}" ng-dblclick="doubleClick($event, item.value)">

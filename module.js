@@ -12,7 +12,8 @@ angular.module('nag.extendText', [
   'nag.core',
   'nag.beat',
   'nag.event',
-  'nag.form'
+  'nag.form',
+  'nag.tooltip'
 ])
 .run([
   'nagDefaults',
@@ -151,10 +152,16 @@ angular.module('nag.extendText', [
       }
     });
 
+    nagDefaults.setOptions('extendTextSearchQueryOptions', {
+      enabled: false,
+      autoHeight: true
+    });
+
     nagDefaults.setOptionsGetter('extendTextOptions', function(options) {
       var extendTextDefaults = nagDefaults.getOptions('extendText');
       var extendTextTagDefaults = nagDefaults.getOptions('extendTextTagOptions');
       var extendTextAutoCompleteDefaults = nagDefaults.getOptions('extendTextAutoCompleteOptions');
+      var extendTextSearchQueryOptions = nagDefaults.getOptions('extendTextSearchQueryOptions');
 
       var results = angular.extend(extendTextDefaults, options);
 
@@ -168,6 +175,12 @@ angular.module('nag.extendText', [
         results.autoCompleteOptions = angular.extend(extendTextAutoCompleteDefaults, results.autoCompleteOptions);
       } else {
         results.autoCompleteOptions = extendTextAutoCompleteDefaults
+      }
+
+      if(results.searchQueryOptions) {
+        results.searchQueryOptions = angular.extend(extendTextSearchQueryOptions, results.searchQueryOptions);
+      } else {
+        results.searchQueryOptions = extendTextSearchQueryOptions
       }
 
       return results;

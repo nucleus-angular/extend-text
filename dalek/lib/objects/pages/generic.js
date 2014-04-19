@@ -25,6 +25,10 @@ var GenericPage = BasePageObject.extend({
   noRedirectedToFormSubmitPage: function() {
     this.test.wait(1000);
     this.test.assert.url('http://localhost:3000/allow-submit-on-enter', 'page did not redirected with form data')
+  },
+
+  objectModelDisplayIs: function(objectString) {
+    this.test.assert.text('.object-model-display').is(objectString, 'object model set properly');
   }
 });
 

@@ -19,19 +19,23 @@
  * @ngdirective nagExtendText
  *
  * @nghtmlattribute {object} nag-extend-text Tells AngularJS this element is an extend text component and the passed object overwrite default for $scope.options
- * @nghtmlattribute {object} data-model Data model to use for this component
+ * @nghtmlattribute {object} data-model Data model to use for this component (must be an object)
+ * @nghtmlattribute {string} data-type The type of input to create (omit for input, 'textarea' for textarea)
+ * @nghtmlattribute {string} data-model-property the proeprty name of the model to use to store the value for the component
+ * @nghtmlattribute {string{ data-input-name The name property for the hidden input
  */
 angular.module('nag.extendText')
 .directive('nagExtendText', [
   '$timeout',
   '$http',
+  '$sce',
   'nagBeat',
   '$compile',
   'nagHelper',
   'nagDefaults',
   'noneAffectingTextKeys',
   '$rootScope',
-  function($timeout, $http, nagBeat, $compile, nagHelper, nagDefaults, noneAffectingTextKeys, $rootScope){
+  function($timeout, $http, $sce, nagBeat, $compile, nagHelper, nagDefaults, noneAffectingTextKeys, $rootScope){
     return {
       restrict: 'A',
       scope: {
@@ -44,6 +48,48 @@ angular.module('nag.extendText')
       controller: [
         '$scope',
         function($scope) {
+          $scope.options = nagDefaults.getOptions('extendTextOptions', $scope.options);
+          var searchQueryHelper = {
+            lastValidatedQuery: null,
+            lastHelpMessage: null,
+            hasQueryChanged: function() {
+              return searchQueryHelper.lastValidatedQuery !== $scope.getHiddenValue();
+            },
+            generateHelpMessage: function() {
+              if($scope.getHiddenValue().length === 0) {
+                message = 'No query entered';
+              } else if($scope.searchQueryValidation === true) {
+                message = 'Valid query entered';
+              } else {
+                var characterNumber = $scope.searchQueryValidation.characterNumber;
+
+                if($scope.searchQueryValidation.queryLocation.substr(0, 3) === '...') {
+                  characterNumber += ($scope.getHiddenValue().lastIndexOf($scope.searchQueryValidation.queryLocation.substr(3).trim()) - 3);
+                }
+
+                message = 'Error on line ' + $scope.searchQueryValidation.lineNumber + ' at character ' + characterNumber;
+                searchQueryHelper.lastHelpMessage = message;
+              }
+            }
+          };
+
+          $scope.searchQueryValidation = true;
+          $scope.validateSearchQuery = function() {
+            //PERFORMANCE: since we call this method internally, we want to make sure not to run validation logic if the last validated query has not changed
+            if(searchQueryHelper.hasQueryChanged()) {
+              //TODO: searchQuery should be passed in as a option to make more configurable
+              $scope.searchQueryValidation = searchQuery.validate($scope.getHiddenValue());
+              searchQueryHelper.lastValidatedQuery = $scope.getHiddenValue();
+              searchQueryHelper.generateHelpMessage();
+            }
+          };
+          $scope.getSearchQueryHelpMessage = function() {
+            return $sce.trustAsHtml(searchQueryHelper.lastHelpMessage);
+          };
+          $scope.tooltipModel = {
+            getContent: $scope.getSearchQueryHelpMessage
+          };
+
           /**
            * Unregisters the form reset event
            *
@@ -72,7 +118,7 @@ angular.module('nag.extendText')
            */
           this.setModelController = function(modelController) {
             $scope.modelController = modelController;
-          }
+          };
 
           //unregister callback on destructure
           $scope.$on('$destroy', function() {
@@ -86,37 +132,36 @@ angular.module('nag.extendText')
           });
         }
       ],
-      templateUrl: function(){
-        return nagHelper.getTemplatePath('extendText');
+      templateUrl: function(element, attributes){
+        var templateUrl = nagHelper.getTemplatePath('extendText');
+
+        if(attributes.type === 'textarea') {
+          templateUrl = templateUrl.replace('.html', '-textarea.html');
+        }
+
+        return templateUrl;
       },
-      transclude: true,
-      compile: function(element, attributes, transclude) {
+      compile: function(element, attributes) {
         if(!attributes.id) {
           throw new Error("Must provide data-id attribute for extend text");
+        }
+
+        if(!attributes.modelProperty) {
+          throw new Error("Must provide data-model-property attribute for extend text");
+        }
+
+        element.find('input[type="hidden"]').attr('ng-model', 'model.' + attributes.modelProperty);
+
+        if(attributes.inputName) {
+          element.find('input[type="hidden"]').attr('name', attributes.inputName);
         }
 
         element.addClass('extend-text');
         return {
           post: function(scope, element, attributes, controllers) {
-            transclude(scope, function(clone) {
-              var displayElement = clone.filter('.display');
-              var hiddenElement = clone.filter('input[type="hidden"]');
-
-              displayElement.attr('ng-class', "{'ng-valid': modelController.$dirty && modelController.$valid, 'ng-invalid': modelController.$dirty && modelController.$invalid}")
-              .attr('nag-event', "{keydown: 'keyDown($event)', keyup: 'keyUp($event)', blur: 'blur($event)', focus: 'focus($event)'}")
-              .attr('ng-mouseup', "mouseUp($event)")
-              .attr('value', "{{ getVisibleValue() }}");
-
-              element.find('.inputs').append($compile(displayElement)(scope)).append(hiddenElement);
-
-              displayElement = null;
-              hiddenElement = null;
-            });
-
-            scope.options = nagDefaults.getOptions('extendTextOptions', scope.options);
             var defaultAutoCompleteOptions = _.clone(scope.options.autoCompleteOptions.options);
             var beatName = 'extend-text-' + scope.$id;
-            var addValue, setValue, updateTextAreaPadding, updateAutoCompletePosition, displayAutoComplete, hideAutoComplete, setElementHeight, getData, originalPadding, borderSize, originalMargin, resetAutoCompleteOptions, setDisplayInput, dataUpdate, dontFocusOnCursorPlacement;
+            var addValue, setValue, updateTextAreaPadding, updateAutoCompletePosition, displayAutoComplete, hideAutoComplete, getData, originalPadding, borderSize, originalMargin, resetAutoCompleteOptions, setDisplayInput, dataUpdate, dontFocusOnCursorPlacement;
             dontFocusOnCursorPlacement = false;
 
             //todo: research: not sure why but I need to have the $timeout here for this to properly be able to pull the original padding
@@ -207,14 +252,6 @@ angular.module('nag.extendText')
               scope.options.autoCompleteOptions.display = false;
             };
 
-            setElementHeight = function() {
-              var elementHeight = $(element).find('.display').outerHeight();
-
-              $(element).css({
-                'minHeight': elementHeight
-              });
-            };
-
             getData = function() {
               var processData = function(data) {
                 if(_.isArray(data)) {
@@ -272,13 +309,6 @@ angular.module('nag.extendText')
               var defaultOptions;
               defaultOptions = defaultAutoCompleteOptions;
 
-              /*if(scope.options.autoCompleteOptions.allowFreeForm && scope.getVisibleValue() != '') {
-                defaultOptions = [{
-                  display: scope.getNewItemValue(),
-                  value: scope.getVisibleValue()
-                }];
-              }*/
-
               scope.options.autoCompleteOptions.options = defaultOptions;
               scope.options.autoCompleteOptions.variableCache = null;
               scope.options.autoCompleteOptions.selectedOptionIndex = 0;
@@ -300,12 +330,10 @@ angular.module('nag.extendText')
 
             dataUpdate = function() {
               var hiddenValue = scope.getHiddenValue();
-              element.find('input[type="hidden"]').val(scope.getHiddenValue());
-              setDisplayInput(scope.getVisibleValue());
+              element.find('input[type="hidden"]').val(hiddenValue);
+              scope.modelController.$setViewValue(hiddenValue);
 
-              if(hiddenValue != '') {
-                scope.modelController.$setViewValue(scope.getHiddenValue());
-              }
+              setDisplayInput(scope.getVisibleValue());
             };
 
             /**
@@ -344,7 +372,6 @@ angular.module('nag.extendText')
                 setDisplayInput('');
               } else {
                 setValue(display, value);
-                //setDisplayInput(display, true);
               }
             };
 
@@ -361,6 +388,8 @@ angular.module('nag.extendText')
                 setDisplayInput('');
                 scope.options.data = [];
               }
+
+              dataUpdate();
 
               resetAutoCompleteOptions();
             }
@@ -544,7 +573,7 @@ angular.module('nag.extendText')
              */
             scope.keyDown = function($event) {
               //handle prevent of enter submitted form
-              if((scope.options.tagOptions.enabled === true || scope.options.preventSubmitOnEnter === true) && $event.which === 13) {
+              if((scope.options.tagOptions.enabled === true || scope.options.preventSubmitOnEnter === true) && scope.options.searchQueryOptions.enabled !== true && $event.which === 13) {
                 $event.preventDefault();
               }
 
@@ -670,6 +699,14 @@ angular.module('nag.extendText')
               } else if(scope.options.autoCompleteOptions.enabled === false && scope.options.tagOptions.enabled === false) {
                 scope.newValue($(element).find('.display').val());
               }
+
+              if(scope.options.searchQueryOptions.enabled === true) {
+                scope.validateSearchQuery();
+
+                if(scope.options.searchQueryOptions.autoHeight === true) {
+                  scope.autoHeightSearchQuery();
+                }
+              }
             };
 
             /**
@@ -792,7 +829,6 @@ angular.module('nag.extendText')
               $timeout(function(){
                 updateTextAreaPadding();
                 updateAutoCompletePosition();
-                //setElementHeight();
               }, 0);
             }, true);
 
@@ -832,6 +868,27 @@ angular.module('nag.extendText')
               scope.unregisterResetFormEvent = $rootScope.$on('NagForm[' + parentFormName +']/reset', function(self) {
                   scope.resetAutoCompleteValues(true);
               });
+            }
+
+            scope.autoHeightSearchQuery = function() {
+              var element = $(event.target);
+
+              if(element.scrollTop() > 0) {
+                //textarea does not automatically scroll to the very bottom so we need to do it
+                element.scrollTop(100);
+                element.css('height', element.outerHeight() + element.scrollTop());
+              }
+            };
+
+            scope.cursorToError = function() {
+              var characterNumber = scope.searchQueryValidation.characterNumber - 1 + (scope.searchQueryValidation.lineNumber - 1);
+              var queryErrorLocationIndex = scope.getHiddenValue().lastIndexOf(scope.searchQueryValidation.queryLocation.substr(3));
+
+              if(scope.searchQueryValidation.queryLocation.substr(0, 3) === '...' && queryErrorLocationIndex !== -1) {
+                characterNumber += (queryErrorLocationIndex - 3);
+              }
+
+              $(element).find('textarea')[0].setSelectionRange(characterNumber, characterNumber);
             }
           }
         };
