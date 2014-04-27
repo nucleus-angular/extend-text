@@ -6,13 +6,12 @@ Each change log are assumed to be accompanied by associated unit test and docume
 - added ability to set custom setValue() method for auto complete (#7)
 - added ability to define custom getData() method for auto complete (#6)
 - fixed issue with new indicator not work whe initial search for data returns nothing (#4)
-- all tests now exectue against both input and textarea elements (#3)
+- all tests now execute against both input and textarea elements (#3)
 - refactored tests to be more maintainable
-- added search query functionality
+- added text parsing functionality
 - refactored template so that transclusion is no longer need (data-type or lack of one defined determines if you get and input or textarea)
 - fixed bug with reset hidden input value (#9)
-
-
+-
 
 ## 0.5.0
 

@@ -1,27 +1,15 @@
 var GenericPage = require('./lib/objects/pages/generic');
 var testBuilder = require('./lib/test-builder');
+var typeHelper = require('./lib/type-helper');
 var searchDelay = 350;
 
 var tests = {
-  'should show no options message when no matched found and free form in not enabled': function(test, type) {
-    var isTextarea = type === 'textarea' ? true : false;
-    var genericPage = GenericPage.new(test, 'auto-complete-basic');
-    var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
-
-    extendTextComponent.type('nomatch');
-    test.wait(searchDelay);
-
-    extendTextComponent.noMatches();
-
-    extendTextComponent.done();
-  },
-
   'should show loading message while data in being retrieved': function(test, type) {
     var isTextarea = type === 'textarea' ? true : false;
     var genericPage = GenericPage.new(test, 'auto-complete-basic');
     var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
 
-    extendTextComponent.type('dataloading');
+    extendTextComponent.type('dataloading', false);
     test.wait(searchDelay);
 
     extendTextComponent.loadingIndicatorVisible();
@@ -34,15 +22,20 @@ var tests = {
     var genericPage = GenericPage.new(test, 'auto-complete-basic');
     var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
 
-    extendTextComponent.type('tes');
+    extendTextComponent.type('test1');
+    test.wait(searchDelay);
+
+    extendTextComponent.noMatches();
+
+    extendTextComponent.type(typeHelper.repeatKey(typeHelper.specialCharacters.leftArrow, 2));
     test.wait(searchDelay);
 
     extendTextComponent.hasAutoCompleteOptions([
-      {display: 'test1', valaue: 1},
-      {display: 'test2', valaue: 2},
-      {display: 'test3', valaue: 3},
-      {display: 'test4', valaue: 4},
-      {display: 'test5', valaue: 5}
+      {display: 'test1', value: 1},
+      {display: 'test2', value: 2},
+      {display: 'test3', value: 3},
+      {display: 'test4', value: 4},
+      {display: 'test5', value: 5}
     ]);
 
     extendTextComponent.done();
@@ -94,11 +87,11 @@ var tests = {
     test.wait(searchDelay);
 
     extendTextComponent.hasAutoCompleteOptions([
-      {display: 'test1', valaue: 1},
-      {display: 'test2', valaue: 2},
-      {display: 'test3', valaue: 3},
-      {display: 'test4', valaue: 4},
-      {display: 'test5', valaue: 5}
+      {display: 'test1', value: 1},
+      {display: 'test2', value: 2},
+      {display: 'test3', value: 3},
+      {display: 'test4', value: 4},
+      {display: 'test5', value: 5}
     ]);
 
     extendTextComponent.done();
@@ -113,11 +106,11 @@ var tests = {
     test.wait(searchDelay);
 
     extendTextComponent.hasAutoCompleteOptions([
-      {display: 'test1', valaue: 1},
-      {display: 'test2', valaue: 2},
-      {display: 'test3', valaue: 3},
-      {display: 'test4', valaue: 4},
-      {display: 'test5', valaue: 5}
+      {display: 'test1', value: 1},
+      {display: 'test2', value: 2},
+      {display: 'test3', value: 3},
+      {display: 'test4', value: 4},
+      {display: 'test5', value: 5}
     ]);
 
     extendTextComponent.done();
@@ -146,11 +139,11 @@ var tests = {
     test.wait(searchDelay);
 
     extendTextComponent.hasAutoCompleteOptions([
-      {display: 'user1', valaue: 1},
-      {display: 'user2', valaue: 2},
-      {display: 'user3', valaue: 3},
-      {display: 'user4', valaue: 4},
-      {display: 'user5', valaue: 5}
+      {display: 'user1', value: 1},
+      {display: 'user2', value: 2},
+      {display: 'user3', value: 3},
+      {display: 'user4', value: 4},
+      {display: 'user5', value: 5}
     ]);
 
     extendTextComponent.done();
@@ -165,8 +158,8 @@ var tests = {
     test.wait(searchDelay);
 
     extendTextComponent.hasAutoCompleteOptions([
-      {display: 'varname1', valaue: 1},
-      {display: 'varname2', valaue: 2}
+      {display: 'varname1', value: 1},
+      {display: 'varname2', value: 2}
     ]);
 
     extendTextComponent.done();
@@ -181,8 +174,8 @@ var tests = {
     test.wait(searchDelay);
 
     extendTextComponent.hasAutoCompleteOptions([
-      {display: 'varformat1', valaue: 1},
-      {display: 'varformat2', valaue: 2}
+      {display: 'varformat1', value: 1},
+      {display: 'varformat2', value: 2}
     ]);
 
     extendTextComponent.done();
@@ -197,11 +190,11 @@ var tests = {
     test.wait(searchDelay);
 
     extendTextComponent.hasAutoCompleteOptions([
-      {display: 'custom url1', valaue: 1},
-      {display: 'custom url2', valaue: 2},
-      {display: 'custom url3', valaue: 3},
-      {display: 'custom url4', valaue: 4},
-      {display: 'custom url5', valaue: 5}
+      {display: 'custom url1', value: 1},
+      {display: 'custom url2', value: 2},
+      {display: 'custom url3', value: 3},
+      {display: 'custom url4', value: 4},
+      {display: 'custom url5', value: 5}
     ]);
 
     extendTextComponent.done();
@@ -212,7 +205,7 @@ var tests = {
     var genericPage = GenericPage.new(test, 'auto-complete-delay');
     var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
 
-    extendTextComponent.type('del');
+    extendTextComponent.type('del', false);
     test.wait(450);
 
     extendTextComponent.autoCompleteHidden();
@@ -220,11 +213,11 @@ var tests = {
     test.wait(500);
 
     extendTextComponent.hasAutoCompleteOptions([
-      {display: 'delay1', valaue: 1},
-      {display: 'delay2', valaue: 2},
-      {display: 'delay3', valaue: 3},
-      {display: 'delay4', valaue: 4},
-      {display: 'delay5', valaue: 5}
+      {display: 'delay1', value: 1},
+      {display: 'delay2', value: 2},
+      {display: 'delay3', value: 3},
+      {display: 'delay4', value: 4},
+      {display: 'delay5', value: 5}
     ]);
 
     extendTextComponent.done();
@@ -239,11 +232,11 @@ var tests = {
     test.wait(searchDelay);
 
     extendTextComponent.hasAutoCompleteOptions([
-      {display: 'test1', valaue: 1},
-      {display: 'test2', valaue: 2},
-      {display: 'test3', valaue: 3},
-      {display: 'test4', valaue: 4},
-      {display: 'test5', valaue: 5}
+      {display: 'test1', value: 1},
+      {display: 'test2', value: 2},
+      {display: 'test3', value: 3},
+      {display: 'test4', value: 4},
+      {display: 'test5', value: 5}
     ]);
 
     extendTextComponent.done();
@@ -285,11 +278,11 @@ var tests = {
     extendTextComponent.clickInput();
 
     extendTextComponent.hasAutoCompleteOptions([
-      {display: 'local 1', valaue: 'l1'},
-      {display: 'lcal 2', valaue: 'l2'},
-      {display: 'local 3', valaue: 'l3'},
-      {display: 'lcal 4', valaue: 'l4'},
-      {display: 'local 5', valaue: 'l5'}
+      {display: 'local 1', value: 'l1'},
+      {display: 'lcal 2', value: 'l2'},
+      {display: 'local 3', value: 'l3'},
+      {display: 'lcal 4', value: 'l4'},
+      {display: 'local 5', value: 'l5'}
     ]);
 
     extendTextComponent.done();
@@ -317,9 +310,9 @@ var tests = {
     extendTextComponent.type('lo');
 
     extendTextComponent.hasAutoCompleteOptions([
-      {display: 'local 1', valaue: 'l1'},
-      {display: 'local 3', valaue: 'l3'},
-      {display: 'local 5', valaue: 'l5'}
+      {display: 'local 1', value: 'l1'},
+      {display: 'local 3', value: 'l3'},
+      {display: 'local 5', value: 'l5'}
     ]);
 
     extendTextComponent.done();
@@ -337,11 +330,11 @@ var tests = {
     extendTextComponent.type('t');
 
     extendTextComponent.hasAutoCompleteOptions([
-      {display: 'local 1', valaue: 'l1'},
-      {display: 'lcal 2', valaue: 'l2'},
-      {display: 'local 3', valaue: 'l3'},
-      {display: 'lcal 4', valaue: 'l4'},
-      {display: 'local 5', valaue: 'l5'}
+      {display: 'local 1', value: 'l1'},
+      {display: 'lcal 2', value: 'l2'},
+      {display: 'local 3', value: 'l3'},
+      {display: 'lcal 4', value: 'l4'},
+      {display: 'local 5', value: 'l5'}
     ]);
 
     extendTextComponent.done();
@@ -406,12 +399,12 @@ var tests = {
     extendTextComponent.type('get');
 
     extendTextComponent.hasAutoCompleteOptions([
-      {display: 'getdata 1', valaue: 1},
-      {display: 'getdata 2', valaue: 2}
+      {display: 'getdata 1', value: 1},
+      {display: 'getdata 2', value: 2}
     ]);
 
     extendTextComponent.done();
-  }
+  },
 };
 
 module.exports = testBuilder('extend text auto complete', tests);

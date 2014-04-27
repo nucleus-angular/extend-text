@@ -275,21 +275,39 @@ angular.module('demo.home.home', [
         }
       }
     })
-    .state('demo.home.searchQueryNoAutoHeight', {
-      url: '/search-query-no-auto-height',
+    .state('demo.home.noAutoHeight', {
+      url: '/no-auto-height',
       views: {
         '': {
-          templateUrl: '/app/components/home/assets/templates/search-query-no-auto-height.html',
-          controller: 'searchQueryNoAutoHeightCtrl'
+          templateUrl: '/app/components/home/assets/templates/no-auto-height.html',
+          controller: 'noAutoHeightCtrl'
         }
       }
     })
-    .state('demo.home.searchQueryAutoHeight', {
-      url: '/search-query-auto-height',
+    .state('demo.home.autoHeight', {
+      url: '/auto-height',
       views: {
         '': {
-          templateUrl: '/app/components/home/assets/templates/search-query-auto-height.html',
-          controller: 'searchQueryAutoHeightCtrl'
+          templateUrl: '/app/components/home/assets/templates/auto-height.html',
+          controller: 'autoHeightCtrl'
+        }
+      }
+    })
+    .state('demo.home.parsingWithAutoComplete', {
+      url: '/parsing-with-auto-complete',
+      views: {
+        '': {
+          templateUrl: '/app/components/home/assets/templates/parsing-with-auto-complete.html',
+          controller: 'parsingWithAutoCompleteCtrl'
+        }
+      }
+    })
+    .state('demo.home.parsingBasic', {
+      url: '/parsing-basic',
+      views: {
+        '': {
+          templateUrl: '/app/components/home/assets/templates/parsing-basic.html',
+          controller: 'parsingBasicCtrl'
         }
       }
     });
@@ -839,7 +857,7 @@ angular.module('demo.home.home', [
         enabled: true,
         url: '/api/delay',
         generateDataUrl: function() {
-          return '/api/custom-url?customUrl=' + this.getTextAreaValue();
+          return '/api/custom-url?customUrl=' + this.$scope.getTextAreaValue();
         }
       }
     };
@@ -848,7 +866,7 @@ angular.module('demo.home.home', [
         enabled: true,
         url: '/api/delay',
         generateDataUrl: function() {
-          return '/api/custom-url?customUrl=' + this.getTextAreaValue();
+          return '/api/custom-url?customUrl=' + this.$scope.getTextAreaValue();
         }
       }
     };
@@ -980,7 +998,7 @@ angular.module('demo.home.home', [
   '$scope',
   function($scope) {
     var getData = function() {
-      this.processData(this.filter([
+      this.controller.processData(this.controller.filter([
         {
           display: 'getdata 1',
           value: 1
@@ -1013,9 +1031,9 @@ angular.module('demo.home.home', [
 .controller('AutoCompleteCustomSetValueCtrl', [
   '$scope',
   function($scope) {
-    var setValue = function(currentDisplayItem, newDisplay, newValue) {
-      console.log(currentDisplayItem);
-      newDisplay = currentDisplayItem.replace('s', newDisplay);
+    var setValue = function(newDisplay, newValue) {
+      var currentTextAreaValue = this.$scope.getTextAreaValue();
+      newDisplay = currentTextAreaValue.replace('s', newDisplay);
       newValue += '-value';
 
       return {
@@ -1042,23 +1060,262 @@ angular.module('demo.home.home', [
     };
   }
 ])
-.controller('searchQueryNoAutoHeightCtrl', [
+.controller('noAutoHeightCtrl', [
   '$scope',
   function($scope) {
     $scope.options = {
-      searchQueryOptions: {
+      autoHeight: false
+    };
+  }
+])
+.controller('autoHeightCtrl', [
+  '$scope',
+  function($scope) {
+    $scope.options = {};
+  }
+])
+.controller('parsingBasicCtrl', [
+  '$scope',
+  function($scope) {
+    $scope.options = {
+      parsingOptions: {
         enabled: true,
-        autoHeight: false
+        parser: new SearchQuery()
       }
     };
   }
 ])
-.controller('searchQueryAutoHeightCtrl', [
+.controller('parsingWithAutoCompleteCtrl', [
   '$scope',
-  function($scope) {
+  '$http',
+  function($scope, $http) {
     $scope.options = {
-      searchQueryOptions: {
-        enabled: true
+      parsingOptions: {
+        enabled: true,
+        parser: new SearchQuery()
+      },
+      autoCompleteOptions: {
+        enabled: true,
+        allowFreeForm: true,
+        url: '/api/test',
+        searchDelay: 0,
+        loadCharacterCount: 0,
+        freeFormIndicator: false,
+        generateDataUrl: function() {
+          var variableValue = this.$scope.getTextAreaValueFromCursor();
+          var url = this.$scope.options.autoCompleteOptions.url;
+          var lastIdentifier = this.$scope.options.parsingOptions.parser.getLastTokenByType(variableValue, 'identifier');
+          lastIdentifier = (_.isObject(lastIdentifier)) ? lastIdentifier.value : this.$scope.options.autoCompleteOptions.variable;
+          var lastValue = this.$scope.options.parsingOptions.parser.getPreviousTokenByIndex(variableValue, 0);
+
+          //we should only be filtering if the we have found an unknown or value token as the last token
+          lastValue = (_.isObject(lastValue) && ['unknown', 'value'].indexOf(lastValue.type) !== -1) ? lastValue.value : '';
+
+          //need to account for comparison to take multiple value
+          if(_.isArray(lastValue)) {
+            lastValue = lastValue[lastValue.length - 1];
+
+            //null/undefined means we are expecting another value so we need to get the full list again
+            if(lastValue === null || lastValue === undefined) {
+              lastValue = '';
+            }
+          }
+
+          if(_.isString(lastValue)) {
+            lastValue = lastValue.trim();
+          }
+
+          this.$scope.options.autoCompleteOptions.variableCache = this.$scope.getTextAreaValue();
+          url += (url.indexOf('?') === -1 ? '?' : '&');
+          url += lastIdentifier + '=' + lastValue;
+
+          if(this.$scope.options.autoCompleteOptions.remoteDataMethod === 'JSONP') {
+            url += '&callback=JSON_CALLBACK';
+          }
+          return url;
+        },
+        setValue: function(newDisplay, newValue, isAutoCompleteSelection) {
+          //only want to do this logic when selecting an auto complete option
+          var data = {};
+
+          if(isAutoCompleteSelection) {
+            var cursorPosition;
+            var fullValue = this.$scope.getTextAreaValue();
+            var cursorBasedValue = this.$scope.getTextAreaValueFromCursor();
+            var cursorTokenList = this.$scope.options.parsingOptions.parser.getTokenList(cursorBasedValue);
+            var fullTokenList = this.$scope.options.parsingOptions.parser.getTokenList(fullValue);
+            var usedTokens = cursorTokenList;
+            var usedTokenIndex = cursorTokenList.length - 1;
+            var replaceStart, replaceEnd;
+
+            if(cursorBasedValue.substr(cursorBasedValue.length - 1, 1) === ' ') {
+              usedTokenIndex += 1;
+            }
+
+            if(fullTokenList[usedTokenIndex]) {
+              usedTokens = fullTokenList;
+            }
+
+            if((usedTokens.length > 0 && cursorBasedValue.substr(cursorBasedValue.length - 1, 1) !== ' ') || (usedTokens.length > 1 && usedTokens[usedTokenIndex])) {
+              //need to account for account for comparisons that have multiple values
+              var usedValue = usedTokens[usedTokenIndex].value;
+
+              if(_.isArray(usedValue)) {
+                var arrayValueIndex = cursorTokenList[usedTokenIndex].value.length > 0 ? cursorTokenList[usedTokenIndex].value.length - 1 : 0;
+                usedValue = usedValue[arrayValueIndex];
+
+                if(usedValue === null || usedValue === undefined) {
+                  usedValue = '';
+                }
+              }
+
+              replaceStart = fullValue.lastIndexOf(usedValue);
+              replaceEnd = replaceStart + usedValue.length;
+
+              if(usedTokens.length >= (usedTokenIndex + 2)) {
+                if(usedTokens[usedTokenIndex + 1].value === null || usedTokens[usedTokenIndex + 1].value === true) {
+                  replaceEnd += 5;
+                } else if(usedTokens[usedTokenIndex + 1].value === false) {
+                  replaceEnd += 6;
+                }
+              }
+            } else if(cursorBasedValue.substr(cursorBasedValue.length - 1, 1) === ' ') {
+              replaceStart = cursorBasedValue.length;
+              replaceEnd = replaceStart;
+            }
+
+            cursorPosition = newDisplay.length;
+
+            newDisplay = fullValue.substr(0, replaceStart) + newDisplay + fullValue.substr(replaceEnd);
+
+            if(_.isNumber(replaceStart)) {
+              cursorPosition += parseInt(replaceStart);
+            }
+
+            data.cursorPosition = {
+              start: cursorPosition
+            }
+          }
+
+          data.display = newDisplay;
+          data.value = newDisplay;
+          return data;
+        },
+        getData: function() {
+          var data = [];
+          var filterValue = '';
+          var fullValue = this.$scope.getTextAreaValue();
+          var valueFromCursor = this.$scope.getTextAreaValueFromCursor();
+          var lastTokenType = this.$scope.options.parsingOptions.parser.getLastKnownTokenType(valueFromCursor);
+          var tokenList = this.$scope.options.parsingOptions.parser.getTokenList(valueFromCursor);
+          var endsWithSpace = valueFromCursor.substr(valueFromCursor.length - 1, 1) === ' ';
+
+          var identifiers = [
+            'firstName',
+            'lastName',
+            'username',
+            'createdTimestamp'
+          ];
+          var comparisons = [
+            '=',
+            '!=',
+            '>',
+            '>=',
+            '<',
+            '<=',
+            'in',
+            'not in',
+            'between',
+            'not between',
+            'is null',
+            'is not null',
+            'like'
+          ];
+          //TODO: implement order by
+          var connectors = [
+            'and',
+            'or'//,
+            //'order by'
+          ];
+          var orderWays = [
+            'asc',
+            'desc'
+          ];
+          var processRemoteData = function() {
+            this.controller.setLoadingIndicator(true);
+
+            $http({method: this.$scope.options.autoCompleteOptions.remoteDataMethod, url: this.$scope.options.autoCompleteOptions.generateDataUrl.apply(this)}).
+            success(function(response, status, headers, config) {
+              if(angular.isObject(response)) {
+                this.controller.processData(this.$scope.options.autoCompleteOptions.responseParser(response));
+              } else {
+                this.controller.setNewIndicator(true);
+              }
+
+              this.controller.setLoadingIndicator(false);
+            }.bind(this)).
+            error(function(data, status, headers, config) {
+              this.controller.setLoadingIndicator(false);
+              //todo: proper error handling
+            }.bind(this));
+          }.bind(this);
+
+          if((tokenList.length > 0 && endsWithSpace === false) || (tokenList.length > 1 && tokenList[tokenList.length - 1].type === 'unknown' && tokenList[tokenList.length - 2].value.indexOf('between') === -1)) {
+            filterValue = tokenList[tokenList.length - 1].value;
+          }
+
+          switch(lastTokenType) {
+            case 'identifier':
+              data = comparisons;
+              break;
+
+            case 'comparison':
+              if(tokenList[tokenList.length - 2].value.indexOf('between') !== -1) {
+                if(tokenList[tokenList.length - 1].value.length === 1 && endsWithSpace === true) {
+                  data = ['and']
+                } else if(endsWithSpace === true || (tokenList[tokenList.length - 1].value.length === 1 && endsWithSpace !== true) || (tokenList[tokenList.length - 1].value.length === 2 && ((endsWithSpace !== true && tokenList[tokenList.length - 1].value[1] !== null) || endsWithSpace === true))) {
+                  processRemoteData();
+                }
+              } else {
+                processRemoteData();
+              }
+              break;
+
+            case 'value':
+                data = connectors;
+              break;
+
+            case 'connector':
+              data = identifiers;
+              break;
+
+            case 'orderBy':
+              data = identifiers;
+              break;
+
+            case 'orderByIdentifier':
+              data = orderWays;
+              break;
+
+            case null:
+              if(fullValue.length === 0 || tokenList.length === 1) {
+                data = identifiers;
+              }
+              break;
+          }
+
+          if(data) {
+            var filteredData = this.controller.filter(data, filterValue);
+
+            if(filteredData.length === 1) {
+              if(filteredData[0].display === filterValue) {
+                filteredData = [];
+              }
+            }
+
+            this.controller.processData(filteredData);
+          }
+        }
       }
     };
   }

@@ -3,7 +3,9 @@
     "dalek/auto-complete.js",
     "dalek/basic.js",
     "dalek/form-integration.js",
-    "dalek/tagging.js"
+    "dalek/tagging.js",
+    "dalek/parsing-basic.js",
+    "dalek/parsing-auto-complete.js"
   ],
   "logLevel": "1",
   "browser": [

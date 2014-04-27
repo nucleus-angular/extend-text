@@ -1,7 +1,7 @@
 [class*="nag-icon-font-"]:before,
 [class*="nag-icon-font-"]:after, .input-element .valid-icon:before,
 .input-element .invalid-icon:before, .tree .tree-element > .tree-label:before,
-.tree .tree-element.tree-expanded > .tree-label:before, .message .icon:before, .search-query .validation-icon:before {
+.tree .tree-element.tree-expanded > .tree-label:before, .message .icon:before, .parsing .validation-icon:before {
   font-family: 'nag-icon-font';
   font-style: normal;
   speak: none;
@@ -830,7 +830,6 @@ button {
 .extend-text .display {
   z-index: 1;
   overflow: hidden;
-  white-space: nowrap;
   height: inherit; }
 .extend-text .auto-complete-options {
   position: absolute;
@@ -1416,43 +1415,51 @@ input[type="text"], textarea {
     height: 8px;
     background-color: #e6e6e6; }
 
-.search-query .inputs.invalid textarea {
+.parsing .inputs.invalid textarea {
   background-color: #f5e6e6; }
-.search-query .inputs.invalid .validation-icon:before {
+.parsing .inputs.invalid .validation-icon:before {
   color: #7f0400;
   content: "\e00d"; }
-.search-query .inputs.valid textarea {
+.parsing .inputs.valid textarea {
   background-color: #e6f5e6; }
-.search-query .inputs.valid .validation-icon:before {
+.parsing .inputs.valid .validation-icon:before {
   color: #007f02;
   content: "\e00b"; }
-.search-query .inputs.empty textarea {
+.parsing .inputs.empty textarea {
   background-color: white; }
-.search-query .inputs.empty .validation-icon:before {
+.parsing .inputs.empty .validation-icon:before {
   color: #414141;
   content: "\e00f"; }
-.search-query .input-container {
+.parsing .input-container {
   position: relative;
   display: inline-block; }
-.search-query textarea {
+.parsing textarea {
   resize: none;
   padding-right: 30px; }
-.search-query .validation-icon {
+.parsing .validation-icon {
   position: absolute;
   top: 9px;
   right: 5px;
   font-size: 1.9rem; }
-.search-query .tooltip .handle {
+.parsing .tooltip .handle {
   cursor: pointer; }
-.search-query .tooltip .content {
+.parsing .tooltip .content {
   width: 200px;
   text-align: center;
   border: 1px solid #878787;
   border-radius: 5px; }
 
+body {
+  height: 500px; }
+
+.extend-text.search-query-auto-complete textarea,
+.extend-text.search-query-auto-complete textarea {
+  width: 900px; }
+.extend-text input,
+.extend-text textarea,
 .extend-text input,
 .extend-text textarea {
   width: 300px; }
 
-.extend-text .search-query textarea {
+.extend-text textarea.display {
   height: 28px; }

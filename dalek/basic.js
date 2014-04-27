@@ -62,7 +62,7 @@ dalekExportObject['should be able to configure that the form submit when hitting
 };
 
 //specific test for textarea
-dalekExportObject['should not be able to configure that the form submit when hitting enter on textarea input'] = function(test) {
+dalekExportObject['should be able to configure that the form does not submit when hitting enter on textarea input'] = function(test) {
   var isTextarea = true;
   var genericPage = GenericPage.new(test, 'allow-submit-on-enter');
   var extendTextComponent = genericPage.getExtendTextComponent(isTextarea);
@@ -72,6 +72,32 @@ dalekExportObject['should not be able to configure that the form submit when hit
   genericPage.noRedirectedToFormSubmitPage();
 
   extendTextComponent.done();
+};
+
+dalekExportObject['should automatically increase height (textarea)'] = function(test) {
+  var genericPage = GenericPage.new(test, 'auto-complete-auto-height');
+  var extendTextComponent = genericPage.getExtendTextComponent(true);
+
+  extendTextComponent.inputHeightIs('28px');
+
+  extendTextComponent.type('test = 2 \nand test = 2');
+
+  extendTextComponent.inputHeightIs('40px');
+
+  genericPage.done();
+};
+
+dalekExportObject['should not automatically increase height (textarea)'] = function(test) {
+  var genericPage = GenericPage.new(test, 'auto-complete-no-auto-height');
+  var extendTextComponent = genericPage.getExtendTextComponent(true);
+
+  extendTextComponent.inputHeightIs('28px');
+
+  extendTextComponent.type('test = 2 and test = 2');
+
+  extendTextComponent.inputHeightIs('28px');
+
+  genericPage.done();
 };
 
 module.exports = dalekExportObject;

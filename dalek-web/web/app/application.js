@@ -177,5 +177,38 @@ angular.module('demo', [
       "value": 5,
       "display": "custom url5"
     }]));
+    httpMocker.register('GET', '/api/test?firstName=', JSON.stringify([{
+      "display": "kim",
+      "value": "kim"
+    },{
+      "display": "john",
+      "value": "john"
+    }]));
+    httpMocker.register('GET', '/api/test?firstName=k', JSON.stringify([{
+      "display": "kim",
+      "value": "kim"
+    }]));
+    httpMocker.register('GET', '/api/test?lastName=', JSON.stringify([{
+      "display": "doe",
+      "value": "doe"
+    },{
+      "display": "smith",
+      "value": "smith"
+    }]));
+    httpMocker.register('GET', '/api/test?lastName=d', JSON.stringify([{
+      "display": "doe",
+      "value": "doe"
+    }]));
+    httpMocker.register('GET', '/api/test?username=', JSON.stringify([{
+      "display": "kim.doe",
+      "value": 'kim.doe'
+    },{
+      "display": "john.smith",
+      "value": 'john.smith'
+    }]));
+    httpMocker.register('GET', '/api/test?username=k', JSON.stringify([{
+      "display": "kim.doe",
+      "value": 'kim.doe'
+    }]));
   }
 ]);

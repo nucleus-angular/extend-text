@@ -2,11 +2,24 @@
 @import "../../components/nucleus-angular-sass-framework/assets/styles/framework/_variables";
 @import "../../components/nucleus-angular-sass-framework/assets/styles/framework";
 
-.extend-text input,
-.extend-text textarea {
-  width: 300px;
+body {
+  height: 500px;
 }
 
-.extend-text .search-query textarea {
+.extend-text,
+.extend-text {
+
+  &.search-query-auto-complete textarea {
+    width: 900px;
+  }
+
+  input,
+  textarea {
+    width: 300px;
+  }
+}
+
+.extend-text textarea.display {
   height: 28px;
 }
+

@@ -19,7 +19,7 @@ angular.module('nag.extendText', [
   'nagDefaults',
   function(nagDefaults) {
     /**
-     * @ignore Properties definations for extend text directive 
+     * @ignore Properties definition for extend text directive
      *
      * @ngdirective nagExtendText
      */
@@ -35,8 +35,9 @@ angular.module('nag.extendText', [
      *   @property {string} [template=""] Template HTML
      */
     nagDefaults.setOptions('extendText', {
-      selectOnFocus: false, //whether or not to select the existing text in the input when focusing
+      selectOnFocus: false,
       preventSubmitOnEnter: true,
+      autoHeight: true,
       data: [],
       templateUrl: 'nucleus-angular-extend-text/assets/templates/extend-text.html',
       template: null
@@ -113,14 +114,13 @@ angular.module('nag.extendText', [
       freeFormIndicator: 'text',
       newText: 'New',
       isNew: false,
-      generateDataUrl: function() {
-        var url = this.options.autoCompleteOptions.url;
-        var variableValue = this.getTextAreaValue();
-        this.options.autoCompleteOptions.variableCache = this.getTextAreaValue();
+      generateDataUrl: function(searchValue) {
+        var url = this.$scope.options.autoCompleteOptions.url;
+        this.$scope.options.autoCompleteOptions.variableCache = searchValue;
         url += (url.indexOf('?') === -1 ? '?' : '&');
-        url += this.options.autoCompleteOptions.variable + '=' + this.options.autoCompleteOptions.formatVariable(variableValue);
+        url += this.$scope.options.autoCompleteOptions.variable + '=' + this.$scope.options.autoCompleteOptions.formatVariable(searchValue);
 
-        if(this.options.autoCompleteOptions.remoteDataMethod === 'JSONP') {
+        if(this.$scope.options.autoCompleteOptions.remoteDataMethod === 'JSONP') {
           url += '&callback=JSON_CALLBACK';
         }
 
@@ -152,16 +152,16 @@ angular.module('nag.extendText', [
       }
     });
 
-    nagDefaults.setOptions('extendTextSearchQueryOptions', {
+    nagDefaults.setOptions('extendTextParsingOptions', {
       enabled: false,
-      autoHeight: true
+      parser: null
     });
 
     nagDefaults.setOptionsGetter('extendTextOptions', function(options) {
       var extendTextDefaults = nagDefaults.getOptions('extendText');
       var extendTextTagDefaults = nagDefaults.getOptions('extendTextTagOptions');
       var extendTextAutoCompleteDefaults = nagDefaults.getOptions('extendTextAutoCompleteOptions');
-      var extendTextSearchQueryOptions = nagDefaults.getOptions('extendTextSearchQueryOptions');
+      var extendTextParsingOptions = nagDefaults.getOptions('extendTextParsingOptions');
 
       var results = angular.extend(extendTextDefaults, options);
 
@@ -177,10 +177,10 @@ angular.module('nag.extendText', [
         results.autoCompleteOptions = extendTextAutoCompleteDefaults
       }
 
-      if(results.searchQueryOptions) {
-        results.searchQueryOptions = angular.extend(extendTextSearchQueryOptions, results.searchQueryOptions);
+      if(results.parsingOptions) {
+        results.parsingOptions = angular.extend(extendTextParsingOptions, results.parsingOptions);
       } else {
-        results.searchQueryOptions = extendTextSearchQueryOptions
+        results.parsingOptions = extendTextParsingOptions
       }
 
       return results;

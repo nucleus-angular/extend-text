@@ -28,8 +28,8 @@ var ExtendTextComponent = BaseComponent.extend({
 
   //actions
 
-  type: function(keys) {
-    this.test.type(this.getSelector('displayInput'), keys);
+  type: function(keys, waitForAngular) {
+    this.typeElement(this.getSelector('displayInput'), keys, waitForAngular);
   },
 
   clickAutoCompleteItem: function(index) {
@@ -145,7 +145,7 @@ var ExtendTextComponent = BaseComponent.extend({
 
   inputHeightIs: function(height) {
     this.test.assert.css(this.getSelector('displayInput'), 'height', height);
-  }
+  },
 });
 
 module.exports = ExtendTextComponent;
