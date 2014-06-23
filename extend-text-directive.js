@@ -73,6 +73,16 @@ angular.module('nag.extendText')
           element.find('input[type="hidden"]').attr('name', attributes.inputName);
         }
 
+        //allows for adding any attribute to the hidden input
+        if(attributes.attributes) {
+          var attributes = attributes.attributes.split(';');
+
+          _.forEach(attributes, function(attribute) {
+            var attributeParts = attribute.split('::');
+            element.find('input[type="hidden"]').attr(attributeParts[0], attributeParts[1] || '');
+          });
+        }
+
         element.addClass('extend-text');
         return {
           post: function(scope, element, attributes, controllers) {
@@ -80,6 +90,7 @@ angular.module('nag.extendText')
             var originalPadding, borderSize, originalMargin;
             var dontFocusOnCursorPlacement = false;
             var newCursorPosition = {};
+            var setPristineInDataWatch = false;
 
             //this is used as the content for functions that are executed here but defined in the configuration object
             var callbackContext = {
@@ -170,7 +181,12 @@ angular.module('nag.extendText')
             var dataUpdate = function() {
               var hiddenValue = scope.getHiddenValue();
               element.find('input[type="hidden"]').val(hiddenValue);
-              scope.modelController.$setViewValue(hiddenValue);
+
+              //we don't want to set the view value if the initial data change is an empty becuase that will set $dirty to true on the controller even though
+              //in this context '' == undefined
+              if(!(hiddenValue === '' && (scope.modelController.$viewValue === undefined || scope.modelController.$viewValue === null))) {
+                scope.modelController.$setViewValue(hiddenValue);
+              }
 
               setDisplayInput(scope.getVisibleValue());
             };
@@ -292,8 +308,6 @@ angular.module('nag.extendText')
                 setDisplayInput('');
                 scope.options.data = [];
               }
-
-              dataUpdate();
 
               selfController.resetAutoCompleteOptions();
             }
@@ -734,6 +748,11 @@ angular.module('nag.extendText')
             scope.$watch('options.data', function(newValue, oldValue) {
               dataUpdate();
 
+              if(setPristineInDataWatch === true) {
+                scope.modelController.$setPristine();
+                setPristineInDataWatch = false;
+              }
+
               //need to make sure that the DOM is available to modify
               $timeout(function(){
                 updateTextAreaPadding();
@@ -775,7 +794,13 @@ angular.module('nag.extendText')
                * @eventlevel root
                */
               scope.unregisterResetFormEvent = $rootScope.$on('NagForm[' + parentFormName +']/reset', function(self) {
-                  scope.resetAutoCompleteValues(true);
+                //we always want to do set pristine in next data watch for allow free form fields because we do call $setViewValue() for empty string with
+                //free form fields which will set the model controller to dirty
+                if(scope.getHiddenValue() != '' || scope.options.autoCompleteOptions.allowFreeForm === true) {
+                  setPristineInDataWatch = true;
+                }
+
+                scope.resetAutoCompleteValues(true);
               });
             }
 

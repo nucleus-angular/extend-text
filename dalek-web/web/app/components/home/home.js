@@ -221,6 +221,15 @@ angular.module('demo.home.home', [
         }
       }
     })
+    .state('demo.home.autoCompleteFormValidation', {
+      url: '/auto-complete-form-validation',
+      views: {
+        '': {
+          templateUrl: '/app/components/home/assets/templates/auto-complete-form-validation.html',
+          controller: 'AutoCompleteFormValidationCtrl'
+        }
+      }
+    })
     .state('demo.home.taggingBasic', {
       url: '/tagging-basic',
       views: {
@@ -932,6 +941,210 @@ angular.module('demo.home.home', [
         'value': 'John'
       }]);
       $rootScope.$broadcast('NagExtendText[textarea]/setData', [{
+        'display': 'Doe',
+        'value': 'Doe'
+      }]);
+    }, 200);
+  }
+])
+.controller('AutoCompleteFormValidationCtrl', [
+  '$scope',
+  '$rootScope',
+  '$timeout',
+  function($scope, $rootScope, $timeout) {
+    $scope.firstNameOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        source: 'local',
+        localData: [{
+          display: 'John',
+          value: 'John'
+        }, {
+          display: 'JohnJohnJohn',
+          value: 'JohnJohnJohn'
+        }, {
+          display: 'Jane',
+          value: 'Jane'
+        }, {
+          display: 'Tom',
+          value: 'Tom'
+        }]
+      }
+    };
+
+    $scope.lastNameOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        source: 'local',
+        localData: [{
+          display: 'Smith',
+          value: 'Smith'
+        }, {
+          display: 'Doe',
+          value: 'Doe'
+        }, {
+          display: 'Deer',
+          value: 'Deer'
+        }]
+      }
+    };
+
+    $scope.middleNameOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        source: 'local',
+        allowFreeForm: true,
+        localData: [{
+          display: 'Smith',
+          value: 'Smith'
+        }, {
+          display: 'Doe',
+          value: 'Doe'
+        }, {
+          display: 'Deer',
+          value: 'Deer'
+        }]
+      }
+    };
+
+    $scope.forthNameOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        source: 'local',
+        allowFreeForm: true,
+        localData: [{
+          display: 'Smith',
+          value: 'Smith'
+        }, {
+          display: 'Doe',
+          value: 'Doe'
+        }, {
+          display: 'Deer',
+          value: 'Deer'
+        }]
+      }
+    };
+
+    $scope.firstNameTextareaOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        source: 'local',
+        localData: [{
+          display: 'John',
+          value: 'John'
+        }, {
+          display: 'JohnJohnJohn',
+          value: 'JohnJohnJohn'
+        }, {
+          display: 'Jane',
+          value: 'Jane'
+        }, {
+          display: 'Tom',
+          value: 'Tom'
+        }]
+      }
+    };
+
+    $scope.lastNameTextareaOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        source: 'local',
+        localData: [{
+          display: 'Smith',
+          value: 'Smith'
+        }, {
+          display: 'Doe',
+          value: 'Doe'
+        }, {
+          display: 'Deer',
+          value: 'Deer'
+        }]
+      }
+    };
+
+    $scope.middleNameTextareaOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        source: 'local',
+        allowFreeForm: true,
+        localData: [{
+          display: 'Smith',
+          value: 'Smith'
+        }, {
+          display: 'Doe',
+          value: 'Doe'
+        }, {
+          display: 'Deer',
+          value: 'Deer'
+        }]
+      }
+    };
+
+    $scope.forthNameTextareaOptions = {
+      autoCompleteOptions: {
+        enabled: true,
+        source: 'local',
+        allowFreeForm: true,
+        localData: [{
+          display: 'Smith',
+          value: 'Smith'
+        }, {
+          display: 'Doe',
+          value: 'Doe'
+        }, {
+          display: 'Deer',
+          value: 'Deer'
+        }]
+      }
+    };
+
+    $scope.extendTextResettableObject = {
+      firstName: null,
+      lastName: null,
+      middleName: null,
+      forthName: null,
+      firstNameTextarea: null,
+      lastNameTextarea: null,
+      middleNameTextarea: null,
+      forthNameTextarea: null
+    };
+
+    $scope.extendTextResettableDefaults = {
+      firstName: null,
+      lastName: null,
+      middleName: null,
+      forthName: null,
+      firstNameTextarea: null,
+      lastNameTextarea: null,
+      middleNameTextarea: null,
+      forthNameTextarea: null
+    };
+
+    $scope.resetExtendTextResettableForm = function() {
+      $rootScope.$broadcast('NagForm[extendTextResettable]/reset', $scope.extendTextResettableDefaults);
+    };
+
+    //todo: figure out why it needs the delay and see if it is possible to resolved
+    $timeout(function() {
+      $rootScope.$broadcast('NagExtendText[lastName]/setData', [{
+        'display': 'Doe',
+        'value': 'Doe'
+      }]);
+    }, 200);
+    $timeout(function() {
+      $rootScope.$broadcast('NagExtendText[forthName]/setData', [{
+        'display': 'Doe',
+        'value': 'Doe'
+      }]);
+    }, 200);
+    $timeout(function() {
+      $rootScope.$broadcast('NagExtendText[lastNameTextarea]/setData', [{
+        'display': 'Doe',
+        'value': 'Doe'
+      }]);
+    }, 200);
+    $timeout(function() {
+      $rootScope.$broadcast('NagExtendText[forthNameTextarea]/setData', [{
         'display': 'Doe',
         'value': 'Doe'
       }]);

@@ -2,7 +2,6 @@ require('string-format-js');
 var _ = require('lodash');
 var BaseComponent = require('../base-component');
 
-
 var ExtendTextComponent = BaseComponent.extend({
   initialize: function(test, baseSelector) {
     this.baseSelector = baseSelector;
@@ -145,7 +144,7 @@ var ExtendTextComponent = BaseComponent.extend({
 
   inputHeightIs: function(height) {
     this.test.assert.css(this.getSelector('displayInput'), 'height', height);
-  },
+  }
 });
 
 module.exports = ExtendTextComponent;

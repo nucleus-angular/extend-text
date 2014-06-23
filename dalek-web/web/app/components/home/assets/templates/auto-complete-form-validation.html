@@ -1,0 +1,105 @@
+<header>Extend Text Reset Form</header>
+<form name="extendTextResettable" nag-resettable-form>
+  {{ $id }}
+  <ul>
+    <li>
+      <label for="first-name">First Name:</label>
+      <span nag-input-element data-show-additional-data="true" data-icon-position="after" data-id="first-name-wrapper">
+        <div nag-extend-text="firstNameOptions"
+             data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
+             data-id="first-name"
+             data-model="extendTextResettableObject"
+             data-model-property="firstName">
+        </div>
+      </span>
+      </label>
+    </li>
+    <li>
+      <label for="last-name">Last Name:</label>
+      <span nag-input-element data-show-additional-data="true" data-icon-position="after" data-id="last-name-wrapper">
+        <div nag-extend-text="lastNameOptions"
+             data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
+             data-id="last-name"
+             data-model="extendTextResettableObject"
+             data-model-property="lastName">
+        </div>
+      </span>
+    </li>
+    <li>
+      <label for="last-name">Middle Name:</label>
+      <span nag-input-element data-show-additional-data="true" data-icon-position="after" data-id="middle-name-wrapper">
+        <div nag-extend-text="middleNameOptions"
+             data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
+             data-id="middle-name"
+             data-model="extendTextResettableObject"
+             data-model-property="middleName">
+        </div>
+      </span>
+    </li>
+    <li>
+      <label for="last-name">Forth Name:</label>
+      <span nag-input-element data-show-additional-data="true" data-icon-position="after" data-id="forth-name-wrapper">
+        <div nag-extend-text="forthNameOptions"
+             data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
+             data-id="forth-name"
+             data-model="extendTextResettableObject"
+             data-model-property="forthName">
+        </div>
+      </span>
+    </li>
+      <li>
+        <label for="first-name">First Name:</label>
+        <span nag-input-element data-show-additional-data="true" data-icon-position="after" data-id="first-name-textarea-wrapper">
+          <div nag-extend-text="firstNameTextareaOptions"
+               data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
+               data-id="first-name-textarea"
+               data-model="extendTextResettableObject"
+               data-model-property="firstNameTextarea"
+               data-type="textarea">
+          </div>
+        </span>
+        </label>
+      </li>
+      <li>
+        <label for="last-name">Last Name:</label>
+        <span nag-input-element data-show-additional-data="true" data-icon-position="after" data-id="last-name-textarea-wrapper">
+          <div nag-extend-text="lastNameTextareaOptions"
+               data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
+               data-id="last-name-textarea"
+               data-model="extendTextResettableObject"
+               data-model-property="lastNameTextarea"
+               data-type="textarea">
+          </div>
+        </span>
+      </li>
+      <li>
+        <label for="last-name">Middle Name:</label>
+        <span nag-input-element data-show-additional-data="true" data-icon-position="after" data-id="middle-name-textarea-wrapper">
+          <div nag-extend-text="middleNameTextareaOptions"
+               data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
+               data-id="middle-name-textarea"
+               data-model="extendTextResettableObject"
+               data-model-property="middleNameTextarea"
+               data-type="textarea">
+          </div>
+        </span>
+      </li>
+      <li>
+        <label for="last-name">Forth Name:</label>
+        <span nag-input-element data-show-additional-data="true" data-icon-position="after" data-id="forth-name-textarea-wrapper">
+          <div nag-extend-text="forthNameTextareaOptions"
+               data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
+               data-id="forth-name-textarea"
+               data-model="extendTextResettableObject"
+               data-model-property="forthNameTextarea"
+               data-type="textarea">
+          </div>
+        </span>
+      </li>
+    <li>
+      <button>Submit</button>
+      <button ng-click="resetExtendTextResettableForm()" class="reset-form">Reset (with event)</button>
+    </li>
+  </ul>
+</form>
+<div class="object-model-display">{{ extendTextResettableObject }}</div>

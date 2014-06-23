@@ -1036,13 +1036,17 @@ input[type="text"], textarea {
       display: table; }
     .input-element > .container:after {
       clear: both; }
-    .input-element > .container:not(.plain) input:not(.plain).ng-invalid {
+    .input-element > .container:not(.plain) input:not(.plain).ng-invalid,
+    .input-element > .container:not(.plain) textarea:not(.plain).ng-invalid {
       border-color: #b03f39; }
-      .input-element > .container:not(.plain) input:not(.plain).ng-invalid:focus {
+      .input-element > .container:not(.plain) input:not(.plain).ng-invalid:focus,
+      .input-element > .container:not(.plain) textarea:not(.plain).ng-invalid:focus {
         border-color: #8c322d; }
-    .input-element > .container:not(.plain) input:not(.plain).ng-valid {
+    .input-element > .container:not(.plain) input:not(.plain).ng-valid,
+    .input-element > .container:not(.plain) textarea:not(.plain).ng-valid {
       border-color: #3fb039; }
-      .input-element > .container:not(.plain) input:not(.plain).ng-valid:focus {
+      .input-element > .container:not(.plain) input:not(.plain).ng-valid:focus,
+      .input-element > .container:not(.plain) textarea:not(.plain).ng-valid:focus {
         border-color: #328c2d; }
   .input-element input[type="text"] ~ .icons {
     bottom: 1.5rem; }
