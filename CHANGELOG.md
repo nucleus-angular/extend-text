@@ -11,7 +11,7 @@ Each change log are assumed to be accompanied by associated unit test and docume
 - added text parsing functionality
 - refactored template so that transclusion is no longer need (data-type or lack of one defined determines if you get and input or textarea)
 - fixed bug with reset hidden input value (#9)
--
+- added test for form validation integration and fixed related issues
 
 ## 0.5.0
 
