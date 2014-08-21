@@ -13,6 +13,8 @@ angular.module('demo', [
     $urlRouterProvider.otherwise('/empty');
   }
 ])
+.value('nagFormInvalidIconPath', '/components/nucleus-angular-sass-framework/assets/svg/open-iconic/svg/x.svg')
+.value('nagFormValidIconPath', '/components/nucleus-angular-sass-framework/assets/svg/open-iconic/svg/check.svg')
 .run([
   '$state',
   '$rootScope',

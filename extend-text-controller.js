@@ -272,17 +272,6 @@ angular.module('nag.extendText')
     };
 
     /**
-     * The context model that is used for the parsing tooltip
-     *
-     * @ngscope
-     * @type object
-     * @property tooltipModel
-     */
-    $scope.tooltipModel = {
-      getContent: $scope.getParsingHelpMessage
-    };
-
-    /**
      * Unregisters the form reset event
      *
      * @ngscope

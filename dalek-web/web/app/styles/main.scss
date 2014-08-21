@@ -1,5 +1,4 @@
-@import "../../components/bourbon/app/assets/stylesheets/_bourbon";
-@import "../../components/nucleus-angular-sass-framework/assets/styles/framework/_variables";
+@import "../../components/bourbon/dist/_bourbon";
 @import "../../components/nucleus-angular-sass-framework/assets/styles/framework";
 
 body {
@@ -17,9 +16,5 @@ body {
   textarea {
     width: 300px;
   }
-}
-
-.extend-text textarea.display {
-  height: 28px;
 }
 

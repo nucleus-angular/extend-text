@@ -836,6 +836,39 @@ angular.module('nag.extendText')
 
               $(element).find('textarea')[0].setSelectionRange(characterNumber, characterNumber);
             };
+
+            $timeout(function() {
+              var toConvert = element.find('.tooltip img');
+
+              if(toConvert.length > 0) {
+                toConvert.addClass('svg-icon');
+                SVGInjector(toConvert.get());
+              }
+            }, 0);
+
+            scope.$watch('isActive', function(newValue) {
+              if(newValue === true) {
+                element.addClass('is-active');
+              } else {
+                element.removeClass('is-active');
+              }
+            });
+
+            scope.$watch('options.autoCompleteOptions.enabled', function(newValue) {
+              if(newValue === true) {
+                element.addClass('auto-complete');
+              } else {
+                element.removeClass('auto-complete');
+              }
+            });
+
+            scope.$watch('options.parsingOptions.enabled', function(newValue) {
+              if(newValue === true) {
+                element.addClass('parsing');
+              } else {
+                element.removeClass('parsing');
+              }
+            });
           }
         };
       }

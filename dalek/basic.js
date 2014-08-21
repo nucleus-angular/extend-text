@@ -78,24 +78,24 @@ dalekExportObject['should automatically increase height (textarea)'] = function(
   var genericPage = GenericPage.new(test, 'auto-complete-auto-height');
   var extendTextComponent = genericPage.getExtendTextComponent(true);
 
-  extendTextComponent.inputHeightIs('28px');
-
-  extendTextComponent.type('test = 2 \nand test = 2');
-
   extendTextComponent.inputHeightIs('40px');
+
+  extendTextComponent.type('1\n1\n1');
+
+  extendTextComponent.inputHeightIs('55px');
 
   genericPage.done();
 };
 
 dalekExportObject['should not automatically increase height (textarea)'] = function(test) {
-  var genericPage = GenericPage.new(test, 'auto-complete-no-auto-height');
+  var genericPage = GenericPage.new(test, 'no-auto-height');
   var extendTextComponent = genericPage.getExtendTextComponent(true);
 
-  extendTextComponent.inputHeightIs('28px');
+  extendTextComponent.inputHeightIs('40px');
 
-  extendTextComponent.type('test = 2 and test = 2');
+  extendTextComponent.type('1\n1\n1\n1');
 
-  extendTextComponent.inputHeightIs('28px');
+  extendTextComponent.inputHeightIs('40px');
 
   genericPage.done();
 };

@@ -1,4 +1,4 @@
-<div class="container" ng-class="{'is-active': isActive, 'auto-complete': options.autoCompleteOptions.enabled}">
+<div class="container">
   <div class="inputs">
     <input type="text" class="display" ng-class="{'ng-valid': modelController.$dirty && modelController.$valid, 'ng-invalid': modelController.$dirty && modelController.$invalid}" nag-event="{keydown: 'keyDown($event)', keyup: 'keyUp($event)', blur: 'blur($event)', focus: 'focus($event)'}" value="{{ getVisibleValue() }}" ng-mouseup="mouseUp($event)" ng-mousedown="mouseDown($event)"/>
     <input type="hidden" nag-input />

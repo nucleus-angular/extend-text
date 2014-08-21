@@ -6,8 +6,8 @@ var InputExtendText = BaseComponent.extend({
   initialize: function(test, baseSelector) {
     this.baseSelector = baseSelector;
     this.selectors = {
-      validIcon: '.valid-icon',
-      invalidIcon: '.invalid-icon',
+      validIcon: '.icons span:nth-child(1)',
+      invalidIcon: '.icons span:nth-child(2)',
       inputMessage: '.input-message',
       validInputMessage: '.input-message.success-text',
       invalidInputMessage: '.input-message.error-text'
