@@ -243,18 +243,6 @@
  */
 /**
  * @section Variables
- * @subsection Auto Complete
- *
- * These are the variable the control the look and feel of the auto complete.
- *
- * @var $border-options-ac
- * @var $background-color-options-ac
- * @var $max-height-options-ac
- * @var $padding-options-ac-option-et
- * @var $background-color-option-is-focused-ac
- */
-/**
- * @section Variables
  * @subsection Search Query
  *
  * These are the variable the control the look and feel of the search query.
@@ -277,8 +265,6 @@
  * @var $padding-compact-label
  * @var $border-radius-input
  * @var $border-input
- * @var $box-shadow-input
- * @var $box-shadow-focus-input
  * @var $padding-input
  * @var $opacity-disabled-input
  * @var $margin-label
@@ -299,7 +285,6 @@
  * @var $right-checkbox-tooltip-icon-ie
  * @var $top-radio-tooltip-icon-ie
  * @var $right-radio-tooltip-icon-ie
- * @var $top-tooltip-icon-compact-ie
  * @var $top-checkbox-tooltip-icon-compact-ie
  * @var $top-radio-tooltip-icon-compact-ie
  * @var $box-shadow-invalid-ie
@@ -434,6 +419,18 @@
  * @var $margin-h5
  * @var $font-size-h6
  * @var $margin-h6
+ */
+/**
+ * @section Variables
+ * @subsection Auto Complete
+ *
+ * These are the variable the control the look and feel of the auto complete.
+ *
+ * @var $border-options-ac
+ * @var $background-color-options-ac
+ * @var $max-height-options-ac
+ * @var $padding-options-ac-option-et
+ * @var $background-color-option-is-focused-ac
  */
 * {
   -webkit-box-sizing: border-box;
@@ -1574,7 +1571,7 @@ button {
    * ```html
    * <div class="extend-text is-active" style="width: 500px;">
    *   <input class="display" type="text" />
-   *   <div class="tag-container" style="top: 5px; left: 4px;">
+   *   <div class="tag-container" style="top: 4px; left: 4px;">
    *     <ul class="tags">
    *       <li class="tag">
    *         <span data-value="tag-value">tag value</span>
@@ -1610,7 +1607,7 @@ button {
    * ```html
    * <div class="extend-text is-active auto-complete" style="width: 500px;">
    *   <input class="display" type="text" />
-   *   <div class="auto-complete-options" style="top: 27px;">
+   *   <div class="auto-complete-options" style="top: 25px;">
    *     <ul>
    *       <li data-value="auto complete option1">auto complete option1</li>
    *       <li data-value="auto complete option1">auto complete option1</li>
@@ -1666,7 +1663,7 @@ button {
      * ```html
      * <div class="extend-text is-active" style="width: 500px;">
      *   <input class="display" type="text" />
-     *   <div class="tag-container" style="top: 5px; left: 4px;">
+     *   <div class="tag-container" style="top: 4px; left: 4px;">
      *     <ul class="tags">
      *       <li class="tag">
      *         <span data-value="tag-value">tag value</span>
@@ -1691,7 +1688,7 @@ button {
      * ```html
      * <div class="extend-text is-active" style="width: 500px;">
      *   <input class="display" type="text" />
-     *   <div class="tag-container" style="top: 5px; left: 4px;">
+     *   <div class="tag-container" style="top: 4px; left: 4px;">
      *     <ul class="tags">
      *       <li class="tag">
      *         <span data-value="tag-value">tag value</span>
@@ -1723,7 +1720,7 @@ button {
     margin: 0; }
   .extend-text .auto-complete-options {
     position: absolute;
-    border: 2px solid #595959;
+    border: 1px solid #595959;
     background-color: white;
     z-index: 1;
     border-top: none;
@@ -1731,6 +1728,7 @@ button {
     overflow: auto;
     width: 100%;
     border-radius: 0 0 5px 5px;
+    box-shadow: 0 0 4px #091850;
     /**
      * @section Extend Text
      * @subsection Auto Complete - Focused Item
@@ -1740,7 +1738,7 @@ button {
      * ```html
      * <div class="extend-text is-active auto-complete" style="width: 500px;">
      *   <input class="display" type="text" />
-     *   <div class="auto-complete-options" style="top: 27px;">
+     *   <div class="auto-complete-options" style="top: 25px;">
      *     <ul>
      *       <li data-value="auto complete option1">auto complete option1</li>
      *       <li class="is-focused" data-value="auto complete option1">auto complete option1</li>
@@ -1768,7 +1766,7 @@ button {
  * ```html
  * <div class="extend-text is-active auto-complete" style="width: 500px;">
  *   <input class="display" type="text" />
- *   <div class="tag-container" style="top: 5px; left: 4px;">
+ *   <div class="tag-container" style="top: 4px; left: 4px;">
  *     <ul class="tags">
  *       <li class="tag">
  *         <span data-value="tag-value">tag value</span>
@@ -1784,7 +1782,7 @@ button {
  *       </li>
  *     </ul>
  *   </div>
- *   <div class="auto-complete-options" style="top: 27px;">
+ *   <div class="auto-complete-options" style="top: 25px;">
  *     <ul>
  *       <li data-value="auto complete option1">auto complete option1</li>
  *       <li class="is-focused" data-value="auto complete option1">auto complete option1</li>
@@ -1806,34 +1804,33 @@ button {
  * <div class="input-element valid">
  *   <div class="container">
  *     <div class="extend-text is-active auto-complete" style="width: 500px;">
- *        <input class="display" type="text" />
- *        <div class="tag-container" style="top: 5px; left: 4px;">
- *          <ul class="tags">
- *            <li class="tag">
- *              <span data-value="tag-value">tag value</span>
- *              <img class="remove svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
- *            </li>
- *            <li class="tag">
- *              <span data-value="tag-value2">tag value2</span>
- *              <img class="remove svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
- *            </li>
- *            <li class="tag">
- *              <span data-value="tag-value3">tag value3</span>
- *              <img class="remove svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
- *            </li>
- *          </ul>
- *        </div>
- *        <div class="auto-complete-options" style="top: 27px;">
- *          <ul>
- *            <li data-value="auto complete option1">auto complete option1</li>
- *            <li class="is-focused" data-value="auto complete option1">auto complete option1</li>
- *            <li data-value="auto complete option1">auto complete option1</li>
- *          </ul>
- *        </div>
+ *       <input class="display" type="text" />
+ *       <div class="tag-container" style="top: 4px; left: 4px;">
+ *         <ul class="tags">
+ *           <li class="tag">
+ *             <span data-value="tag-value">tag value</span>
+ *             <img class="remove svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
+ *           </li>
+ *           <li class="tag">
+ *             <span data-value="tag-value2">tag value2</span>
+ *             <img class="remove svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
+ *           </li>
+ *           <li class="tag">
+ *             <span data-value="tag-value3">tag value3</span>
+ *             <img class="remove svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
+ *           </li>
+ *         </ul>
+ *       </div>
+ *       <div class="auto-complete-options" style="top: 25px;">
+ *         <ul>
+ *           <li data-value="auto complete option1">auto complete option1</li>
+ *           <li class="is-focused" data-value="auto complete option1">auto complete option1</li>
+ *           <li data-value="auto complete option1">auto complete option1</li>
+ *         </ul>
+ *       </div>
  *     </div>
  *   </div>
  *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
- *   <div class="input-message inline">Valid</div>
  * </div>
  * ```
  *
@@ -1843,42 +1840,48 @@ button {
  * <div class="input-element invalid">
  *   <div class="container">
  *     <div class="extend-text is-active auto-complete" style="width: 500px;">
- *        <input class="display" type="text" />
- *        <div class="tag-container" style="top: 5px; left: 4px;">
- *          <ul class="tags">
- *            <li class="tag">
- *              <span data-value="tag-value">tag value</span>
- *              <img class="remove svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
- *            </li>
- *            <li class="tag">
- *              <span data-value="tag-value2">tag value2</span>
- *              <img class="remove svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
- *            </li>
- *            <li class="tag">
- *              <span data-value="tag-value3">tag value3</span>
- *              <img class="remove svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
- *            </li>
- *          </ul>
- *        </div>
- *        <div class="auto-complete-options" style="top: 27px;">
- *          <ul>
- *            <li data-value="auto complete option1">auto complete option1</li>
- *            <li class="is-focused" data-value="auto complete option1">auto complete option1</li>
- *            <li data-value="auto complete option1">auto complete option1</li>
- *          </ul>
- *        </div>
+ *       <input class="display" type="text" />
+ *       <div class="tag-container" style="top: 4px; left: 4px;">
+ *         <ul class="tags">
+ *           <li class="tag">
+ *             <span data-value="tag-value">tag value</span>
+ *             <img class="remove svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
+ *           </li>
+ *           <li class="tag">
+ *             <span data-value="tag-value2">tag value2</span>
+ *             <img class="remove svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
+ *           </li>
+ *           <li class="tag">
+ *             <span data-value="tag-value3">tag value3</span>
+ *             <img class="remove svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
+ *           </li>
+ *         </ul>
+ *       </div>
+ *       <div class="auto-complete-options" style="top: 25px;">
+ *        <ul>
+ *           <li data-value="auto complete option1">auto complete option1</li>
+ *           <li class="is-focused" data-value="auto complete option1">auto complete option1</li>
+ *          <li data-value="auto complete option1">auto complete option1</li>
+ *         </ul>
+ *       </div>
  *     </div>
  *   </div>
- *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
- *   <div class="input-message inline">Invalid</div>
+ *   <div class="tooltip">
+ *     <div class="handle">
+ *       <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
+ *     </div>
+ *     <div class="content">Invalid</div>
+ *   </div>
  * </div>
  * ```
  */
 .invalid .extend-text .auto-complete-options {
-  border-color: #b03a38; }
+  border-color: #b03a38;
+  box-shadow: 0 0 4px #b03a38; }
 
 .valid .extend-text .auto-complete-options {
-  border-color: #3eb038; }
+  border-color: #3eb038;
+  box-shadow: 0 0 4px #3eb038; }
 
 /**
  * @section Forms
@@ -1998,15 +2001,15 @@ select {
  * ```html
  * <form>
  *   <div>
+ *     <label for="first-name">First Name</label>
  *     <div class="input-element valid">
- *       <label for="first-name">First Name</label>
  *       <input id="first-name" type="text" />
  *       <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
  *     </div>
  *   </div>
  *   <div>
+ *     <label for="last-name">Last Name</label>
  *     <div class="input-element valid">
- *       <label for="last-name">Last Name</label>
  *       <input id="last-name" type="text" />
  *       <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
  *     </div>
@@ -2021,8 +2024,8 @@ select {
  *     </div>
  *   </div>
  *   <div>
+ *     <label for="country">Select Country</label>
  *     <div class="input-element invalid" data-input-type="select">
- *       <label for="country">Select Country</label>
  *       <select id="country" style="width: 100px;">
  *         <option>USA</option>
  *         <option>Other</option>
@@ -2034,8 +2037,8 @@ select {
  *     </div>
  *   <div>
  *   <div>
+ *     <label for="bio">Bio</label>
  *     <div class="input-element invalid">
- *       <label for="bio">Bio</label>
  *       <textarea id="bio">Bio</textarea>
  *       <div class="tooltip">
  *         <div class="handle"><img class="svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" /></div>
@@ -2044,8 +2047,8 @@ select {
  *     </div>
  *   <div>
  *   <div>
+ *     <label>Is Admin</label>
  *     <div class="input-element valid">
- *       <label>Is Admin</label>
  *       <input id="is-admin-yes" name="isAdmin" type="radio"> <label for="is-admin-yes" />Yes</label>
  *       <input id="is-admin-no" name="isAdmin" type="radio" /> <label for="is-admin-no">No</label>
  *       <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
@@ -2059,15 +2062,15 @@ select {
  * ```html
  * <form class="compact">
  *   <div>
+ *     <label for="first-name">First Name</label>
  *     <div class="input-element valid">
- *       <label for="first-name">First Name</label>
  *       <input id="first-name" type="text" />
  *       <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
  *     </div>
  *   </div>
  *   <div>
+ *     <label for="last-name">Last Name</label>
  *     <div class="input-element valid">
- *       <label for="last-name">Last Name</label>
  *       <input id="last-name" type="text" />
  *       <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
  *     </div>
@@ -2082,8 +2085,8 @@ select {
  *     </div>
  *   </div>
  *   <div>
+ *     <label for="country">Select Country</label>
  *     <div class="input-element invalid" data-input-type="select">
- *       <label for="country">Select Country</label>
  *       <select id="country" style="width: 100px;">
  *         <option>USA</option>
  *         <option>Other</option>
@@ -2095,8 +2098,8 @@ select {
  *     </div>
  *   <div>
  *   <div>
+ *     <label for="bio">Bio</label>
  *     <div class="input-element invalid">
- *       <label for="bio">Bio</label>
  *       <textarea id="bio">Bio</textarea>
  *       <div class="tooltip">
  *         <div class="handle"><img class="svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" /></div>
@@ -2105,8 +2108,8 @@ select {
  *     </div>
  *   <div>
  *   <div>
+ *     <label>Is Admin</label>
  *     <div class="input-element valid">
- *       <label>Is Admin</label>
  *       <input id="is-admin-yes" name="isAdmin" type="radio"> <label for="is-admin-yes" />Yes</label>
  *       <input id="is-admin-no" name="isAdmin" type="radio" /> <label for="is-admin-no">No</label>
  *       <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
@@ -2126,13 +2129,13 @@ select {
    * container element.
    *
    * ```html
+   * <label>Label:</label>
    * <div class="input-element invalid plain">
-   *   <label>Label:</label>
    *   <input type="text" />
    *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
    * </div>
+   * <label>Label:</label>
    * <div class="input-element valid plain">
-   *   <label>Label:</label>
    *   <input type="text" />
    *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
    * </div>
@@ -2145,8 +2148,8 @@ select {
    * You you provide an icon for the input element that is SVG, you just need to add the `icon` class to the element.
    *
    * ```html
+   * <label>Label:</label>
    * <div class="input-element valid">
-   *   <label>Label:</label>
    *   <input type="text" />
    *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
    * </div>
@@ -2159,12 +2162,29 @@ select {
    * You you provide tooltip to for example, display an error message if the validation failed.
    *
    * ```html
+   * <label>Label:</label>
    * <div class="input-element invalid">
-   *   <label>Label:</label>
    *   <input type="text" />
    *   <div class="tooltip">
    *     <div class="handle"><img class="svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" /></div>
    *     <div class="content">Error message</div>
+   *   </div>
+   * </div>
+   * ```
+   */
+  /**
+   * @section Input Element
+   * @subsection Messages
+   *
+   * You can display messages within an input element if you don't want to display them as a tooltip
+   *
+   * ```html
+   * <label>Label:</label>
+   * <div class="input-element invalid">
+   *   <input type="text" />
+   *   <div class="message danger">
+   *     <div>This field is required</div>
+   *     <div>this field is too short</div>
    *   </div>
    * </div>
    * ```
@@ -2176,7 +2196,7 @@ select {
   .input-element .tooltip,
   .input-element .icon {
     position: absolute;
-    top: 22px;
+    top: 4px;
     right: 5px; }
   .input-element select ~ .tooltip,
   .input-element select ~ .icon {
@@ -2189,6 +2209,9 @@ select {
   .input-element input[type="radio"] ~ .icon {
     top: 15px;
     right: -21px; }
+  .input-element .message {
+    display: block;
+    margin-top: 10px; }
   .input-element:not(.plain) {
     /**
      * @section Input Element
@@ -2197,8 +2220,8 @@ select {
      * If an input element is invalid, you need to add the `invalid` class on the container.
      *
      * ```html
+     * <label>Label:</label>
      * <div class="input-element invalid">
-     *   <label>Label:</label>
      *   <input type="text" />
      *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
      * </div>
@@ -2211,8 +2234,8 @@ select {
      * If an input element is valid, you need to add the `valid` class on the container.
      *
      * ```html
+     * <label>Label:</label>
      * <div class="input-element valid">
-     *   <label>Label:</label>
      *   <input type="text" />
      *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
      * </div>
@@ -2247,9 +2270,6 @@ select {
   .input-element.valid .tooltip .content {
     color: #007e01; }
 
-form.compact .input-element .tooltip,
-form.compact .input-element .icon {
-  top: 4px; }
 form.compact .input-element input[type="checkbox"] ~ .tooltip,
 form.compact .input-element input[type="checkbox"] ~ .icon {
   top: 1px; }
