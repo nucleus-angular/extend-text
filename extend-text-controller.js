@@ -5,9 +5,6 @@ angular.module('nag.extendText')
   'nagBeat',
   'nagDefaults',
   function($scope, $sce, nagBeat, nagDefaults) {
-    //generate options
-    $scope.options = nagDefaults.getOptions('extendTextOptions', $scope.options);
-
     /**
      * Beat name
      *
@@ -16,15 +13,6 @@ angular.module('nag.extendText')
      * @property beatName
      */
     this.beatName = 'extend-text-' + $scope.$id;
-
-    /**
-     * Store original auto complete options to be able to properly reset them
-     *
-     * @ngdirectivecontroller
-     * @type object
-     * @property defaultAutoCompleteOptions
-     */
-    this.defaultAutoCompleteOptions = _.clone($scope.options.autoCompleteOptions.options);
 
     /**
      * Converts an array of strings to an array of objects that can be for the auto complete options
@@ -206,10 +194,6 @@ angular.module('nag.extendText')
       $scope.options.autoCompleteOptions.variableCache = null;
       $scope.options.autoCompleteOptions.display = false;
     };
-
-    if($scope.options.parsingOptions.enabled === true && !_.isObject($scope.options.parsingOptions.parser)) {
-      throw Error('You must provide a parser in order to use the parsing functionality');
-    }
 
     var parsingHelper = {
       lastValidatedQuery: null,

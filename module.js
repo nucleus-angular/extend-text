@@ -1,6 +1,6 @@
 /**
  * # Extend Text
- * 
+ *
  * An enhanced input element that add support for the following functionality:
  *
  * - Auto Complete
@@ -13,7 +13,8 @@ angular.module('nag.extendText', [
   'nag.beat',
   'nag.event',
   'nag.form',
-  'nag.tooltip'
+  'nag.tooltip',
+  'nag.svg'
 ])
 .run([
   'nagDefaults',

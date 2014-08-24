@@ -21,7 +21,7 @@ var GenericPage = BasePageObject.extend({
       var dataId = isTextarea === true ? 'textarea' : 'input';
     }
 
-    return ExtendTextComponent.new(this.test, '.main-content div[data-id="%s"]'.format(dataId));
+    return ExtendTextComponent.new(this.test, '.main-content [data-id="%s"]'.format(dataId));
   },
 
   getInputExtendTextComponent: function(isTextarea) {
@@ -31,7 +31,7 @@ var GenericPage = BasePageObject.extend({
       var dataId = isTextarea === true ? 'textarea' : 'input';
     }
 
-    return InputExtendTextComponent.new(this.test, '.main-content span[data-id="%s"]'.format(dataId + '-wrapper'));
+    return InputExtendTextComponent.new(this.test, '.main-content [data-id="%s"]'.format(dataId + '-wrapper'));
   },
 
   //TODO: refactor assertion so http://localhost:3000 does not need to be in test

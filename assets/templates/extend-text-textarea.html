@@ -1,12 +1,12 @@
 <div class="container">
-  <div class="inputs" ng-class="{'empty': getHiddenValue().length === 0, 'valid': parsingValidation === true, 'invalid': parsingValidation !== true}">
+  <div class="inputs" ng-class="{'empty': getHiddenValue().length === 0, 'valid': parsingValidation === true && getHiddenValue().length > 0, 'invalid': parsingValidation !== true && getHiddenValue().length > 0}">
     <textarea class="display" ng-class="{'ng-valid': modelController.$dirty && modelController.$valid, 'ng-invalid': modelController.$dirty && modelController.$invalid}" nag-event="{keydown: 'keyDown($event)', keyup: 'keyUp($event)', blur: 'blur($event)'}" ng-mouseup="mouseUp($event)" ng-mousedown="mouseDown($event)"></textarea>
     <input type="hidden" nag-input />
-    <div ng-if="options.parsingOptions.enabled === true" ng-click="cursorToError()" nag-tooltip>
+    <div ng-show="options.parsingOptions.enabled === true" ng-click="cursorToError()" nag-tooltip>
       <span class="handle">
-        <span ng-show="model.isEmpty()"><img class="empty" data-src="/components/nucleus-angular-sass-framework/assets/svg/open-iconic/svg/question-mark.svg" /></span>
-        <span ng-show="getHiddenValue().length !== 0 && parsingValidation === true"><img class="valid" data-src="/components/nucleus-angular-sass-framework/assets/svg/open-iconic/svg/check.svg" /></span>
-        <span ng-show="getHiddenValue().length !== 0 && parsingValidation !== true"><img class="invalid" data-src="/components/nucleus-angular-sass-framework/assets/svg/open-iconic/svg/x.svg" /></span>
+        <span ng-show="getHiddenValue().length === 0"><img class="empty svg-icon" data-src="/components/nucleus-angular-sass-framework/assets/svg/open-iconic/svg/question-mark.svg" /></span>
+        <span ng-show="getHiddenValue().length !== 0 && parsingValidation === true"><img class="valid svg-icon" data-src="/components/nucleus-angular-sass-framework/assets/svg/open-iconic/svg/check.svg" /></span>
+        <span ng-show="getHiddenValue().length !== 0 && parsingValidation !== true"><img class="invalid svg-icon" data-src="/components/nucleus-angular-sass-framework/assets/svg/open-iconic/svg/x.svg" /></span>
       </span>
       <div class="content" ng-bind-html="getParsingHelpMessage()"></div>
     </div>

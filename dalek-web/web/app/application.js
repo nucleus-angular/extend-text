@@ -2,7 +2,8 @@ angular.module('demo', [
   'nag.extendText',
   'httpMocker',
   'demo.core',
-  'demo.home'
+  'demo.home',
+  'nag.svg'
 ])
 .config([
   '$locationProvider',

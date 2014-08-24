@@ -18,7 +18,7 @@ var ExtendTextComponent = BaseComponent.extend({
       noMatchesIndicator: '.no-matches',
       loadingIndicator: '.loading',
       inputsContainer: '.inputs',
-      searchQueryValidationIcon: '.validation-icon',
+      searchQueryValidationIcon: '.tooltip .handle',
       searchQueryTooltipContent: '.tooltip .content'
     };
 

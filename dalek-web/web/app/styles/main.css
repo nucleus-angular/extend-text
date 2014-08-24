@@ -143,7 +143,7 @@
  */
 /**
  * @section Variables
- * @subsection Danger Colors
+ * @subsection Caution Colors
  *
  * These are colors used to indicator something you should be cautious with.
  *
@@ -289,6 +289,7 @@
  * @var $top-radio-tooltip-icon-compact-ie
  * @var $box-shadow-invalid-ie
  * @var $box-shadow-valid-ie
+ * @var $top-tooltip-icon-compact-ie
  */
 /**
  * @section Variables
@@ -299,11 +300,12 @@
  * @var $padding-message
  * @var $border-message
  * @var $border-radius
- * @var $margin-icon-message
  * @var $width-icon-message
  * @var $height-icon-message
  * @var $padding-icon-message
  * @var $border-radius-icon-message
+ * @var $top-icon-message
+ * @var $left-icon-message
  */
 /**
  * @section Variables
@@ -846,7 +848,7 @@ body {
   color: #0002ab; }
 
 .caution-text {
-  color: #cfcf00; }
+  color: #7e7e00; }
 
 .danger-text {
   color: #7a0200; }
@@ -866,25 +868,21 @@ body {
 @-webkit-keyframes fadeIn {
   0% {
     opacity: 0; }
-
   100% {
     opacity: 1; } }
 @-moz-keyframes fadeIn {
   0% {
     opacity: 0; }
-
   100% {
     opacity: 1; } }
 @-o-keyframes fadeIn {
   0% {
     opacity: 0; }
-
   100% {
     opacity: 1; } }
 @keyframes fadeIn {
   0% {
     opacity: 0; }
-
   100% {
     opacity: 1; } }
 /**
@@ -897,28 +895,24 @@ body {
 @-webkit-keyframes fadeOut {
   0% {
     opacity: 1; }
-
   100% {
     opacity: 0;
     display: none; } }
 @-moz-keyframes fadeOut {
   0% {
     opacity: 1; }
-
   100% {
     opacity: 0;
     display: none; } }
 @-o-keyframes fadeOut {
   0% {
     opacity: 1; }
-
   100% {
     opacity: 0;
     display: none; } }
 @keyframes fadeOut {
   0% {
     opacity: 1; }
-
   100% {
     opacity: 0;
     display: none; } }
@@ -931,7 +925,7 @@ body {
  * @section Utility
  * @subsection Hiding
  *
- * In order to hide an element, just add the `u-hid` class.
+ * In order to hide an element, just add the `u-hide` class.
  *
  * ```html
  * <div>this should be shown</div>
@@ -1230,9 +1224,9 @@ button {
   button.border {
     border: 1px solid #5e5e5e; }
   button:hover:not([disabled]) {
-    background-color: #777777; }
+    background-color: #919191; }
   button:active:not([disabled]), button.is-active:not([disabled]) {
-    background-color: #777777; }
+    background-color: #919191; }
   button:focus {
     outline: none; }
   button.small {
@@ -1273,9 +1267,9 @@ button {
     button.primary.border {
       border: 1px solid #2e4c9a; }
     button.primary:hover:not([disabled]) {
-      background-color: #3a60c1; }
+      background-color: #5f7ecf; }
     button.primary:active:not([disabled]), button.primary.is-active:not([disabled]) {
-      background-color: #3a60c1; }
+      background-color: #5f7ecf; }
   button.caution {
     /**
      * @section Buttons
@@ -1305,9 +1299,9 @@ button {
     button.caution.border {
       border: 1px solid #363600; }
     button.caution:hover:not([disabled]) {
-      background-color: #696900; }
+      background-color: #9c9c00; }
     button.caution:active:not([disabled]), button.caution.is-active:not([disabled]) {
-      background-color: #696900; }
+      background-color: #9c9c00; }
   button.danger {
     /**
      * @section Buttons
@@ -1337,9 +1331,9 @@ button {
     button.danger.border {
       border: 1px solid #3c1413; }
     button.danger:hover:not([disabled]) {
-      background-color: #63211f; }
+      background-color: #892d2c; }
     button.danger:active:not([disabled]), button.danger.is-active:not([disabled]) {
-      background-color: #63211f; }
+      background-color: #892d2c; }
   button.safe {
     /**
      * @section Buttons
@@ -1369,9 +1363,9 @@ button {
     button.safe.border {
       border: 1px solid #153c13; }
     button.safe:hover:not([disabled]) {
-      background-color: #23631f; }
+      background-color: #30892c; }
     button.safe:active:not([disabled]), button.safe.is-active:not([disabled]) {
-      background-color: #23631f; }
+      background-color: #30892c; }
   button[disabled] {
     opacity: 0.5;
     cursor: not-allowed; }
@@ -1558,6 +1552,8 @@ button {
  * @section Extend Text
  *
  * This component extends the capibilities of your standard text box/textarea elements.
+ *
+ * **NOTE: The auto complete options container looks a little off in FireFox but that is just a browser issue with the static css.  If you use javascript to position the box (like the Nucleus Angular Extend Text component does), it will look fine.**
  */
 .extend-text {
   position: relative;
@@ -1751,7 +1747,7 @@ button {
     .extend-text .auto-complete-options li {
       padding: 3px 6px; }
     .extend-text .auto-complete-options .is-focused {
-      background-color: #e1e9f6; }
+      background-color: #E1E9F6; }
   .extend-text .new-indicator {
     position: absolute;
     top: 6px;
@@ -1868,7 +1864,7 @@ button {
  *   </div>
  *   <div class="tooltip">
  *     <div class="handle">
- *       <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
+ *       <img class="svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
  *     </div>
  *     <div class="content">Invalid</div>
  *   </div>
@@ -2001,15 +1997,15 @@ select {
  * ```html
  * <form>
  *   <div>
- *     <label for="first-name">First Name</label>
  *     <div class="input-element valid">
+ *       <label for="first-name">First Name</label>
  *       <input id="first-name" type="text" />
  *       <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
  *     </div>
  *   </div>
  *   <div>
- *     <label for="last-name">Last Name</label>
  *     <div class="input-element valid">
+ *       <label for="last-name">Last Name</label>
  *       <input id="last-name" type="text" />
  *       <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
  *     </div>
@@ -2024,8 +2020,8 @@ select {
  *     </div>
  *   </div>
  *   <div>
- *     <label for="country">Select Country</label>
  *     <div class="input-element invalid" data-input-type="select">
+ *       <label for="country">Select Country</label>
  *       <select id="country" style="width: 100px;">
  *         <option>USA</option>
  *         <option>Other</option>
@@ -2037,8 +2033,8 @@ select {
  *     </div>
  *   <div>
  *   <div>
- *     <label for="bio">Bio</label>
  *     <div class="input-element invalid">
+ *       <label for="bio">Bio</label>
  *       <textarea id="bio">Bio</textarea>
  *       <div class="tooltip">
  *         <div class="handle"><img class="svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" /></div>
@@ -2047,8 +2043,8 @@ select {
  *     </div>
  *   <div>
  *   <div>
- *     <label>Is Admin</label>
  *     <div class="input-element valid">
+ *       <label>Is Admin</label>
  *       <input id="is-admin-yes" name="isAdmin" type="radio"> <label for="is-admin-yes" />Yes</label>
  *       <input id="is-admin-no" name="isAdmin" type="radio" /> <label for="is-admin-no">No</label>
  *       <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
@@ -2062,15 +2058,15 @@ select {
  * ```html
  * <form class="compact">
  *   <div>
- *     <label for="first-name">First Name</label>
  *     <div class="input-element valid">
+ *       <label for="first-name">First Name</label>
  *       <input id="first-name" type="text" />
  *       <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
  *     </div>
  *   </div>
  *   <div>
- *     <label for="last-name">Last Name</label>
  *     <div class="input-element valid">
+ *       <label for="last-name">Last Name</label>
  *       <input id="last-name" type="text" />
  *       <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
  *     </div>
@@ -2085,8 +2081,8 @@ select {
  *     </div>
  *   </div>
  *   <div>
- *     <label for="country">Select Country</label>
  *     <div class="input-element invalid" data-input-type="select">
+ *       <label for="country">Select Country</label>
  *       <select id="country" style="width: 100px;">
  *         <option>USA</option>
  *         <option>Other</option>
@@ -2098,8 +2094,8 @@ select {
  *     </div>
  *   <div>
  *   <div>
- *     <label for="bio">Bio</label>
  *     <div class="input-element invalid">
+ *       <label for="bio">Bio</label>
  *       <textarea id="bio">Bio</textarea>
  *       <div class="tooltip">
  *         <div class="handle"><img class="svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" /></div>
@@ -2108,8 +2104,8 @@ select {
  *     </div>
  *   <div>
  *   <div>
- *     <label>Is Admin</label>
  *     <div class="input-element valid">
+ *       <label>Is Admin</label>
  *       <input id="is-admin-yes" name="isAdmin" type="radio"> <label for="is-admin-yes" />Yes</label>
  *       <input id="is-admin-no" name="isAdmin" type="radio" /> <label for="is-admin-no">No</label>
  *       <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
@@ -2129,13 +2125,13 @@ select {
    * container element.
    *
    * ```html
-   * <label>Label:</label>
    * <div class="input-element invalid plain">
+   *   <label>Label:</label>
    *   <input type="text" />
    *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
    * </div>
-   * <label>Label:</label>
    * <div class="input-element valid plain">
+   *   <label>Label:</label>
    *   <input type="text" />
    *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
    * </div>
@@ -2148,8 +2144,8 @@ select {
    * You you provide an icon for the input element that is SVG, you just need to add the `icon` class to the element.
    *
    * ```html
-   * <label>Label:</label>
    * <div class="input-element valid">
+   *   <label>Label:</label>
    *   <input type="text" />
    *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
    * </div>
@@ -2162,8 +2158,8 @@ select {
    * You you provide tooltip to for example, display an error message if the validation failed.
    *
    * ```html
-   * <label>Label:</label>
    * <div class="input-element invalid">
+   *   <label>Label:</label>
    *   <input type="text" />
    *   <div class="tooltip">
    *     <div class="handle"><img class="svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" /></div>
@@ -2179,8 +2175,8 @@ select {
    * You can display messages within an input element if you don't want to display them as a tooltip
    *
    * ```html
-   * <label>Label:</label>
    * <div class="input-element invalid">
+   *   <label>Label:</label>
    *   <input type="text" />
    *   <div class="message danger">
    *     <div>This field is required</div>
@@ -2196,14 +2192,14 @@ select {
   .input-element .tooltip,
   .input-element .icon {
     position: absolute;
-    top: 4px;
+    top: 22px;
     right: 5px; }
   .input-element select ~ .tooltip,
   .input-element select ~ .icon {
-    right: 16px; }
+    right: 22px; }
   .input-element input[type="checkbox"] ~ .tooltip,
   .input-element input[type="checkbox"] ~ .icon {
-    top: 1px;
+    top: 0px;
     right: -21px; }
   .input-element input[type="radio"] ~ .tooltip,
   .input-element input[type="radio"] ~ .icon {
@@ -2220,8 +2216,8 @@ select {
      * If an input element is invalid, you need to add the `invalid` class on the container.
      *
      * ```html
-     * <label>Label:</label>
      * <div class="input-element invalid">
+     *   <label>Label:</label>
      *   <input type="text" />
      *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
      * </div>
@@ -2234,8 +2230,8 @@ select {
      * If an input element is valid, you need to add the `valid` class on the container.
      *
      * ```html
-     * <label>Label:</label>
      * <div class="input-element valid">
+     *   <label>Label:</label>
      *   <input type="text" />
      *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
      * </div>
@@ -2270,9 +2266,12 @@ select {
   .input-element.valid .tooltip .content {
     color: #007e01; }
 
+form.compact .input-element .tooltip,
+form.compact .input-element .icon {
+  top: 4px; }
 form.compact .input-element input[type="checkbox"] ~ .tooltip,
 form.compact .input-element input[type="checkbox"] ~ .icon {
-  top: 1px; }
+  top: 0px; }
 form.compact .input-element input[type="radio"] ~ .tooltip,
 form.compact .input-element input[type="radio"] ~ .icon {
   top: -2px; }
@@ -2285,7 +2284,8 @@ form.compact .input-element input[type="radio"] ~ .icon {
  * ```html
  * <a id="default" class="show-notify" href>click me to show default notify (auto removed in 2 seconds)</a>
  * <div class="notify message notice" data-id="default">
- *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/info.svg" />This is a notification message.
+ *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/info.svg" />
+ *   <div class="content">This is a notification message.</div>
  * </div>
  * ```
  *
@@ -2294,7 +2294,8 @@ form.compact .input-element input[type="radio"] ~ .icon {
  * ```html
  * <a id="positioned" class="show-notify" href>click me to show positioned notify (auto removed in 2 seconds)</a>
  * <div class="notify message danger" data-id="positioned" style="top: 300px; left: 150px; right: auto;">
- *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />This is a positioned notification message.
+ *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
+ *   <div class="content">This is a positioned notification message.</div>
  * </div>
  * ```
  *
@@ -2795,13 +2796,16 @@ form.compact .input-element input[type="radio"] ~ .icon {
   border-radius: 3px;
   /**
    * @section Messages
-   * #subsection Icon
+   * @subsection Icon
    *
    * Messages element can also have an icon.
    *
+   * If you are using an icon, then you must wrap you message content in an element with the `content` class.
+   *
    * ```html
    * <div class="message">
-   *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />This is a generic message.
+   *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
+   *   <div class="content">This is a generic message.</div>
    * </div>
    * ```
    */
@@ -2815,7 +2819,8 @@ form.compact .input-element input[type="radio"] ~ .icon {
    *
    * ```html
    * <div class="message safe">
-   *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />This is a generic message.
+   *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/check.svg" />
+   *   <div class="content">This is a generic message.</div>
    * </div>
    * ```
    *
@@ -2823,7 +2828,8 @@ form.compact .input-element input[type="radio"] ~ .icon {
    *
    * ```html
    * <div class="message notice">
-   *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/info.svg" />This is a generic message.
+   *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/info.svg" />
+   *   <div class="content">This is a generic message.</div>
    * </div>
    * ```
    *
@@ -2831,7 +2837,8 @@ form.compact .input-element input[type="radio"] ~ .icon {
    *
    * ```html
    * <div class="message caution">
-   *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/question-mark.svg" />This is a generic message.
+   *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/question-mark.svg" />
+   *   <div class="content">This is a generic message.</div>
    * </div>
    * ```
    *
@@ -2839,17 +2846,23 @@ form.compact .input-element input[type="radio"] ~ .icon {
    *
    * ```html
    * <div class="message danger">
-   *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />This is a generic message.
+   *   <img class="icon svg-icon" src="http://cdn.jsdelivr.net/open-iconic/1.1.0/svg/x.svg" />
+   *   <div class="content">This is a generic message.</div>
    * </div>
    * ```
    */ }
+  .message:not(.notify) {
+    position: relative; }
   .message .icon {
-    vertical-align: middle;
-    margin: 0 5px 0 0;
-    width: 24px;
-    height: 24px;
-    padding: 4px;
-    border-radius: 12px; }
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 21px;
+    height: 21px;
+    padding: 3px;
+    border-radius: 10.5px; }
+  .message .content {
+    margin-left: 21px; }
   .message.safe {
     background-color: #eef9ee;
     color: #007e01;
@@ -2866,7 +2879,7 @@ form.compact .input-element input[type="radio"] ~ .icon {
       background-color: #091850; }
   .message.caution {
     background-color: #f1f2ab;
-    color: #cfcf00;
+    color: #7e7e00;
     fill: #f1f2ab;
     border-color: #7e7e00; }
     .message.caution .icon {
@@ -3112,3 +3125,5 @@ body {
 .extend-text input,
 .extend-text textarea {
   width: 300px; }
+
+/*# sourceMappingURL=main.css.map */

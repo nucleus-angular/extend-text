@@ -37,13 +37,12 @@ angular.module('nag.extendText')
   'nagHelper',
   'noneAffectingTextKeys',
   '$rootScope',
-  function($timeout, $http, nagBeat, $compile, nagHelper, noneAffectingTextKeys, $rootScope){
+  'nagDefaults',
+  'nagSvgHelper',
+  function($timeout, $http, nagBeat, $compile, nagHelper, noneAffectingTextKeys, $rootScope, nagDefaults, nagSvgHelper){
     return {
       restrict: 'A',
-      scope: {
-        options: '=?nagExtendText',
-        model: '='
-      },
+      scope: true,
       require: [
         '^?nagResettableForm',
         'nagExtendText'
@@ -67,10 +66,14 @@ angular.module('nag.extendText')
           throw new Error("Must provide data-model-property attribute for extend text");
         }
 
-        element.find('input[type="hidden"]').attr('ng-model', 'model.' + attributes.modelProperty);
+        element.find('input[type="hidden"]').attr('ng-model', attributes.model + '.' + attributes.modelProperty);
 
         if(attributes.inputName) {
           element.find('input[type="hidden"]').attr('name', attributes.inputName);
+        }
+
+        if(element.find('.inputs .svg-icon').length > 0) {
+          nagSvgHelper.inject(element.find('.inputs .svg-icon').get());
         }
 
         //allows for adding any attribute to the hidden input
@@ -86,7 +89,15 @@ angular.module('nag.extendText')
         element.addClass('extend-text');
         return {
           post: function(scope, element, attributes, controllers) {
+            scope.options = nagDefaults.getOptions('extendTextOptions', scope.$eval(attributes.nagExtendText));
+
+            if(scope.options.parsingOptions.enabled === true && !_.isObject(scope.options.parsingOptions.parser)) {
+              throw Error('You must provide a parser in order to use the parsing functionality');
+            }
+
             var selfController = controllers[1];
+            selfController.defaultAutoCompleteOptions = _.clone(scope.options.autoCompleteOptions.options);
+
             var originalPadding, borderSize, originalMargin;
             var dontFocusOnCursorPlacement = false;
             var newCursorPosition = {};
@@ -811,12 +822,12 @@ angular.module('nag.extendText')
              * @method autoHeight
              */
             scope.autoHeight = function() {
-              var element = $(event.target);
+              var autoHeightElement = $(event.target);
 
-              if(element.scrollTop() > 0) {
+              if(autoHeightElement.scrollTop() > 0) {
                 //textarea does not automatically scroll to the very bottom so we need to do it
-                element.scrollTop(100);
-                element.css('height', element.outerHeight() + element.scrollTop());
+                autoHeightElement.scrollTop(100);
+                autoHeightElement.css('height', autoHeightElement.outerHeight() + autoHeightElement.scrollTop());
               }
             };
 
@@ -836,15 +847,6 @@ angular.module('nag.extendText')
 
               $(element).find('textarea')[0].setSelectionRange(characterNumber, characterNumber);
             };
-
-            $timeout(function() {
-              var toConvert = element.find('.tooltip img');
-
-              if(toConvert.length > 0) {
-                toConvert.addClass('svg-icon');
-                SVGInjector(toConvert.get());
-              }
-            }, 0);
 
             scope.$watch('isActive', function(newValue) {
               if(newValue === true) {
