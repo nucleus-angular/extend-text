@@ -3,6 +3,9 @@
 Each change log are assumed to be accompanied by associated unit test and documentation updates.
 
 ## master
+
+- coverted from isolate scope to child scope
+- added .editorconfig file
 - added ability to set custom setValue() method for auto complete (#7)
 - added ability to define custom getData() method for auto complete (#6)
 - fixed issue with new indicator not work whe initial search for data returns nothing (#4)
