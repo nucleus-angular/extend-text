@@ -2,6 +2,12 @@
 
 Each change log are assumed to be accompanied by associated unit test and documentation updates.
 
+## master
+
+- moved auto focus to data attribute
+- converted from grunt to gulp
+- converted UI tests to protractor from dalek
+
 ## 0.6.0
 
 - coverted from isolate scope to child scope

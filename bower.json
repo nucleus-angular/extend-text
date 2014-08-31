@@ -8,7 +8,8 @@
     "nucleus-angular-form": "master",
     "nucleus-angular-tooltip": "master",
     "javascript-utilities": "master",
-    "search-query": "master"
+    "search-query": "master",
+    "nucleus-angular-svg": "master"
   },
   "devDependencies": {
     "lodash": "2.x.x",

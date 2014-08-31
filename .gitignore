@@ -7,3 +7,4 @@ libpeerconnection.log
 chromedriver.log
 .DS_Store
 .sass-cache
+gulp/build-meta-data/*

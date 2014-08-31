@@ -86,6 +86,11 @@ angular.module('nag.extendText')
           });
         }
 
+        if(attributes.autoFocus === 'true') {
+          console.log('adding auto focus');
+          element.find('.display').attr('nag-auto-focus', 'true');
+        }
+
         element.addClass('extend-text');
         return {
           post: function(scope, element, attributes, controllers) {

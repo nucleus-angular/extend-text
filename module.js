@@ -31,6 +31,7 @@ angular.module('nag.extendText', [
      * @property {object} options
      *   @property {boolean} [selectOnFocus=false] Whether or not to select of data when focusing on input
      *   @property {boolean} [preventSubmitOnEnter=true] Whether or not the prevent form submission on the enter key when input focused
+     *   @property {boolean} [autoHeight=true] Make sure the element of the input automatically increases as needed
      *   @property {array} [data] The data for the input
      *   @property {string} [templateUrl="extend-text.html"] Main template url
      *   @property {string} [template=""] Template HTML
