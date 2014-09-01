@@ -17,13 +17,13 @@ inputTextElementComponent.isInvalid = function() {
 };
 
 inputTextElementComponent.validationNotVisible = function() {
-  expect($(this.getSelector('validIndicator')).isPresent()).to.eventually.be.false;
-  expect($(this.getSelector('invalidIndicator')).isPresent()).to.eventually.be.false;
+  expect($(this.getSelector('validIndicator')).isDisplayed()).to.eventually.be.false;
+  expect($(this.getSelector('invalidIndicator')).isDisplayed()).to.eventually.be.false;
 };
 
 inputTextElementComponent.validationIsVisible = function() {
-  expect($(this.getSelector('validIndicator')).isPresent()).to.eventually.be.true;
-  expect($(this.getSelector('invalidIndicator')).isPresent()).to.eventually.be.true;
+  expect($(this.getSelector('validIndicator')).isDisplayed()).to.eventually.be.true;
+  expect($(this.getSelector('invalidIndicator')).isDisplayed()).to.eventually.be.true;
 };
 
 module.exports = {

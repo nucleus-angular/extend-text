@@ -2,8 +2,11 @@
 <form name="extendTextResettable" nag-resettable-form>
   {{ $id }}
   <ul>
-    <li nag-input-element data-input-name="extendTextResettable.firstName" data-id="first-name-wrapper">
-      <label for="first-name">First Name:</label>
+    <li nag-input-element="firstName" data-id="first-name-wrapper">
+      <label for="first-name">
+        First Name:
+        <div nag-input-element-validation></div>
+      </label>
       <div nag-extend-text="firstNameOptions"
            data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
            data-id="first-name"
@@ -12,8 +15,11 @@
            data-input-name="firstName">
       </div>
     </li>
-    <li nag-input-element data-input-name="extendTextResettable.lastName" data-id="last-name-wrapper">
-      <label for="last-name">Last Name:</label>
+    <li nag-input-element="lastName" data-id="last-name-wrapper">
+      <label for="last-name">
+        Last Name:
+        <div nag-input-element-validation></div>
+      </label>
       <div nag-extend-text="lastNameOptions"
            data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
            data-id="last-name"
@@ -22,8 +28,11 @@
            data-input-name="lastName">
       </div>
     </li>
-    <li nag-input-element data-input-name="extendTextResettable.middleName" data-id="middle-name-wrapper">
-      <label for="last-name">Middle Name:</label>
+    <li nag-input-element="middleName" data-id="middle-name-wrapper">
+      <label for="last-name">
+        Middle Name:
+        <div nag-input-element-validation></div>
+      </label>
       <div nag-extend-text="middleNameOptions"
            data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
            data-id="middle-name"
@@ -32,8 +41,11 @@
            data-input-name="middleName">
       </div>
     </li>
-    <li nag-input-element data-input-name="extendTextResettable.forthName" data-id="forth-name-wrapper">
-      <label for="last-name">Forth Name:</label>
+    <li nag-input-element="forthName" data-id="forth-name-wrapper">
+      <label for="last-name">
+        Forth Name:
+        <div nag-input-element-validation></div>
+      </label>
       <div nag-extend-text="forthNameOptions"
            data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
            data-id="forth-name"
@@ -42,8 +54,11 @@
            data-input-name="forthName">
       </div>
     </li>
-    <li nag-input-element data-input-name="extendTextResettable.firstNameTextarea" data-id="first-name-textarea-wrapper">
-      <label for="first-name">First Name:</label>
+    <li nag-input-element="firstNameTextarea" data-id="first-name-textarea-wrapper">
+      <label for="first-name">
+        First Name:
+        <div nag-input-element-validation></div>
+      </label>
       <div nag-extend-text="firstNameTextareaOptions"
            data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
            data-id="first-name-textarea"
@@ -53,8 +68,11 @@
            data-input-name="firstNameTextarea">
       </div>
     </li>
-    <li nag-input-element data-input-name="extendTextResettable.lastNameTextarea" data-id="last-name-textarea-wrapper">
-      <label for="last-name">Last Name:</label>
+    <li nag-input-element="lastNameTextarea" data-id="last-name-textarea-wrapper">
+      <label for="last-name">
+        Last Name:
+        <div nag-input-element-validation></div>
+      </label>
       <div nag-extend-text="lastNameTextareaOptions"
            data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
            data-id="last-name-textarea"
@@ -64,8 +82,11 @@
            data-input-name="lastNameTextarea">
       </div>
     </li>
-    <li nag-input-element data-input-name="extendTextResettable.middleNameTextarea" data-id="middle-name-textarea-wrapper">
-      <label for="last-name">Middle Name:</label>
+    <li nag-input-element="middleNameTextarea" data-id="middle-name-textarea-wrapper">
+      <label for="last-name">
+        Middle Name:
+        <div nag-input-element-validation></div>
+      </label>
       <div nag-extend-text="middleNameTextareaOptions"
            data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
            data-id="middle-name-textarea"
@@ -75,8 +96,11 @@
            data-input-name="middleNameTextarea">
       </div>
     </li>
-    <li nag-input-element data-input-name="extendTextResettable.forthNameTextarea" data-id="forth-name-textarea-wrapper">
-      <label for="last-name">Forth Name:</label>
+    <li nag-input-element="forthNameTextarea" data-id="forth-name-textarea-wrapper">
+      <label for="last-name">
+        Forth Name:
+        <div nag-input-element-validation></div>
+      </label>
       <div nag-extend-text="forthNameTextareaOptions"
            data-attributes="nag-validate-required;nag-validate-range-length::{min: 1, max: 10}"
            data-id="forth-name-textarea"

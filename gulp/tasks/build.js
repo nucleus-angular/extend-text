@@ -6,7 +6,6 @@ gulp.task('build', 'Builds the code along with running quality checks (tests, hi
     'copy-self',
     'jshint',
     ['sass', 'javascript'],
-    'karma',
     done
   );
 });

@@ -117,7 +117,7 @@ angular.module('nag.extendText')
       if(_.isArray(data)) {
         $scope.options.autoCompleteOptions.options = data;
 
-        if(data.length == 0 || _.map(data, function(option){return option.display;}).indexOf($scope.getVisibleValue()) == -1) {
+        if(data.length === 0 || _.map(data, function(option){return option.display;}).indexOf($scope.getVisibleValue()) === -1) {
           $scope.options.autoCompleteOptions.isNew = true;
         } else {
           $scope.options.autoCompleteOptions.isNew = false;
@@ -282,6 +282,7 @@ angular.module('nag.extendText')
      * @param {object} modelController Model controller
      */
     this.setModelController = function(modelController) {
+      //REFACTOR: remove all instance of access to modelController from template to not have to attach it to the scope
       $scope.modelController = modelController;
     };
 

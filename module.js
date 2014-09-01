@@ -170,19 +170,19 @@ angular.module('nag.extendText', [
       if(results.tagOptions) {
         results.tagOptions = angular.extend(extendTextTagDefaults, results.tagOptions);
       } else {
-        results.tagOptions = extendTextTagDefaults
+        results.tagOptions = extendTextTagDefaults;
       }
 
       if(results.autoCompleteOptions) {
         results.autoCompleteOptions = angular.extend(extendTextAutoCompleteDefaults, results.autoCompleteOptions);
       } else {
-        results.autoCompleteOptions = extendTextAutoCompleteDefaults
+        results.autoCompleteOptions = extendTextAutoCompleteDefaults;
       }
 
       if(results.parsingOptions) {
         results.parsingOptions = angular.extend(extendTextParsingOptions, results.parsingOptions);
       } else {
-        results.parsingOptions = extendTextParsingOptions
+        results.parsingOptions = extendTextParsingOptions;
       }
 
       return results;

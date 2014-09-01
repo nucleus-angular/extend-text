@@ -1,5 +1,6 @@
 @import "../../components/bourbon/dist/_bourbon";
-@import "../../components/nucleus-angular-sass-framework/assets/styles/framework";
+@import "../../components/nucleus-angular-sass-framework/assets/styles/framework/_variables";
+@import "../../components/nucleus-angular-sass-framework/assets/styles/_framework";
 
 body {
   height: 500px;
